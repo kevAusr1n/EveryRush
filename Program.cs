@@ -15,7 +15,7 @@ builder.Services.AddOpenApi();
 builder.Services.AddControllers();
 builder.Services.AddAuthentication();
 
-builder.Services.AddAuthorization
+/*builder.Services.AddAuthorization
 (
     options =>
     {
@@ -23,7 +23,7 @@ builder.Services.AddAuthorization
             .RequireAuthenticatedUser()
             .Build();
     }
-);
+);*/
 
 builder.Services.AddDbContext<AuthDbContext>
 (

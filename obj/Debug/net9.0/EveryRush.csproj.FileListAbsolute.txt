@@ -438,3 +438,4 @@
 /Users/kevin/git-app/EveryRush/bin/Debug/net9.0/react-front-end/tsconfig.app.json
 /Users/kevin/git-app/EveryRush/bin/Debug/net9.0/react-front-end/tsconfig.json
 /Users/kevin/git-app/EveryRush/bin/Debug/net9.0/react-front-end/tsconfig.node.json
+/Users/kevin/git-app/EveryRush/obj/Debug/net9.0/EveryRush.sourcelink.json

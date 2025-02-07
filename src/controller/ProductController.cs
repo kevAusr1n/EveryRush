@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace EveryRush.Controller;
 
 [AllowAnonymous]
-[Route("api/product")]
+[Route("api/products")]
 [ApiController]
 public class ProductController : ControllerBase 
 {   
@@ -18,9 +18,12 @@ public class ProductController : ControllerBase
     [HttpGet("market")]
     public async Task<ActionResult<GetPaginatedMarketResponse>> GetPaginatedMarket(
         [FromQuery] int page,
-        [FromQuery] int size) 
+        [FromQuery] int size,
+        [FromQuery] string keyword = "",
+        [FromQuery] string orderby = "",
+        [FromQuery] string order = "") 
     {
-        return await _productService.GetPaginatedMarket(page, size);
+        return await _productService.GetPaginatedMarket(page, size, keyword, orderby, order);
     }
 
     [HttpPost("create")]

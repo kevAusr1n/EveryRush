@@ -1,16 +1,18 @@
-import { ReactNode, useRef, useState } from "react";
+import { Dispatch, MutableRefObject, ReactNode, SetStateAction, useRef, useState } from "react";
 
-export function Pagination(props: {totalCount : number}) {
+export function Pagination(props: {
+    size : number,
+    setSize : Dispatch<SetStateAction<number>>,
+    page : number,
+    setPage : Dispatch<SetStateAction<number>>,
+    totalPage : number,
+    totalCount : number}) 
+{
     const fixDisplayPageCount = 10;
-    
     const startPage = useRef(1);
-    const [size, setSize]  = useState(10);
-    const [page, setPage] = useState(1);
-    const [totalPage, setTotalPage] = useState(Math.ceil(props.totalCount / size));
-
+    
     const changeSize = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        setSize(Number(e.target.value))
-        setTotalPage(Math.ceil(props.totalCount / Number(e.target.value)))
+        props.setSize(Number(e.target.value));
     };
 
     const renderPageButton = (currentPage: number) : ReactNode => {
@@ -21,7 +23,7 @@ export function Pagination(props: {totalCount : number}) {
             startPage.current = Math.max(1, currentPage - 1);
         }
 
-        return [...Array(Math.min(fixDisplayPageCount, totalPage - startPage.current + 1))].map((_, index) => {
+        return [...Array(Math.min(fixDisplayPageCount, props.totalPage - startPage.current + 1))].map((_, index) => {
             const thisPage = startPage.current + index;
             let style = "border bg-white hover:bg-white text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline";
 
@@ -30,28 +32,33 @@ export function Pagination(props: {totalCount : number}) {
             }
 
             return (
-                <button onClick={() => setPage(thisPage)} className={style}>
+                <button onClick={() => props.setPage(thisPage)} className={style}>
                     {thisPage}
                 </button>
             )
         })
     };
 
-    const jumpToPage = (page: number) => {
-        if (page < 1 || page > totalPage) {
-            return;
+    const jumpToPage = (toPage : number) => {
+        if (toPage < 1) {
+            alert("You're already at first Page.")
         }
-        setPage(page);
+        else if (toPage > props.totalPage) {
+            alert("You're already at last Page.")
+        }
+        else {
+            props.setPage(toPage);
+        }
     }
 
     return (
-        <div className="flex justify-center items-center">
-            <button onClick={() => setPage(page - 1)} className="bg-blue-500 hover:bg-blue-700 text-white font-bold 
+        <div className="flex justify-center items-center m-10">
+            <button onClick={() => jumpToPage(props.page - 1)} className="bg-blue-500 hover:bg-blue-700 text-white font-bold 
             py-2 px-4 rounded-full mr-2">
                 Previous
             </button>
-            {renderPageButton(page)}
-            <button onClick={() => setPage(page + 1)} className="bg-blue-500 hover:bg-blue-700 text-white font-bold 
+            {renderPageButton(props.page)}
+            <button onClick={() => jumpToPage(props.page + 1)} className="bg-blue-500 hover:bg-blue-700 text-white font-bold 
             py-2 px-4 rounded-full mr-2">
                 Next
             </button>       

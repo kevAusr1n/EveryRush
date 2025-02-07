@@ -20,20 +20,42 @@ public class ProductService
         _authorizationService = authorizationService;
     }
 
-    public async Task<GetPaginatedMarketResponse> GetPaginatedMarket(int page, int size) 
-    {   
+    public async Task<GetPaginatedMarketResponse> GetPaginatedMarket(
+        int page, 
+        int size,
+        string keyword,
+        string orderby,
+        string order) 
+    {       
         var totalCount = await _productDbContext.Products.CountAsync();
         var totalPages = (int)Math.Ceiling((double)totalCount / size);
-        var products = await _productDbContext.Products
-        .Skip((page - 1) * size)
-        .Take(size)
-        .ToListAsync();
+        IQueryable<Product> productsQuery = _productDbContext.Products.Where(p => 1 == 1);
+
+        if (!String.IsNullOrEmpty(keyword)) 
+        {
+            productsQuery = productsQuery.Where(p => p.Name.Contains(keyword));
+        }
+        if (!String.IsNullOrEmpty(orderby)) 
+        {   
+            switch (orderby + "/" + order) 
+            {
+                case "price/asc": 
+                    productsQuery = productsQuery.OrderBy(p => p.Price);
+                    break;
+                case "price/desc": 
+                    productsQuery = productsQuery.OrderByDescending(p => p.Price);
+                    break;
+            }
+        } 
 
         return new GetPaginatedMarketResponse 
         {
             TotalCount = totalCount,
             TotalPages = totalPages,
-            Products = products
+            Products = await productsQuery
+            .Skip((page - 1) * size)
+            .Take(size)
+            .ToListAsync()
         };
     }
 

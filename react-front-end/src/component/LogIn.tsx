@@ -63,17 +63,19 @@ function LogIn() {
 
     return (
         <div>
-            <FormTable inputNames={["Email", "Password"]}
+            <FormTable 
+                inputNames={["Email", "Password"]}
                 inputTypes={["text", "text"]}
                 inputValues={["", ""]}
                 actionName="SIGNIN" 
                 actionHandler={doLogin}/>
             <div className="flex items-center justify-center">
-                <button className = "border bg-white hover:bg-white text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" 
-                onClick={useGoogleLogin({
-                        onSuccess: (tokenResponse) => setupGoogleUser(tokenResponse),
-                        onError: (error) => console.log(error)
-                    })
+                <button 
+                    className = "border bg-white hover:bg-white text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" 
+                    onClick={useGoogleLogin({
+                            onSuccess: (tokenResponse) => setupGoogleUser(tokenResponse),
+                            onError: (error) => console.log(error)
+                        })
                 }>
                     Sign in with Google
                 </button>
