@@ -1,4 +1,5 @@
 import { ReactNode, useState } from "react";
+import { redirect } from "react-router";
 
 function Cart() {
     const [refreshThisPage, setRefreshThisPage] = useState(false);
@@ -52,6 +53,16 @@ function Cart() {
         }  
     }
 
+    const goCheckout = () => {
+        let productsInCart = sessionStorage.getItem("cart");
+
+        if (productsInCart == null || productsInCart == "null") {
+            alert("You have nothing to checkout.")
+        }
+
+        redirect("/checkout");
+    }
+
     return (
         <>
             <div className="flex m-20">
@@ -63,7 +74,7 @@ function Cart() {
                             REMOVE ALL
                 </button>
                 <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded 
-                        focus:outline-none focus:shadow-outline">
+                        focus:outline-none focus:shadow-outline" onClick={() => goCheckout()}>
                             CHECKOUT
                 </button>
             </div>

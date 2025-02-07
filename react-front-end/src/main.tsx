@@ -10,6 +10,7 @@ import Products from './component/Products.tsx'
 import Orders from './component/Orders.tsx'
 import Contacts from './component/Contacts.tsx'
 import Messages from './component/Messages.tsx'
+import Checkout from './component/Checkout.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -24,6 +25,7 @@ createRoot(document.getElementById('root')!).render(
             <Route path="orders" element={<Orders />} />
             <Route path="contacts" element={<Contacts />} />
             <Route path="messages" element={<Messages />} />
+            <Route path="checkout" element={<Checkout />} />
           </Route>
       </Routes>
       </BrowserRouter>
