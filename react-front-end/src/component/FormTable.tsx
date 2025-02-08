@@ -1,4 +1,4 @@
-import { FormHTMLAttributes, useState } from 'react';
+import { useState } from 'react';
 import { Link, redirect } from 'react-router';
 
 function GenerateInputRowFormat(inputName : string, inputType: string, inputValue: string) {

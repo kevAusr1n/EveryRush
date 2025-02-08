@@ -1,4 +1,4 @@
-import { Dispatch, MutableRefObject, ReactNode, SetStateAction, useRef, useState } from "react";
+import { Dispatch, ReactNode, SetStateAction, useRef} from "react";
 
 export function Pagination(props: {
     size : number,

@@ -11,6 +11,7 @@ import Orders from './component/Orders.tsx'
 import Contacts from './component/Contacts.tsx'
 import Messages from './component/Messages.tsx'
 import Checkout from './component/Checkout.tsx'
+import Addcontact from './component/AddContact.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -23,6 +24,7 @@ createRoot(document.getElementById('root')!).render(
             <Route path="products" element={<Products />} />
             <Route path="cart" element={<Cart />} />
             <Route path="orders" element={<Orders />} />
+            <Route path="add-contact" element={<Addcontact />} />
             <Route path="contacts" element={<Contacts />} />
             <Route path="messages" element={<Messages />} />
             <Route path="checkout" element={<Checkout />} />

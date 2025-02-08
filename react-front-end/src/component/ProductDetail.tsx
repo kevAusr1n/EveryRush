@@ -1,8 +1,8 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-function ProductDetail(props: {id : string}) {
-    const [product, setProduct] = useState<any>([]);
+function ProductDetail() {
+    const [_, setProduct] = useState<any>([]);
 
     useEffect(() => {
         axios

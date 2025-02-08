@@ -1,15 +1,9 @@
 import { TokenResponse, useGoogleLogin } from '@react-oauth/google';
 import FormTable from './FormTable';
 import axios from 'axios';
-import { Form } from 'react-router';
 
 function LogIn() {
     const doLogin = async (formData : FormData) => {
-        const body = {
-            "email": formData.get("email"),
-            "password": formData.get("password"),
-        }
-
         axios
             .post(`http://localhost:5175/api/auth/login`, {
                 headers: {

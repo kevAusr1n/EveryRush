@@ -28,6 +28,9 @@ namespace EveryRush.Migrations.ProductDb
                     b.Property<string>("Description")
                         .HasColumnType("longtext");
 
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("longtext");
+
                     b.Property<string>("Name")
                         .HasColumnType("longtext");
 
@@ -36,6 +39,9 @@ namespace EveryRush.Migrations.ProductDb
 
                     b.Property<decimal?>("Price")
                         .HasColumnType("decimal(65,30)");
+
+                    b.Property<int?>("Status")
+                        .HasColumnType("int");
 
                     b.Property<int?>("Stock")
                         .HasColumnType("int");

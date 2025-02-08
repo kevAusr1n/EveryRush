@@ -1,0 +1,13 @@
+public class PurchaseProductSnapshot {
+    public string? Id { get; set; }
+    public string? OrderId { get; set; }
+
+    public string? ProductId { get; set; }
+    public string? ProductName { get; set; }
+    public string? ProductDescription { get; set; }
+    public string? ProductImageUrl { get; set; }    
+    public int? Quantity { get; set; }
+    public decimal? Price { get; set; }
+    public DateTime Date { get; set; }
+    // Add any other fields that you need for the purchase snapshot
+}

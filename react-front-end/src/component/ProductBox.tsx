@@ -1,5 +1,3 @@
-import { Link } from "react-router";
-
 function ProductBox(props: {product : any}) 
 {    
     const addToCart = () => {

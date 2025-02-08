@@ -79,7 +79,7 @@ public class ProductService
         }
         catch (DbUpdateException e) 
         {
-            return null;
+            return new Product();
         } 
     }
 
