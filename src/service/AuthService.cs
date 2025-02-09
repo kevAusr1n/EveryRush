@@ -36,21 +36,27 @@ public class AuthService
         return user;
     }
 
-    public async Task<AppUser> LoginAsync(LoginRequest request) 
+    public async Task<GetUserResponse> LoginAsync(LoginRequest request) 
     {
         AppUser user = await _userManager.FindByEmailAsync(request.Email);
         if (user == null) 
         {
-            return new AppUser {
+            return new GetUserResponse {
                 Email = "none"
             };
         }
 
+        IList<string> roles = await _userManager.GetRolesAsync(user);
         await _signInManager.SignInAsync(user, false);
-        return user;
+
+        return new GetUserResponse {
+            Email = user.Email,
+            UserName = user.UserName,
+            Role = roles[0]
+        };
     }
 
-    public async Task<AppUser> RegisterAsync(RegisterRequest request) 
+    public async Task<GetUserResponse> RegisterAsync(RegisterRequest request) 
     {           
         var appUser = new AppUser {
             Email = request.Email,
@@ -65,10 +71,17 @@ public class AuthService
         var userStoreResult = await _userManager.CreateAsync(appUser, request.Password);
         var userRoleRelationStoreResult = await _userManager.AddToRoleAsync(appUser, appRole.Name);
 
-        if (userStoreResult.Succeeded && roleStoreResult.Succeeded && userRoleRelationStoreResult.Succeeded) {
-            return appUser;
+        if (userStoreResult.Succeeded && roleStoreResult.Succeeded && userRoleRelationStoreResult.Succeeded)
+        {
+            return new GetUserResponse() {
+                Email = request.Email,
+                UserName = request.UserName,
+                Role = request.Role
+            };
         }
 
-        return new AppUser();
+        return new GetUserResponse() {
+            Email = "none"
+        };
     }
 }

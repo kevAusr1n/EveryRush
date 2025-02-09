@@ -1,7 +1,6 @@
 using EveryRush.Entity;
 using EveryRush.Request;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EveryRush.Controller;
@@ -25,14 +24,14 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("signin")]
-    public async Task<ActionResult<AppUser>> Login([FromBody] LoginRequest request) 
+    public async Task<ActionResult<GetUserResponse>> Login([FromBody] LoginRequest request) 
     {
         return await _authService.LoginAsync(request);
     }
 
     [AllowAnonymous]
     [HttpPost("signup")]
-    public async Task<ActionResult<AppUser>> Register([FromBody] RegisterRequest request) 
+    public async Task<ActionResult<GetUserResponse>> Register([FromBody] RegisterRequest request) 
     {
         return await _authService.RegisterAsync(request);
     }

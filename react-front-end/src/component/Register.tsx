@@ -6,7 +6,7 @@ function Register() {
     const navigate = useNavigate()
 
     function doRegister (formData : FormData) {
-        const body = {
+        const requestBody = {
             "email": formData.get("email"),
             "username": formData.get("username"),
             "password": formData.get("password"),
@@ -14,11 +14,10 @@ function Register() {
         }
 
         axios
-            .post(`http://localhost:5175/api/auth/signup`, {
+            .post(`http://localhost:5175/api/auth/signup`, requestBody, {
                 headers: {
                     Accept: 'application/json'
-                },
-                body: JSON.stringify(body)
+                }
             })
             .then((res) => {
                 if (res.status == 201) {

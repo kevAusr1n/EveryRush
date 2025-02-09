@@ -17,11 +17,10 @@ function Addcontact() {
         }
 
         axios
-            .post(`http://localhost:5175/api/contacts/add`, {
+            .post(`http://localhost:5175/api/contacts/add`, requestBody, {
                 headers: {
                     Accept: 'application/json'
-                },
-                body: JSON.stringify(requestBody)
+                }
             })
             .then((_) => {
                 redirect("/contacts");
