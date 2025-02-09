@@ -21,9 +21,7 @@ function AddOrUpdateContact() {
             state: formData.get('state'),
             postcode: formData.get('postcode'),
         }
-
-        alert(JSON.stringify(requestBody));
-
+        
         axios
             .post(`http://localhost:5175/api/contacts/${action}`, requestBody, {
                 headers: {
@@ -56,11 +54,8 @@ function AddOrUpdateContact() {
                     searchParams.get("postcode") as string, 
                 ]}
                 actionName={action as string}
-                actionHandler={doAddOrUpdateContact}/>
-            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded 
-                focus:outline-none focus:shadow-outline" onClick={() => navigate("/contacts")}>
-                    Back
-                </button>
+                actionHandler={doAddOrUpdateContact}
+                backUrl="/contacts"/>
         </div>
     )
     

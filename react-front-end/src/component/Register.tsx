@@ -37,7 +37,8 @@ function Register() {
                 "text", "text", "option"]}
             inputValues={[email, "", "", "Customer,BusinessOwner"]}
             actionName="REGISTER"
-            actionHandler={doRegister}/>
+            actionHandler={doRegister}
+            backUrl="/"/>
     )
 }
 

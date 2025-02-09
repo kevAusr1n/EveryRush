@@ -7,6 +7,7 @@ function FormTable(props:{
     inputValues: string[],
     actionName: string,
     actionHandler: any
+    backUrl: string
 }) {
     const navigate = useNavigate();
 
@@ -23,7 +24,7 @@ function FormTable(props:{
                     {props.actionName.toLocaleUpperCase()}
                 </button>                 
                 <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded 
-                focus:outline-none focus:shadow-outline" onClick={() => navigate("/")}>
+                focus:outline-none focus:shadow-outline" onClick={() => navigate(props.backUrl)}>
                     Back
                 </button>
             </form>

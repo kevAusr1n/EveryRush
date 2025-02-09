@@ -14,22 +14,26 @@ function Contacts() {
                     Accept: 'application/json'
                 }
             })
-            .then((response) => {
-                setContacts(response.data.contacts);
+            .then((res) => {
+                if (res.status == 200) {
+                    setContacts(contacts.filter((contact: any) => contact.id != contactId));
+                }
             })
-            .catch((error) => {console.log(error);})
+            .catch((error) => {alert(error);})
     }
 
     const doDisplayContactsIfThereIs = () : ReactNode => {
         if (contacts.length > 0){
             return (
                 <>
-                    <h1>Contacts</h1>
-                    <p>Here are your contacts:</p>
+                    <div className="flex items-center justify-center">
+                        <h1>Contacts</h1>
+                        <p>Here are your contacts:</p>
+                    </div>
                     {contacts.map((contact: any) => {
                         return (
                             <div>
-                                <p>{contact.firstName}" "{contact.lastName}</p>
+                                <p>{contact.firstName} {contact.lastName}</p>
                                 <p>{contact.email}</p>
                                 <p>{contact.phone}</p>
                                 <p>{contact.address}</p>
@@ -90,7 +94,7 @@ function Contacts() {
                     setContacts(response.data.contacts);
                 })
                 .catch((error) => {console.log(error);})
-            }, [contacts])
+            }, [])
 
             return (
                 <>

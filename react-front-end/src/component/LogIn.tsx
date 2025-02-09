@@ -81,7 +81,8 @@ function LogIn() {
                 inputTypes={["text", "text"]}
                 inputValues={["", ""]}
                 actionName="SIGN IN"
-                actionHandler={doLogin}/>
+                actionHandler={doLogin}
+                backUrl="/"/>
             <div className="flex items-center justify-center">
                 <button 
                     className = "border bg-white hover:bg-white text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" 

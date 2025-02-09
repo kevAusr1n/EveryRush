@@ -18,8 +18,8 @@ public class ContactController : ControllerBase
         _contactService = contactService;
     }
 
-    [HttpGet("{userid}")]
-    public async Task<ActionResult<GetContactsResponse>> GetAllContacts([FromRoute] string userId) 
+    [HttpGet]
+    public async Task<ActionResult<GetContactsResponse>> GetAllContacts([FromQuery] string userId) 
     {
         return await _contactService.GetAllContacts(userId);
     }
