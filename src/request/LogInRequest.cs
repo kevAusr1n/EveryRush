@@ -5,8 +5,8 @@ namespace EveryRush.Request;
 public class LoginRequest 
 {
     [Required]
-    [JsonPropertyName("id")]
-    public string? Id {get;set;}
+    [JsonPropertyName("email")]
+    public string? Email {get;set;}
 
     [Required]
     [JsonPropertyName("password")]

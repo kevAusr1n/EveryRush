@@ -18,7 +18,7 @@ function SearchBar(props: {
             py-2 px-4 rounded-full mr-2">
                 Search
             </button>
-            <select onInput={(e) => props.setOrderTerm(e.target.value)}>
+            <select onChange={(e) => props.setOrderTerm(e.target.value)}>
                 <option value="Popularity">Popularity</option>
                 <option value="Price Ascending">Price Ascending</option>
                 <option value="Price Descending">Price Descending</option>

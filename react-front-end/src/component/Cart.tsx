@@ -36,20 +36,33 @@ function Cart() {
         } else {
             let productsInCartJson = JSON.parse(productsInCart);
 
-            return productsInCartJson.products.map((product: any) => {
-                return (
-                    <div className="flex flex-col border-1 border-grey-200 rounded-lg w-100">
-                        <p>Product: {product.name}</p>
-                        <p>Price: {product.price}</p>
-                        <div className="flex">
-                            <button onClick={() => changeQuantity(productsInCartJson.products, product, 1)} className="bg-blue-500 text-white w-5 h-5">+</button>
-                            <p>Qty:{product.quantity}</p>
-                            <button onClick={() => changeQuantity(productsInCartJson.products, product, -1)} className="bg-blue-500 text-white w-5 h-5">-</button>
+            return (
+                <>
+                    {productsInCartJson.products.map((product: any) => {
+                    return (
+                        <div className="flex flex-col border-1 border-grey-200 rounded-lg w-100">
+                            <p>Product: {product.name}</p>
+                            <p>Price: {product.price}</p>
+                            <div className="flex">
+                                <button onClick={() => changeQuantity(productsInCartJson.products, product, 1)} className="bg-blue-500 text-white w-5 h-5">+</button>
+                                <p>Qty:{product.quantity}</p>
+                                <button onClick={() => changeQuantity(productsInCartJson.products, product, -1)} className="bg-blue-500 text-white w-5 h-5">-</button>
+                            </div>
+                            <button onClick={() => removeFromCart(productsInCartJson.products, product)} className="bg-red-500 text-white">Remove</button>
                         </div>
-                        <button onClick={() => removeFromCart(productsInCartJson.products, product)} className="bg-red-500 text-white">Remove</button>
+                    )})}
+                    <div className="flex m-20">
+                        <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded 
+                                focus:outline-none focus:shadow-outline" onClick={() => removeFromCart(null, null)}>
+                                REMOVE ALL
+                        </button>
+                        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded 
+                                focus:outline-none focus:shadow-outline" onClick={() => goCheckout()}>
+                                CHECKOUT
+                        </button>
                     </div>
-                )
-            })
+                </>
+            )    
         }  
     }
 
@@ -65,18 +78,8 @@ function Cart() {
 
     return (
         <>
-            <div className="flex m-20">
+            <div className="flex m-20 items-center justify-center">
                 {displayCart()}
-            </div>
-            <div className="flex m-20">
-                <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded 
-                        focus:outline-none focus:shadow-outline" onClick={() => removeFromCart(null, null)}>
-                            REMOVE ALL
-                </button>
-                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded 
-                        focus:outline-none focus:shadow-outline" onClick={() => goCheckout()}>
-                            CHECKOUT
-                </button>
             </div>
         </>
     )

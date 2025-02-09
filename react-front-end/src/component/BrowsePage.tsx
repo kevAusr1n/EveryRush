@@ -1,9 +1,25 @@
-import { Link, Outlet } from "react-router";
+import { Link, Outlet, useNavigate } from "react-router";
 import { ReactNode } from "react";
+import { googleLogout } from "@react-oauth/google";
+import { isUserLoggedIn } from "../functions/UserUtils";
 
 function BrowsePage() {
+    const navigate = useNavigate();
+
+    const doLogOut = () => {
+        if (localStorage.getItem("provider") == "google") {
+            googleLogout();
+        }
+
+        localStorage.removeItem("user");
+        localStorage.removeItem("username");
+        localStorage.removeItem("role");
+        localStorage.removeItem("provider");
+        navigate("/");
+    };
+
     const userInfoSection = () : ReactNode => {
-        if (sessionStorage.getItem('username') == null) {
+        if (!isUserLoggedIn()) {
             return (
                 <>
                     <Link to="signin"><p className="text-black">SIGN IN</p></Link>
@@ -13,8 +29,8 @@ function BrowsePage() {
         } else {
             return (
                 <>
-                    <p>{sessionStorage.getItem('username') as string}</p>
-                    <Link to="signout"><p className="text-black">SIGN OUT</p></Link>
+                    <p>{localStorage.getItem("username") as string}</p>
+                    <button onClick={() => doLogOut()}>SIGN OUT</button>
                 </>
             );
         }

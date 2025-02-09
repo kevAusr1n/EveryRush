@@ -1,8 +1,11 @@
 import axios from 'axios';
-import FormTable from './FormTable';
+import { Link, useNavigate } from 'react-router';
+import GenerateInputRowFormat from '../functions/InputRowGenerator';
 
 function Register() {
-    const doRegister = async (formData : FormData) => {
+    const navigate = useNavigate()
+
+    function doRegister (formData : FormData) {
         const body = {
             "email": formData.get("email"),
             "username": formData.get("username"),
@@ -11,7 +14,7 @@ function Register() {
         }
 
         axios
-            .post(`http://localhost:5175/api/auth/register`, {
+            .post(`http://localhost:5175/api/auth/signup`, {
                 headers: {
                     Accept: 'application/json'
                 },
@@ -19,26 +22,35 @@ function Register() {
             })
             .then((res) => {
                 if (res.status == 201) {
-                    sessionStorage.setItem("email", res.data.email);
-                    sessionStorage.setItem("username", res.data.username);
-                    sessionStorage.setItem("password", res.data.password);
-                    sessionStorage.setItem("role", res.data.role);
                     sessionStorage.setItem("user_registered", "true");
-                    window.location.href = "/";
+                    navigate("/");
                 }
             })
             .catch((err) => {return false});
     }
 
-    const email : string = sessionStorage.getItem("email") != null ? sessionStorage.getItem("email") : "";
-    
+    const email : string = sessionStorage.getItem("email") as string;
+    const inputNames = ["email", "username", "password", "role"];
+    const inputTypes= ["text", "text", "text", "option"];
+    const inputValues= [email, "", "", "Customer,BusinessOwner"];
+
     return (
-        <div>
-            <FormTable inputNames={["Email", "Username", "Password", "Role"]}
-                inputTypes={["text", "text", "text", "option"]}
-                inputValues={[email, "", "", "Customer,BusinessOwner"]}
-                actionName="REGISTER" 
-                actionHandler={doRegister}/>
+        <div className="flex items-center justify-center">
+            <form action={doRegister} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+                {
+                    inputNames.map((inputName, index) => {
+                        return GenerateInputRowFormat(inputName, inputTypes[index], inputValues[index]);
+                    })
+                }
+                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded 
+                focus:outline-none focus:shadow-outline" type="submit">
+                    REGISTER
+                </button>
+                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded 
+                focus:outline-none focus:shadow-outline" onClick={() => navigate("/")}>
+                    Back
+                </button>
+            </form>
         </div>
     )
 }

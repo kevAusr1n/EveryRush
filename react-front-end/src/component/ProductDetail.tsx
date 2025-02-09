@@ -6,7 +6,7 @@ function ProductDetail() {
 
     useEffect(() => {
         axios
-            .get(`http://localhost:5175/api/products/market?${query}`, {
+            .get(`http://localhost:5175/api/products/market?`, {
                 headers: {
                     Accept: 'application/json'
                 }

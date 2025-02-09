@@ -9,24 +9,25 @@ using System.Security.Cryptography.X509Certificates;
 public class AuthService 
 {
     private readonly UserManager<AppUser> _userManager;
-
     private readonly RoleManager<AppRole> _roleManager;
-
+    private readonly SignInManager<AppUser> _signInManager;
     private readonly AuthDbContext _authDbContext;
 
     public AuthService(
         UserManager<AppUser> userManager,
         RoleManager<AppRole> roleManager, 
+        SignInManager<AppUser> signInManager,
         AuthDbContext authDbContext) 
     {
         _userManager = userManager;
         _roleManager = roleManager;
+        _signInManager = signInManager;
         _authDbContext = authDbContext;
     }
 
-    public async Task<AppUser> ThirdPartyLoginUserExistCheckAsync(string id) 
+    public async Task<AppUser> ThirdPartyLoginUserExistCheckAsync(string email) 
     {   
-        AppUser user = await _userManager.FindByEmailAsync(id);
+        AppUser user = await _userManager.FindByEmailAsync(email);
         if (user == null) {
             user = new AppUser {
                 Email = "none"
@@ -37,7 +38,16 @@ public class AuthService
 
     public async Task<AppUser> LoginAsync(LoginRequest request) 
     {
-        return new AppUser();
+        AppUser user = await _userManager.FindByEmailAsync(request.Email);
+        if (user == null) 
+        {
+            return new AppUser {
+                Email = "none"
+            };
+        }
+
+        await _signInManager.SignInAsync(user, false);
+        return user;
     }
 
     public async Task<AppUser> RegisterAsync(RegisterRequest request) 

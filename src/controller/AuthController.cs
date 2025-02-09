@@ -18,20 +18,20 @@ public class AuthController : ControllerBase
         _authService = authService;
     }
 
-    [HttpGet("third-party-login-user-exist-check/{id}")]
-    public async Task<ActionResult<AppUser>> ThirdPartyLoginUserExistCheck([FromRoute] string id) 
+    [HttpGet("third-party-login-user-exist-check/{email}")]
+    public async Task<ActionResult<AppUser>> ThirdPartyLoginUserExistCheck([FromRoute] string email) 
     {
-        return await _authService.ThirdPartyLoginUserExistCheckAsync(id);
+        return await _authService.ThirdPartyLoginUserExistCheckAsync(email);
     }
 
-    [HttpPost("login")]
+    [HttpPost("signin")]
     public async Task<ActionResult<AppUser>> Login([FromBody] LoginRequest request) 
     {
         return await _authService.LoginAsync(request);
     }
 
     [AllowAnonymous]
-    [HttpPost("register")]
+    [HttpPost("signup")]
     public async Task<ActionResult<AppUser>> Register([FromBody] RegisterRequest request) 
     {
         return await _authService.RegisterAsync(request);
