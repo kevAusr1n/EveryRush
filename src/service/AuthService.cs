@@ -50,6 +50,7 @@ public class AuthService
         await _signInManager.SignInAsync(user, false);
 
         return new GetUserResponse {
+            Id = user.Id,
             Email = user.Email,
             UserName = user.UserName,
             Role = roles[0]
@@ -72,8 +73,11 @@ public class AuthService
         var userRoleRelationStoreResult = await _userManager.AddToRoleAsync(appUser, appRole.Name);
 
         if (userStoreResult.Succeeded && roleStoreResult.Succeeded && userRoleRelationStoreResult.Succeeded)
-        {
+        {    
+            AppUser user = await _userManager.FindByEmailAsync(request.Email);
+
             return new GetUserResponse() {
+                Id = user.Id,
                 Email = request.Email,
                 UserName = request.UserName,
                 Role = request.Role

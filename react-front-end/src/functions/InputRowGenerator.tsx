@@ -10,12 +10,25 @@ function GenerateInputRowFormat(inputName : string, inputType: string, inputValu
                     {inputName}
                 </label>
                 <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 
-                leading-tight focus:outline-none focus:shadow-outline" name={inputName} type="text"
+                leading-tight focus:outline-none focus:shadow-outline" defaultValue={inputValue} 
+                id={inputName.toLocaleLowerCase()} name={inputName.toLocaleLowerCase()} type="text"
                 onChange={(e) => setState(e.target.value)}/>
             </div>
         )
     }
-    else if (inputType == "option") {
+    else if (inputType == "fixed-text") {
+        return (
+            <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2">
+                    {inputName}
+                </label>
+                <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 
+                leading-tight focus:outline-none focus:shadow-outline" value={inputValue} 
+                id={inputName.toLocaleLowerCase()} name={inputName.toLocaleLowerCase()} type="text"
+                onChange={(e) => setState(e.target.value)}/>
+            </div>
+        )
+    } else if (inputType == "option") {
         const optionValues = inputValue.split(",");
         return (
             <div className="mb-4">

@@ -2,6 +2,7 @@ import { TokenResponse, useGoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
 import { data, useNavigate } from 'react-router';
 import GenerateInputRowFormat from '../functions/InputRowGenerator';
+import FormTable from './FormTable';
 
 function LogIn() {
     const navigate = useNavigate()
@@ -21,7 +22,8 @@ function LogIn() {
             })
             .then((res) => {
                 if (res.data.email != "none") {
-                    localStorage.setItem("user", res.data.email);
+                    localStorage.setItem("userid", res.data.id);
+                    localStorage.setItem("email", res.data.email);
                     localStorage.setItem("username", res.data.userName);
                     localStorage.setItem("role", res.data.role);
                     navigate("/")
@@ -55,7 +57,8 @@ function LogIn() {
             })
             .then((res) => {
                 if (res.data.email != "none") {
-                    localStorage.setItem("user", res.data.email);
+                    localStorage.setItem("userid", res.data.id);
+                    localStorage.setItem("email", res.data.email);
                     localStorage.setItem("username", res.data.userName);
                     localStorage.setItem("role", res.data.role);
                     localStorage.setItem("provider", "google");
@@ -71,29 +74,14 @@ function LogIn() {
         navigate("/");
     }
 
-    const inputNames = ["email", "password"];
-    const inputTypes = ["text", "text"];
-    const inputValues= ["", ""];
-
     return (
         <>
-            <div className="flex items-center justify-center">
-                <form action={doLogin} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-                    {
-                        inputNames.map((inputName, index) => {
-                            return GenerateInputRowFormat(inputName, inputTypes[index], inputValues[index]);
-                        })
-                    }
-                    <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded 
-                    focus:outline-none focus:shadow-outline" type="submit">
-                        SIGN IN
-                    </button>                 
-                    <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded 
-                    focus:outline-none focus:shadow-outline" onClick={() => navigate("/")}>
-                        Back
-                    </button>
-                </form>
-            </div>
+            <FormTable 
+                inputNames={["email", "password"]}
+                inputTypes={["text", "text"]}
+                inputValues={["", ""]}
+                actionName="SIGN IN"
+                actionHandler={doLogin}/>
             <div className="flex items-center justify-center">
                 <button 
                     className = "border bg-white hover:bg-white text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" 

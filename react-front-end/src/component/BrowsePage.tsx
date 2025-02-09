@@ -11,7 +11,8 @@ function BrowsePage() {
             googleLogout();
         }
 
-        localStorage.removeItem("user");
+        localStorage.removeItem("userid");
+        localStorage.removeItem("email");
         localStorage.removeItem("username");
         localStorage.removeItem("role");
         localStorage.removeItem("provider");

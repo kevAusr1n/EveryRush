@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { Link, useNavigate } from 'react-router';
-import GenerateInputRowFormat from '../functions/InputRowGenerator';
+import { useNavigate } from 'react-router';
+import FormTable from './FormTable';
 
 function Register() {
     const navigate = useNavigate()
@@ -29,28 +29,15 @@ function Register() {
     }
 
     const email : string = sessionStorage.getItem("email") as string;
-    const inputNames = ["email", "username", "password", "role"];
-    const inputTypes= ["text", "text", "text", "option"];
-    const inputValues= [email, "", "", "Customer,BusinessOwner"];
 
     return (
-        <div className="flex items-center justify-center">
-            <form action={doRegister} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-                {
-                    inputNames.map((inputName, index) => {
-                        return GenerateInputRowFormat(inputName, inputTypes[index], inputValues[index]);
-                    })
-                }
-                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded 
-                focus:outline-none focus:shadow-outline" type="submit">
-                    REGISTER
-                </button>
-                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded 
-                focus:outline-none focus:shadow-outline" onClick={() => navigate("/")}>
-                    Back
-                </button>
-            </form>
-        </div>
+        <FormTable
+            inputNames={["email", "username", "password", "role"]}
+            inputTypes={[(email == null || email == "null" ? "text" : "fixed-text"), 
+                "text", "text", "option"]}
+            inputValues={[email, "", "", "Customer,BusinessOwner"]}
+            actionName="REGISTER"
+            actionHandler={doRegister}/>
     )
 }
 

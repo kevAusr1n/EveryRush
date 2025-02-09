@@ -1,5 +1,5 @@
 function isUserLoggedIn() : boolean {
-    return localStorage.getItem("user") != null;
+    return localStorage.getItem("userid") != null;
 }
 
 export { isUserLoggedIn };
