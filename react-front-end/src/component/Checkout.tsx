@@ -1,4 +1,6 @@
 import { ReactNode } from "react"
+import FormTable from "./FormTable";
+import GenerateInputRowFormat from "../functions/InputRowGenerator";
 
 function Checkout() {
     const displayProducts = () : ReactNode => {
@@ -16,6 +18,16 @@ function Checkout() {
         })
     }
 
+    const inputNames=["FirstName", "LastName", "Email", "Phone", "Address", "City", "State", "Postcode"]
+    const inputTypes=["text", "text", "text", "text", "text", "text", "text", "text"]
+    const inputValues=["", "", "", "", "", "", "", ""]
+
+    const doGenerateContactInput = (inputNames: string[], inputTypes: string[], inputValues: string[]) : ReactNode => {
+        return inputNames.map((name, index) => {
+            return GenerateInputRowFormat(name, inputTypes[index], inputValues[index]);
+        })
+    }
+
     return (
         <>
             <div className="flex m-20">
@@ -24,12 +36,11 @@ function Checkout() {
             </div>
             <div>
                 <h1>Post Address</h1>
-            </div>
-            <div>
-                <h1>Post Address</h1>
+                {doGenerateContactInput(inputNames, inputTypes, inputValues)}
             </div>
             <div>
                 <h1>Billing Address</h1>
+                {doGenerateContactInput(inputNames, inputTypes, inputValues)}
             </div>
         </>
     )
