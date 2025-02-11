@@ -1,10 +1,13 @@
-import { useEffect, useRef, useState } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 import axios from "axios";
 import Pagination from "./Pagination";
 import ProductBox from "./ProductBox";
 import SearchBar from "./SearchBar";
+import { useNavigate } from "react-router";
 
 function Products() {
+    const navigate = useNavigate();
+
     const [size, setSize]  = useState(10);
     const [page, setPage] = useState(1);
     const [products, setProducts] = useState<any>([]);
@@ -53,7 +56,7 @@ function Products() {
         }
 
         axios
-            .get(`http://localhost:5175/api/products/market?${query}`, {
+            .get(`http://localhost:5175/api/products?${query}`, {
                 headers: {
                     Accept: 'application/json'
                 }
@@ -67,6 +70,14 @@ function Products() {
 
     }, [searchTerm, orderTerm, page, size]);
 
+    const doDisplayAddProductButtonIfBusinessOwnerLoggedIn = () : ReactNode => {
+        return (
+            <button onClick={() => navigate("/products/add")}>
+                ADD PRODUCT
+            </button>
+        )
+    }
+
     return (
         <>  
             <SearchBar 
@@ -75,6 +86,7 @@ function Products() {
                 orderTerm={orderTerm}
                 setOrderTerm={setOrderTerm}
             /> 
+            {doDisplayAddProductButtonIfBusinessOwnerLoggedIn()}
             <div className="flex m-20">
                 {products.map((product : any) => {
                     return <ProductBox 

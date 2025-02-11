@@ -12,6 +12,7 @@ import Contacts from './component/Contacts.tsx'
 import Messages from './component/Messages.tsx'
 import Checkout from './component/Checkout.tsx'
 import AddOrUpdateContact from './component/AddOrUpdateContact.tsx'
+import AddOrUpdateProduct from './component/AddOrUpdateProduct.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -25,6 +26,7 @@ createRoot(document.getElementById('root')!).render(
             <Route path="cart" element={<Cart />} />
             <Route path="orders" element={<Orders />} />
             <Route path="contacts/:action" element={<AddOrUpdateContact />} />
+            <Route path="products/:action" element={<AddOrUpdateProduct />} />
             <Route path="contacts" element={<Contacts />} />
             <Route path="messages" element={<Messages />} />
             <Route path="checkout" element={<Checkout />} />

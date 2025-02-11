@@ -15,7 +15,7 @@ public class ProductController : ControllerBase
         _productService = productService;
     }
 
-    [HttpGet("market")]
+    [HttpGet]
     public async Task<ActionResult<GetPaginatedMarketResponse>> GetPaginatedMarket(
         [FromQuery] int page,
         [FromQuery] int size,

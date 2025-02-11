@@ -1,13 +1,13 @@
 import axios from "axios";
 import { useNavigate, useParams, useSearchParams } from "react-router";
 import FormTable from "./FormTable";
+import { useState } from "react";
 
 function AddOrUpdateContact() {
+    const navigate = useNavigate();
     const { action } = useParams();
     const [searchParams, _] = useSearchParams();
-    
-    const navigate = useNavigate();
-
+   
     const doAddOrUpdateContact = (formData : FormData) => {
         var requestBody = {
             id: searchParams.get("id") as string,

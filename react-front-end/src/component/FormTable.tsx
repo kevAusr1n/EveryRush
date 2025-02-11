@@ -6,14 +6,14 @@ function FormTable(props:{
     inputTypes: string[],
     inputValues: string[],
     actionName: string,
-    actionHandler: any
+    actionHandler: any,
     backUrl: string
 }) {
     const navigate = useNavigate();
-
+    
     return (
         <div className="flex items-center justify-center">
-            <form action={props.actionHandler} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+            <form action={props.actionHandler} className="bg-white" encType="multipart/form-data">
                 {
                     props.inputNames.map((inputName, index) => {
                         return GenerateInputRowFormat(inputName, props.inputTypes[index], props.inputValues[index]);

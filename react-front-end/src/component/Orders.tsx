@@ -30,7 +30,7 @@ function Orders() {
                         <p>Here are your orders:</p>
                     </div>
                     {orders.map((order: any) => {
-                        const cancelOrRefund = 
+                        const cancelOrRefund = () => {};
 
                         return (
                             <div>

@@ -112,7 +112,7 @@ function Contacts() {
 
     return (
         <div className="flex m-20 items-center justify-center">
-            {doDisplayContactPage()}
+            {doDisplayContactPage()}            
         </div>
     )
 }
