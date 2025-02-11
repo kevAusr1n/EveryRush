@@ -6,17 +6,14 @@ using Microsoft.EntityFrameworkCore;
 
 public class ProductService 
 {   
-    private readonly AuthDbContext _authDbContext;
-    private readonly ProductDbContext _productDbContext;
+    private readonly AppDbContext _appDbContext;
     private readonly IAuthorizationService _authorizationService;
 
     public ProductService(
-        AuthDbContext authDbContext,
-        ProductDbContext productDbContext, 
+        AppDbContext appDbContext,
         IAuthorizationService authorizationService) 
     {
-        _authDbContext = authDbContext;
-        _productDbContext = productDbContext;
+        _appDbContext = appDbContext;
         _authorizationService = authorizationService;
     }
 
@@ -27,9 +24,9 @@ public class ProductService
         string orderby,
         string order) 
     {       
-        var totalCount = await _productDbContext.Products.CountAsync();
+        var totalCount = await _appDbContext.Products.CountAsync();
         var totalPages = (int)Math.Ceiling((double)totalCount / size);
-        IQueryable<Product> productsQuery = _productDbContext.Products.Where(p => 1 == 1);
+        IQueryable<Product> productsQuery = _appDbContext.Products.Where(p => 1 == 1);
 
         if (!String.IsNullOrEmpty(keyword)) 
         {
@@ -64,7 +61,7 @@ public class ProductService
         var newProduct = new Product
         {
             Id = Guid.NewGuid().ToString(),
-            OwnerId = request.OwnerId,
+            AppUserId = request.UserId,
             Name = request.Name,
             Description = request.Description,
             Price = request.Price,
@@ -73,8 +70,8 @@ public class ProductService
         
         try 
         {
-            _productDbContext.Products.Add(newProduct);
-            await _productDbContext.SaveChangesAsync();
+            _appDbContext.Products.Add(newProduct);
+            await _appDbContext.SaveChangesAsync();
             return newProduct;
         }
         catch (DbUpdateException e) 
@@ -87,14 +84,14 @@ public class ProductService
     {   
         try 
         {   
-            var product = await _productDbContext.Products.FindAsync(id);
+            var product = await _appDbContext.Products.FindAsync(id);
 
             if (product == null) {
                 return true;
             }
 
-            _productDbContext.Products.Remove(product);
-            await _productDbContext.SaveChangesAsync();
+            _appDbContext.Products.Remove(product);
+            await _appDbContext.SaveChangesAsync();
             return true;
         }
         catch (DbUpdateException e) 

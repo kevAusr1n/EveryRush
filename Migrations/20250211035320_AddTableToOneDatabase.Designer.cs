@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EveryRush.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250129074246_AddThirdPartyIdentity")]
-    partial class AddThirdPartyIdentity
+    [Migration("20250211035320_AddTableToOneDatabase")]
+    partial class AddTableToOneDatabase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,6 +23,92 @@ namespace EveryRush.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
+
+            modelBuilder.Entity("AppRole", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex");
+
+                    b.ToTable("AspNetRoles", (string)null);
+                });
+
+            modelBuilder.Entity("CartItem", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("ProductId")
+                        .HasColumnType("longtext");
+
+                    b.Property<int?>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.ToTable("CartItems");
+                });
+
+            modelBuilder.Entity("Contact", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Address")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("City")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Phone")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Postcode")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("State")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.ToTable("Contacts");
+                });
 
             modelBuilder.Entity("EveryRush.Entity.AppUser", b =>
                 {
@@ -69,9 +155,6 @@ namespace EveryRush.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("longtext");
 
-                    b.Property<string>("ThirdPartyIdentity")
-                        .HasColumnType("longtext");
-
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("tinyint(1)");
 
@@ -91,30 +174,37 @@ namespace EveryRush.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
+            modelBuilder.Entity("EveryRush.Entity.Product", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("varchar(255)");
 
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("ImageUrl")
                         .HasColumnType("longtext");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(256)
-                        .HasColumnType("varchar(256)");
+                        .HasColumnType("longtext");
 
-                    b.Property<string>("NormalizedName")
-                        .HasMaxLength(256)
-                        .HasColumnType("varchar(256)");
+                    b.Property<decimal?>("Price")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<int?>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Stock")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("NormalizedName")
-                        .IsUnique()
-                        .HasDatabaseName("RoleNameIndex");
+                    b.HasIndex("AppUserId");
 
-                    b.ToTable("AspNetRoles", (string)null);
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -223,9 +313,120 @@ namespace EveryRush.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Order", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<DateTime?>("Date")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("SnapshotIds")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("Process", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<DateTime?>("Date")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Event")
+                        .HasColumnType("longtext");
+
+                    b.Property<int?>("InitiatorId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("OrderId")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<int?>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("Processes");
+                });
+
+            modelBuilder.Entity("PurchaseProductSnapshot", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("OrderId")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<decimal?>("Price")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<string>("ProductDescription")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("ProductId")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("ProductImageUrl")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("ProductName")
+                        .HasColumnType("longtext");
+
+                    b.Property<int?>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("PurchaseProductSnapshots");
+                });
+
+            modelBuilder.Entity("CartItem", b =>
+                {
+                    b.HasOne("EveryRush.Entity.AppUser", "AppUser")
+                        .WithMany("CartItems")
+                        .HasForeignKey("AppUserId");
+
+                    b.Navigation("AppUser");
+                });
+
+            modelBuilder.Entity("Contact", b =>
+                {
+                    b.HasOne("EveryRush.Entity.AppUser", "AppUser")
+                        .WithMany("Contacts")
+                        .HasForeignKey("AppUserId");
+
+                    b.Navigation("AppUser");
+                });
+
+            modelBuilder.Entity("EveryRush.Entity.Product", b =>
+                {
+                    b.HasOne("EveryRush.Entity.AppUser", "User")
+                        .WithMany("Products")
+                        .HasForeignKey("AppUserId");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                    b.HasOne("AppRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -252,7 +453,7 @@ namespace EveryRush.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                    b.HasOne("AppRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -272,6 +473,51 @@ namespace EveryRush.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Order", b =>
+                {
+                    b.HasOne("EveryRush.Entity.AppUser", "AppUser")
+                        .WithMany("Orders")
+                        .HasForeignKey("AppUserId");
+
+                    b.Navigation("AppUser");
+                });
+
+            modelBuilder.Entity("Process", b =>
+                {
+                    b.HasOne("Order", "Order")
+                        .WithMany("Processes")
+                        .HasForeignKey("OrderId");
+
+                    b.Navigation("Order");
+                });
+
+            modelBuilder.Entity("PurchaseProductSnapshot", b =>
+                {
+                    b.HasOne("Order", "Order")
+                        .WithMany("PurchaseProductSnapshots")
+                        .HasForeignKey("OrderId");
+
+                    b.Navigation("Order");
+                });
+
+            modelBuilder.Entity("EveryRush.Entity.AppUser", b =>
+                {
+                    b.Navigation("CartItems");
+
+                    b.Navigation("Contacts");
+
+                    b.Navigation("Orders");
+
+                    b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("Order", b =>
+                {
+                    b.Navigation("Processes");
+
+                    b.Navigation("PurchaseProductSnapshots");
                 });
 #pragma warning restore 612, 618
         }

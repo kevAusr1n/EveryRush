@@ -25,7 +25,7 @@ builder.Services.AddAuthentication();
     }
 );*/
 
-builder.Services.AddDbContext<AuthDbContext>
+builder.Services.AddDbContext<AppDbContext>
 (
     connDbOptions => connDbOptions.UseMySql
     (
@@ -34,47 +34,10 @@ builder.Services.AddDbContext<AuthDbContext>
     )
 );
 
-builder.Services.AddDbContext<ProductDbContext>
-(
-    connDbOptions => connDbOptions.UseMySql
-    (
-        "server=127.0.0.1;port=3306;user=root;password=key123456;database=mysqldatabase", 
-        new MySqlServerVersion(new Version(8, 4, 3))
-    )
-);
-
-builder.Services.AddDbContext<ContactDbContext>
-(
-    connDbOptions => connDbOptions.UseMySql
-    (
-        "server=127.0.0.1;port=3306;user=root;password=key123456;database=mysqldatabase", 
-        new MySqlServerVersion(new Version(8, 4, 3))
-    )
-);
-
-builder.Services.AddDbContext<OrderDbContext>
-(
-    connDbOptions => connDbOptions.UseMySql
-    (
-        "server=127.0.0.1;port=3306;user=root;password=key123456;database=mysqldatabase", 
-        new MySqlServerVersion(new Version(8, 4, 3))
-    )
-);
-
-builder.Services.AddDbContext<PurchaseProductSnapshotDbContext>
-(
-    connDbOptions => connDbOptions.UseMySql
-    (
-        "server=127.0.0.1;port=3306;user=root;password=key123456;database=mysqldatabase", 
-        new MySqlServerVersion(new Version(8, 4, 3))
-    )
-);
-
-
 builder.Services
 .AddIdentityApiEndpoints<AppUser>()
 .AddRoles<AppRole>()
-.AddEntityFrameworkStores<AuthDbContext>();
+.AddEntityFrameworkStores<AppDbContext>();
 
 builder.Services.Configure<IdentityOptions>
 (

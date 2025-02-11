@@ -36,7 +36,7 @@ namespace ContactManager.Authorization
                 return Task.CompletedTask;
             }
 
-            if (resource.OwnerId == _userManager.GetUserId(context.User))
+            if (resource.AppUserId == _userManager.GetUserId(context.User))
             {
                 context.Succeed(requirement);
             }

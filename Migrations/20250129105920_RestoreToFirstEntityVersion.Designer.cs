@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EveryRush.Migrations
 {
-    [DbContext(typeof(AuthDbContext))]
+    [DbContext(typeof(AppDbContext))]
     [Migration("20250129105920_RestoreToFirstEntityVersion")]
     partial class RestoreToFirstEntityVersion
     {

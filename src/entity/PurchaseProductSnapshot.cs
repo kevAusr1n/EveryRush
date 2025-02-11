@@ -9,5 +9,5 @@ public class PurchaseProductSnapshot {
     public int? Quantity { get; set; }
     public decimal? Price { get; set; }
     public DateTime Date { get; set; }
-    // Add any other fields that you need for the purchase snapshot
+    public Order? Order {get; set;}
 }

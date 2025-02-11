@@ -6,14 +6,14 @@ using Microsoft.EntityFrameworkCore;
 
 public class OrderService
 {   
-    private readonly OrderDbContext _orderDbContext;
+    private readonly AppDbContext _appDbContext;
     private readonly IAuthorizationService _authorizationService;
 
     public OrderService(
-        OrderDbContext orderDbContext,
+        AppDbContext appDbContext,
         IAuthorizationService authorizationService) 
     {
-        _orderDbContext = orderDbContext;
+        _appDbContext = appDbContext;
         _authorizationService = authorizationService;
     }
 

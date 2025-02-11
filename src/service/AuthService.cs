@@ -11,18 +11,18 @@ public class AuthService
     private readonly UserManager<AppUser> _userManager;
     private readonly RoleManager<AppRole> _roleManager;
     private readonly SignInManager<AppUser> _signInManager;
-    private readonly AuthDbContext _authDbContext;
+    private readonly AppDbContext _appDbContext;
 
     public AuthService(
         UserManager<AppUser> userManager,
         RoleManager<AppRole> roleManager, 
         SignInManager<AppUser> signInManager,
-        AuthDbContext authDbContext) 
+        AppDbContext appDbContext) 
     {
         _userManager = userManager;
         _roleManager = roleManager;
         _signInManager = signInManager;
-        _authDbContext = authDbContext;
+        _appDbContext = appDbContext;
     }
 
     public async Task<AppUser> ThirdPartyLoginUserExistCheckAsync(string email) 
