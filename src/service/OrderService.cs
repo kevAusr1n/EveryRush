@@ -7,13 +7,16 @@ using Microsoft.EntityFrameworkCore;
 public class OrderService
 {   
     private readonly AppDbContext _appDbContext;
+    private readonly UserManager<AppUser> _userManager;
     private readonly IAuthorizationService _authorizationService;
 
     public OrderService(
         AppDbContext appDbContext,
+        UserManager<AppUser> userManager,
         IAuthorizationService authorizationService) 
     {
         _appDbContext = appDbContext;
+        _userManager = userManager;
         _authorizationService = authorizationService;
     }
 
@@ -27,6 +30,13 @@ public class OrderService
 
     public async Task<Order> MakeOrder(MakeOrderRequest request) 
     {   
+        AppUser user = await _userManager.FindByIdAsync(request.UserId);
+
+        if (user == null) 
+        {
+            throw new Exception("User not found");
+        }
+        
         return null;
     }
 }

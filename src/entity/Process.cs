@@ -6,4 +6,5 @@ public class Process {
     public int? InitiatorId {get;set;}
     public DateTime? Date {get;set;}
     public Order? Order {get;set;}
+    public ICollection<AppFile>? AppFiles {get; set;}
 }

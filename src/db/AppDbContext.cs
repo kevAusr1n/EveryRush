@@ -17,4 +17,6 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, string>
     public DbSet<Process> Processes {get;set;}
 
     public DbSet<PurchaseProductSnapshot> PurchaseProductSnapshots {get;set;}
+
+    public DbSet<AppFile> AppFiles {get;set;}
 }

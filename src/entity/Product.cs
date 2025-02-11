@@ -14,4 +14,6 @@ public class Product
     public int? Status {get; set;}
 
     public AppUser? User {get; set;}
+
+    public ICollection<AppFile>? AppFiles {get; set;}
 }

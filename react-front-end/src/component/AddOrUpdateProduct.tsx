@@ -9,7 +9,7 @@ function AddOrUpdateProduct() {
     const [files, setFiles] = useState<File>();
 
     const navigate = useNavigate();
-    
+
     const doAddOrUpdateProduct = (formData : FormData) => {
         var requestBody = {
             id: searchParams.get("id") as string,
@@ -17,7 +17,8 @@ function AddOrUpdateProduct() {
             name: formData.get('name'),
             description: formData.get('description'),
             price: formData.get('price'),
-            stock: formData.get('stock')
+            stock: formData.get('stock'),
+            files: files
         }
         
         axios

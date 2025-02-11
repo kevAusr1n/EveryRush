@@ -26,11 +26,11 @@ public class ProductController : ControllerBase
         return await _productService.GetPaginatedMarket(page, size, keyword, orderby, order);
     }
 
-    [HttpPost("create")]
-    public async Task<ActionResult<Product>> CreateProduct(
-        [FromBody] CreateProductRequest request) 
+    [HttpPost("add")]
+    public async Task<ActionResult<Product>> AddProduct(
+        [FromBody] AddProductRequest request) 
     {
-        return await _productService.CreateProduct(request);
+        return await _productService.AddProduct(request);
     }
 
     [HttpDelete("delete/{id}")]

@@ -1,3 +1,4 @@
+using System.Collections;
 using EveryRush.Entity;
 using Google.Apis.Drive.v3.Data;
 using Microsoft.AspNetCore.Authorization;
@@ -56,7 +57,7 @@ public class ProductService
         };
     }
 
-    public async Task<Product> CreateProduct(CreateProductRequest request) 
+    public async Task<Product> AddProduct(AddProductRequest request) 
     {   
         var newProduct = new Product
         {
@@ -68,12 +69,43 @@ public class ProductService
             Stock = request.Stock
         };
         
+        var ImageUrl = "";
+
+        foreach (IFormFile file in request.Files) 
+        {
+            var thisUrl = request.UserId + "-" + DateTime.Now.ToString("yyyyMMddHHmmss") 
+                + "-" + file.ContentType;
+
+            using (var memoryStream = new MemoryStream())
+            {
+                await file.CopyToAsync(memoryStream);
+                
+                byte[] header = new byte[4];
+                memoryStream.Read(header, 0, header.Length);
+                string format = BitConverter.ToString(header);
+
+                AppFile newFile = new AppFile {
+                    Id = Guid.NewGuid().ToString(),
+                    Name = thisUrl,
+                    ProductId = newProduct.Id,
+                    Content = memoryStream.ToArray(),
+                    Format = format,
+                };
+
+                _appDbContext.AppFiles.Add(newFile);
+                await _appDbContext.SaveChangesAsync();
+            }
+        } 
+
+        newProduct.ImageUrl = ImageUrl;
+
         try 
         {
             _appDbContext.Products.Add(newProduct);
             await _appDbContext.SaveChangesAsync();
             return newProduct;
         }
+
         catch (DbUpdateException e) 
         {
             return new Product();
@@ -90,6 +122,7 @@ public class ProductService
                 return true;
             }
 
+            _appDbContext.AppFiles.RemoveRange(_appDbContext.AppFiles.Where(f => f.ProductId == id));
             _appDbContext.Products.Remove(product);
             await _appDbContext.SaveChangesAsync();
             return true;
