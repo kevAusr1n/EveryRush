@@ -55,6 +55,8 @@ public class ProductService
             .ToListAsync()
         };
 
+        Console.WriteLine("GetPaginatedProducts: " + response.Products.Count);
+
         foreach (Product product in response.Products) {
             product.AppFiles = await _appDbContext.AppFiles
                 .Where(f => f.ProductId == product.Id)
@@ -76,9 +78,9 @@ public class ProductService
             Stock = request.Stock
         };
         
-        var ImageUrl = "";
+        List<AppFile> savedFiles = new List<AppFile>();
 
-        if (request.Files != null) 
+        if (request.Files != null && request.Files.Count > 0) 
         {
             foreach (IFormFile file in request.Files) 
             {
@@ -89,10 +91,19 @@ public class ProductService
                 {
                     await file.CopyToAsync(memoryStream);
                     
-                    byte[] header = new byte[4];
-                    memoryStream.Read(header, 0, header.Length);
-                    string format = BitConverter.ToString(header);
+                    byte[] chkbytes = new byte[256];
+                    memoryStream.Position = 0;
+                    memoryStream.Read(chkbytes, 0, chkbytes.Length);
+                    string format = "";
 
+                    foreach (var signature in FileFormatMagicBytes._fileSignatures)
+                    {
+                        if (chkbytes.Take(signature.Key.Length).SequenceEqual(signature.Key))
+                        {
+                            format = signature.Value;
+                        }
+                    }
+                    
                     AppFile newFile = new AppFile {
                         Id = Guid.NewGuid().ToString(),
                         Name = thisUrl,
@@ -101,25 +112,19 @@ public class ProductService
                         Format = format,
                     };
 
-                    _appDbContext.AppFiles.Add(newFile);
-                    await _appDbContext.SaveChangesAsync();
+                    savedFiles.Add(newFile);
                 }
             } 
         }
 
-        newProduct.ImageUrl = ImageUrl;
+        newProduct.ImageUrl = String.Join(",", savedFiles.Select(f => f.Name));
+        _appDbContext.Products.Add(newProduct);
+        await _appDbContext.SaveChangesAsync();
 
-        try 
-        {
-            _appDbContext.Products.Add(newProduct);
-            await _appDbContext.SaveChangesAsync();
-            return newProduct;
-        }
+        _appDbContext.AppFiles.AddRange(savedFiles);
+        await _appDbContext.SaveChangesAsync();
 
-        catch (DbUpdateException e) 
-        {
-            return new Product();
-        } 
+        return newProduct;
     }
 
     public async Task<Boolean> DeleteProduct(string id) 

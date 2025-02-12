@@ -439,3 +439,6 @@
 /Users/kevin/git-app/EveryRush/bin/Debug/net9.0/react-front-end/tsconfig.json
 /Users/kevin/git-app/EveryRush/bin/Debug/net9.0/react-front-end/tsconfig.node.json
 /Users/kevin/git-app/EveryRush/obj/Debug/net9.0/EveryRush.sourcelink.json
+/Users/kevin/git-app/EveryRush/bin/Debug/net9.0/Microsoft.AspNetCore.JsonPatch.dll
+/Users/kevin/git-app/EveryRush/bin/Debug/net9.0/Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+/Users/kevin/git-app/EveryRush/bin/Debug/net9.0/Newtonsoft.Json.Bson.dll

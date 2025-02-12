@@ -11,20 +11,20 @@ function AddOrUpdateProduct() {
     const navigate = useNavigate();
 
     const doAddOrUpdateProduct = (formData : FormData) => {
-        var requestBody = {
-            id: searchParams.get("id") as string,
-            userId: localStorage.getItem('userid'),
-            name: formData.get('name'),
-            description: formData.get('description'),
-            price: formData.get('price'),
-            stock: formData.get('stock'),
-            files: files
+        formData.append("userId", localStorage.getItem("userid") as string);
+        formData.append("id", searchParams.get("id") as string);
+
+        if (files != null) {
+            for (let i = 0; i < files.length; i++) {
+
+                formData.append("files", files[i]); 
+            }
         }
         
         axios
-            .post(`http://localhost:5175/api/products/${action}`, requestBody, {
+            .post(`http://localhost:5175/api/products/${action}`, formData, {
                 headers: {
-                    Accept: 'application/json'
+                    "Content-Type": "multipart/form-data"
                 }
             })
             .then((_) => {

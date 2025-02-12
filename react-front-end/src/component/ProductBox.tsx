@@ -35,7 +35,8 @@ function ProductBox(props: {product : any})
 
     const displayImageIfThereIs = () : ReactNode => {
         if (props.product.appFiles != null && props.product.appFiles.length > 0) {
-            return <img src={URL.createObjectURL(props.product.appFiles[0])} className="w-32 h-32"/>
+            const imageContent : string = `data:${props.product.appFiles[0].format};base64,${props.product.appFiles[0].content}`
+            return <img src={imageContent} className="w-32 h-32"/>
         } else {
             return <></>
         }
