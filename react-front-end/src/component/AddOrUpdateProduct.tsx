@@ -40,7 +40,7 @@ function AddOrUpdateProduct() {
     return (
         <div>
             <FormTable
-                inputNames={["Name", "Descrption", "Price", "Stock", "Images"]}
+                inputNames={["Name", "Description", "Price", "Stock", "Images"]}
                 inputTypes={["text", "text", "text", "text", "file"]}
                 inputValues={["", "",  "",  "",  [files, setFiles]]}
                 actionName={action as string}
