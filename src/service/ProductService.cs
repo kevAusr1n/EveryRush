@@ -18,7 +18,7 @@ public class ProductService
         _authorizationService = authorizationService;
     }
 
-    public async Task<GetPaginatedMarketResponse> GetPaginatedMarket(
+    public async Task<GetPaginatedProductsResponse> GetPaginatedProducts(
         int page, 
         int size,
         string keyword,
@@ -46,8 +46,7 @@ public class ProductService
             }
         } 
 
-        return new GetPaginatedMarketResponse 
-        {
+        var response = new GetPaginatedProductsResponse {
             TotalCount = totalCount,
             TotalPages = totalPages,
             Products = await productsQuery
@@ -55,9 +54,17 @@ public class ProductService
             .Take(size)
             .ToListAsync()
         };
+
+        foreach (Product product in response.Products) {
+            product.AppFiles = await _appDbContext.AppFiles
+                .Where(f => f.ProductId == product.Id)
+                .ToListAsync();
+        }
+
+        return response;
     }
 
-    public async Task<Product> AddProduct(AddProductRequest request) 
+    public async Task<Product> AddProduct(AddOrUpdateProductRequest request) 
     {   
         var newProduct = new Product
         {

@@ -6,14 +6,14 @@ import { useState } from "react";
 function AddOrUpdateProduct() {
     const { action } = useParams();
     const [searchParams, _] = useSearchParams();
-    const [files, setFiles] = useState<File>();
+    const [files, setFiles] = useState<FileList | null>(null);
 
     const navigate = useNavigate();
 
     const doAddOrUpdateProduct = (formData : FormData) => {
         var requestBody = {
             id: searchParams.get("id") as string,
-            ownerId: localStorage.getItem('userid'),
+            userId: localStorage.getItem('userid'),
             name: formData.get('name'),
             description: formData.get('description'),
             price: formData.get('price'),
@@ -30,7 +30,7 @@ function AddOrUpdateProduct() {
             .then((_) => {
                 navigate("/products");
             })
-            .catch((error) => {console.log(error);})
+            .catch((error) => {alert(error);})
     }
 
     const doBackToProducts = () => {
@@ -42,13 +42,12 @@ function AddOrUpdateProduct() {
             <FormTable
                 inputNames={["Name", "Descrption", "Price", "Stock", "Images"]}
                 inputTypes={["text", "text", "text", "text", "file"]}
-                inputValues={["", "",  "",  "",  ""]}
+                inputValues={["", "",  "",  "",  [files, setFiles]]}
                 actionName={action as string}
                 actionHandler={doAddOrUpdateProduct}
                 backUrl="/contacts"/>
         </div>
     )
-    
 }
 
 export default AddOrUpdateProduct;

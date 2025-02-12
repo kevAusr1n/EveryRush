@@ -16,19 +16,18 @@ public class ProductController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<GetPaginatedMarketResponse>> GetPaginatedMarket(
+    public async Task<ActionResult<GetPaginatedProductsResponse>> GetPaginatedProducts(
         [FromQuery] int page,
         [FromQuery] int size,
         [FromQuery] string keyword = "",
         [FromQuery] string orderby = "",
         [FromQuery] string order = "") 
     {
-        return await _productService.GetPaginatedMarket(page, size, keyword, orderby, order);
+        return await _productService.GetPaginatedProducts(page, size, keyword, orderby, order);
     }
 
     [HttpPost("add")]
-    public async Task<ActionResult<Product>> AddProduct(
-        [FromBody] AddProductRequest request) 
+    public async Task<ActionResult<Product>> AddProduct([FromBody] AddOrUpdateProductRequest request) 
     {
         return await _productService.AddProduct(request);
     }

@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useNavigate, useParams, useSearchParams } from "react-router";
 import FormTable from "./FormTable";
-import { useState } from "react";
 
 function AddOrUpdateContact() {
     const navigate = useNavigate();
@@ -11,7 +10,7 @@ function AddOrUpdateContact() {
     const doAddOrUpdateContact = (formData : FormData) => {
         var requestBody = {
             id: searchParams.get("id") as string,
-            ownerId: localStorage.getItem('userid'),
+            userId: localStorage.getItem('userid'),
             firstname: formData.get('firstname'),
             lastname: formData.get('lastname'),
             email: formData.get('email'),

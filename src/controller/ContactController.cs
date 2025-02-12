@@ -25,13 +25,13 @@ public class ContactController : ControllerBase
     }
 
     [HttpPost("add")]
-    public async Task<ActionResult<Contact>> AddContact([FromBody] AddContactRequest request) 
+    public async Task<ActionResult<Contact>> AddContact([FromBody] AddOrUpdateContactRequest request) 
     {
         return await _contactService.AddContact(request);
     }
 
     [HttpPost("edit")]
-    public async Task<ActionResult<Contact>> EditContact([FromBody] EditContactRequest request) 
+    public async Task<ActionResult<Contact>> EditContact([FromBody] AddOrUpdateContactRequest request) 
     {
         return await _contactService.EditContact(request);
     }

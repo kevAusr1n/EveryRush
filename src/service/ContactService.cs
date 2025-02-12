@@ -25,7 +25,7 @@ public class ContactService
         };
     }
 
-    public async Task<Contact> AddContact(AddContactRequest request) 
+    public async Task<Contact> AddContact(AddOrUpdateContactRequest request) 
     {   
         Contact newContact = new Contact() {
             Id = Guid.NewGuid().ToString(),
@@ -52,7 +52,7 @@ public class ContactService
         } 
     }
 
-    public async Task<Contact> EditContact(EditContactRequest request) 
+    public async Task<Contact> EditContact(AddOrUpdateContactRequest request) 
     {   
         Contact contactForUpdate = _appDbContext.Contacts.FirstOrDefault(c => c.Id == request.Id);
         

@@ -1,6 +1,6 @@
 using EveryRush.Entity;
 
-public class GetPaginatedMarketResponse
+public class GetPaginatedProductsResponse
 {
     public int TotalCount { get; set; }
     public int TotalPages { get; set; }

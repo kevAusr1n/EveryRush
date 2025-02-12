@@ -75,7 +75,7 @@ public class AuthService
         if (userStoreResult.Succeeded && roleStoreResult.Succeeded && userRoleRelationStoreResult.Succeeded)
         {    
             AppUser user = await _userManager.FindByEmailAsync(request.Email);
-
+            
             return new GetUserResponse() {
                 Id = user.Id,
                 Email = request.Email,

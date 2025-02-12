@@ -1,51 +1,15 @@
 import { ReactNode, useState } from 'react';
 
-function GenerateInputRowFormat(inputName : string, inputType: string, inputValue: string) {
-    const [_, setState] = useState(inputValue);
-    const [files, setFiles] = useState<FileList | null>(null);
-    
-    const addImageToFiles = (fileList: FileList) => {
-        const dataTransfer = new DataTransfer();
-
-        for (let i = 0; i < fileList.length; i++) {
-            if (!fileList[i].type.startsWith("image")) {
-                alert("cannot upload non-image files");
-                return;
-            }
-        }
-
-        if (files == null) {
-            setFiles(fileList);
-        } else if (fileList == null) {
-            return;
-        } else {
-            for (let i = 0; i < files.length; i++) {
-                dataTransfer.items.add(files[i]);
-            }
-            for (let i = 0; i < fileList.length; i++) {
-                dataTransfer.items.add(fileList[i]);
-            }
-            setFiles(dataTransfer.files)
-        }      
-    }
-
-    const deleteFromFiles = (file : File) => {
-        const dataTransfer = new DataTransfer();
-        
-        if (files == null) {
-            return;
-        }
-
-        for (let i = 0; i < files.length; i++) {
-            if (files[i] != file) {
-                dataTransfer.items.add(files[i]);
-            }
-        }
-
-        setFiles(dataTransfer.files);
-    }
+function GenerateInputRowFormat(
+    inputName : string, 
+    inputType: string, 
+    inputValue: string | [FileList | null, React.Dispatch<React.SetStateAction<FileList | null>>],
+) {
 
     if (inputType == "text") {
+        inputValue = inputValue as string;
+        const [_, setState] = useState(inputValue);
+
         return (
             <div className="mb-4">
                 <label className="block text-gray-700 text-sm font-bold mb-2">
@@ -59,6 +23,9 @@ function GenerateInputRowFormat(inputName : string, inputType: string, inputValu
         )
     }
     else if (inputType == "fixed-text") {
+        inputValue = inputValue as string;
+        const [_, setState] = useState(inputValue);
+
         return (
             <div className="mb-4">
                 <label className="block text-gray-700 text-sm font-bold mb-2">
@@ -71,7 +38,9 @@ function GenerateInputRowFormat(inputName : string, inputType: string, inputValu
             </div>
         )
     } else if (inputType == "option") {
+        inputValue = inputValue as string;
         const optionValues = inputValue.split(",");
+        
         return (
             <div className="mb-4">
                 <label className="block text-gray-700 text-sm font-bold mb-2">
@@ -86,7 +55,54 @@ function GenerateInputRowFormat(inputName : string, inputType: string, inputValu
                 </select>
             </div>
         )
-    } else if (inputType == "file") {
+    } else if (inputType == "file") { 
+        const [files, setFiles] = inputValue as [FileList | null, React.Dispatch<React.SetStateAction<FileList | null>>];
+        
+        const addImageToFiles = (fileList: FileList) => {
+            const dataTransfer = new DataTransfer();
+    
+            for (let i = 0; i < fileList.length; i++) {
+                if (!fileList[i].type.startsWith("image")) {
+                    alert("cannot upload non-image files");
+                    return;
+                }
+                if (fileList[i].size > 2048000) {
+                    alert("cannot upload files larger than 2MB");
+                    return;
+                }
+            }
+    
+            if (files == null) {
+                setFiles(fileList);
+            } else if (fileList == null) {
+                return;
+            } else {
+                for (let i = 0; i < files.length; i++) {
+                    dataTransfer.items.add(files[i]);
+                }
+                for (let i = 0; i < fileList.length; i++) {
+                    dataTransfer.items.add(fileList[i]);
+                }
+                setFiles(dataTransfer.files)
+            }      
+        }
+    
+        const deleteFromFiles = (file : File) => {
+            const dataTransfer = new DataTransfer();
+            
+            if (files == null) {
+                return;
+            }
+    
+            for (let i = 0; i < files.length; i++) {
+                if (files[i] != file) {
+                    dataTransfer.items.add(files[i]);
+                }
+            }
+    
+            setFiles(dataTransfer.files);
+        }
+
         return (
             <div className="mb-4">
                 <label className="block text-gray-700 text-sm font-bold mb-2">
@@ -104,7 +120,11 @@ function GenerateInputRowFormat(inputName : string, inputType: string, inputValu
                         <div>
                             <p>{file.name}</p>
                             <img src={URL.createObjectURL(file)} alt="uploaded" className="w-32 h-32"/>
-                            <button onClick={() => deleteFromFiles(file)}>Delete</button>
+                            <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded 
+                                focus:outline-none focus:shadow-outline" 
+                                onClick={() => deleteFromFiles(file)}>
+                                Delete
+                            </button>
                         </div>
                     )
                 })}

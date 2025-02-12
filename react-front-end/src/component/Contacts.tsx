@@ -39,7 +39,7 @@ function Contacts() {
                                 <p>{contact.address}</p>
                                 <p>{contact.city}</p>
                                 <p>{contact.state}</p>
-                                <p>{contact.postCode}</p>
+                                <p>{contact.postcode}</p>
                                 <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded 
                                     focus:outline-none focus:shadow-outline" 
                                     onClick={() => navigate({pathname: "/contacts/edit", search: createSearchParams({
@@ -51,7 +51,7 @@ function Contacts() {
                                         address: contact.address,
                                         city: contact.city,
                                         state: contact.state,
-                                        postcode: contact.postCode
+                                        postcode: contact.postcode
                                 }).toString()})}>
                                     EDIT
                                 </button>

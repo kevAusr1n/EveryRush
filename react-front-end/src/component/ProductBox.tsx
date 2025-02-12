@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 function ProductBox(props: {product : any}) 
 {    
     const addToCart = () => {
@@ -31,11 +33,21 @@ function ProductBox(props: {product : any})
         }
     }
 
+    const displayImageIfThereIs = () : ReactNode => {
+        if (props.product.appFiles != null && props.product.appFiles.length > 0) {
+            return <img src={URL.createObjectURL(props.product.appFiles[0])} className="w-32 h-32"/>
+        } else {
+            return <></>
+        }
+    }
+
     return (
         <div className="border-1 border-grey-200 rounded-lg h-60 w-100 m-5">
             <h3>{props.product.name}</h3>
             <p>{props.product.description}</p>
             <p>${props.product.price}</p>
+            <p>{props.product.stock}</p>
+            {displayImageIfThereIs()}
             <button onClick={addToCart} className="bg-blue-500 hover:bg-blue-700 text-white font-bold 
             py-2 px-4 rounded-full mr-2">
                 Add To Cart

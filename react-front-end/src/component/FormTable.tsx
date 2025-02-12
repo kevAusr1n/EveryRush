@@ -4,7 +4,7 @@ import GenerateInputRowFormat from "../functions/InputRowGenerator";
 function FormTable(props:{
     inputNames: string[],
     inputTypes: string[],
-    inputValues: string[],
+    inputValues: any[],
     actionName: string,
     actionHandler: any,
     backUrl: string

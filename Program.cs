@@ -98,7 +98,7 @@ app.UseRouting();
 app.UseCors("AllowAnyOrigin");
 
 app.UseAuthentication();
-app.UseAuthorization();
+//app.UseAuthorization();
 app.MapControllers();
 app.MapIdentityApi<AppUser>();
 
