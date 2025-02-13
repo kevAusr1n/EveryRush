@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { BasicButton } from "../components/Button";
 
 function ProductBox(props: {product : any}) 
 {    
@@ -27,7 +28,6 @@ function ProductBox(props: {product : any})
                     return;
                 }
             }
-
             productsInCartJson.products.push(thisProduct)
             sessionStorage.setItem("cart", JSON.stringify(productsInCartJson));
         }
@@ -36,27 +36,20 @@ function ProductBox(props: {product : any})
     const displayImageIfThereIs = () : ReactNode => {
         if (props.product.appFiles != null && props.product.appFiles.length > 0) {
             const imageContent : string = `data:${props.product.appFiles[0].format};base64,${props.product.appFiles[0].content}`
-            return <img src={imageContent} className="w-32 h-32"/>
+            return <img src={imageContent} className="float-left w-64 h-64"/>
         } else {
             return <></>
         }
     }
 
     return (
-        <div className="border-1 border-grey-200 rounded-lg h-60 w-100 m-5">
-            <h3>{props.product.name}</h3>
-            <p>{props.product.description}</p>
-            <p>${props.product.price}</p>
-            <p>{props.product.stock}</p>
+        <div className="gap-5 border-1 m-5 p-5 flex flex-col items-center">
             {displayImageIfThereIs()}
-            <button onClick={addToCart} className="bg-blue-500 hover:bg-blue-700 text-white font-bold 
-            py-2 px-4 rounded-full mr-2">
-                Add To Cart
-            </button> 
-            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold 
-            py-2 px-4 rounded-full mr-2">
-                Purchase
-            </button> 
+            <strong>{props.product.name}</strong>
+            <p>price: ${props.product.price}</p>
+            <p>stock: {props.product.stock}</p>
+            <BasicButton color="black" buttonName="ADD TO CART" clickHandler={addToCart} /> 
+            <BasicButton color="black" buttonName="PURCHASE" clickHandler={addToCart} />  
         </div>    
     )
 }

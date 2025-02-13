@@ -1,4 +1,4 @@
-import { ReactNode, useState } from 'react';
+import { useState } from 'react';
 
 function GenerateInputRowFormat(
     inputName : string, 
@@ -11,7 +11,7 @@ function GenerateInputRowFormat(
         const [_, setState] = useState(inputValue);
 
         return (
-            <div className="mb-4">
+            <>
                 <label className="block text-gray-700 text-sm font-bold mb-2">
                     {inputName}
                 </label>
@@ -19,7 +19,7 @@ function GenerateInputRowFormat(
                 leading-tight focus:outline-none focus:shadow-outline" defaultValue={inputValue} 
                 id={inputName.toLocaleLowerCase()} name={inputName.toLocaleLowerCase()} type="text"
                 onChange={(e) => setState(e.target.value)}/>
-            </div>
+            </>
         )
     }
     else if (inputType == "fixed-text") {
@@ -27,7 +27,7 @@ function GenerateInputRowFormat(
         const [_, setState] = useState(inputValue);
 
         return (
-            <div className="mb-4">
+            <>
                 <label className="block text-gray-700 text-sm font-bold mb-2">
                     {inputName}
                 </label>
@@ -35,25 +35,25 @@ function GenerateInputRowFormat(
                 leading-tight focus:outline-none focus:shadow-outline" value={inputValue} 
                 id={inputName.toLocaleLowerCase()} name={inputName.toLocaleLowerCase()} type="text"
                 onChange={(e) => setState(e.target.value)}/>
-            </div>
+            </>
         )
     } else if (inputType == "option") {
         inputValue = inputValue as string;
         const optionValues = inputValue.split(",");
-        
+
         return (
-            <div className="mb-4">
+            <>
                 <label className="block text-gray-700 text-sm font-bold mb-2">
                     {inputName}
                 </label>
                 <select>
                     {
-                        optionValues.map((optionValue) => {
+                        optionValues.map((optionValue, index) => {
                             return <option value = {optionValue}>{optionValue}</option>
                         })
                     }
                 </select>
-            </div>
+            </>
         )
     } else if (inputType == "file") { 
         const [files, setFiles] = inputValue as [FileList | null, React.Dispatch<React.SetStateAction<FileList | null>>];
@@ -104,7 +104,7 @@ function GenerateInputRowFormat(
         }
 
         return (
-            <div className="mb-4">
+            <>
                 <label className="block text-gray-700 text-sm font-bold mb-2">
                     {inputName}
                 </label>
@@ -128,7 +128,7 @@ function GenerateInputRowFormat(
                         </div>
                     )
                 })}
-            </div>
+            </>
         )
     }
 }

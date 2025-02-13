@@ -25,7 +25,7 @@ function Register() {
                     navigate("/");
                 }
             })
-            .catch((err) => {return false});
+            .catch((err) => {console.log(err)});
     }
 
     const email : string = sessionStorage.getItem("email") as string;

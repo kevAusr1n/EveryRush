@@ -4,6 +4,7 @@ import Pagination from "./Pagination";
 import ProductBox from "./ProductBox";
 import SearchBar from "./SearchBar";
 import { useNavigate } from "react-router";
+import { BasicButton } from "../components/Button";
 
 function Products() {
     const navigate = useNavigate();
@@ -72,9 +73,11 @@ function Products() {
 
     const doDisplayAddProductButtonIfBusinessOwnerLoggedIn = () : ReactNode => {
         return (
-            <button onClick={() => navigate("/products/add")}>
-                ADD PRODUCT
-            </button>
+            <>
+                <div>
+                    <BasicButton color="black" buttonName="CREATE PRODUCT" clickHandler={() => navigate("/browse/products/add")} />
+                </div>
+            </>
         )
     }
 
@@ -87,7 +90,7 @@ function Products() {
                 setOrderTerm={setOrderTerm}
             /> 
             {doDisplayAddProductButtonIfBusinessOwnerLoggedIn()}
-            <div className="flex m-20">
+            <div className="grid grid-cols-4">
                 {products.map((product : any) => {
                     return <ProductBox 
                         product={product}/>

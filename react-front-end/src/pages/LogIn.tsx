@@ -1,8 +1,8 @@
 import { TokenResponse, useGoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
-import { data, useNavigate } from 'react-router';
-import GenerateInputRowFormat from '../functions/InputRowGenerator';
+import { useNavigate } from 'react-router';
 import FormTable from './FormTable';
+import { BasicButton } from '../components/Button';
 
 function LogIn() {
     const navigate = useNavigate()
@@ -74,6 +74,12 @@ function LogIn() {
         navigate("/");
     }
 
+    const doGoogleLogin = useGoogleLogin({
+        onSuccess: (tokenResponse) => setupGoogleUser(tokenResponse),
+        onError: (error) => console.log(error)
+    })
+    
+
     return (
         <>
             <FormTable 
@@ -84,15 +90,7 @@ function LogIn() {
                 actionHandler={doLogin}
                 backUrl="/"/>
             <div className="flex items-center justify-center">
-                <button 
-                    className = "border bg-white hover:bg-white text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" 
-                    onClick={() => useGoogleLogin({
-                            onSuccess: (tokenResponse) => setupGoogleUser(tokenResponse),
-                            onError: (error) => console.log(error)
-                        })
-                }>
-                    Sign in with Google
-                </button>
+                <BasicButton color="black" buttonName="SIGN IN WITH GOOGLE" clickHandler={() => doGoogleLogin()} />
             </div>
         </>
     )

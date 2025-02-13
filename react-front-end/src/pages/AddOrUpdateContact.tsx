@@ -33,10 +33,6 @@ function AddOrUpdateContact() {
             .catch((error) => {console.log(error);})
     }
 
-    const doBackToContact = () => {
-        navigate("/contacts");
-    }
-
     return (
         <div>
             <FormTable

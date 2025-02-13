@@ -2,17 +2,17 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import { BrowserRouter, Route, Routes } from 'react-router'
-import Register from './component/Register.tsx'
-import LogIn from './component/LogIn.tsx'
-import BrowsePage from './component/BrowsePage.tsx'
-import Cart from './component/Cart.tsx'
-import Products from './component/Products.tsx'
-import Orders from './component/Orders.tsx'
-import Contacts from './component/Contacts.tsx'
-import Messages from './component/Messages.tsx'
-import Checkout from './component/Checkout.tsx'
-import AddOrUpdateContact from './component/AddOrUpdateContact.tsx'
-import AddOrUpdateProduct from './component/AddOrUpdateProduct.tsx'
+import Register from './pages/Register.tsx'
+import LogIn from './pages/LogIn.tsx'
+import BrowsePage from './pages/BrowsePage.tsx'
+import Cart from './pages/Cart.tsx'
+import Products from './pages/Products.tsx'
+import Orders from './pages/Orders.tsx'
+import Contacts from './pages/Contacts.tsx'
+import Messages from './pages/Messages.tsx'
+import Checkout from './pages/Checkout.tsx'
+import AddOrUpdateContact from './pages/AddOrUpdateContact.tsx'
+import AddOrUpdateProduct from './pages/AddOrUpdateProduct.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -21,7 +21,8 @@ createRoot(document.getElementById('root')!).render(
         <Routes>
           <Route path="signin" element={<LogIn />} /> 
           <Route path="signup" element={<Register />} /> 
-          <Route path="/" element={<BrowsePage />}>
+          <Route path="browse" element={<BrowsePage />}>
+            <Route index element={<Products />} />
             <Route path="products" element={<Products />} />
             <Route path="cart" element={<Cart />} />
             <Route path="orders" element={<Orders />} />

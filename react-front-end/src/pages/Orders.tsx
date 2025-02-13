@@ -1,10 +1,10 @@
-import { ReactNode, useEffect, useRef, useState } from "react";
-import { isUserLoggedIn } from "../functions/UserUtils";
-import { createSearchParams, useNavigate } from "react-router";
-import axios from "axios";
+//import { ReactNode, useEffect, useRef, useState } from "react";
+//import { isUserLoggedIn } from "../functions/UserUtils";
+//import { useNavigate } from "react-router";
+//import axios from "axios";
 
 function Orders() {
-    const navigate = useNavigate();
+    /*const navigate = useNavigate();
     const [orders, setOrders] = useState<any>([]);
     const [size, setSize]  = useState(10);
     const [page, setPage] = useState(1);
@@ -107,7 +107,8 @@ function Orders() {
         <div className="flex m-20 items-center justify-center">
             {doDisplayOrderPage()}
         </div>
-    )
+    )*/
+    return <></>
 }
 
 export default Orders;

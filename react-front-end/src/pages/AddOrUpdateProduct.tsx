@@ -32,11 +32,7 @@ function AddOrUpdateProduct() {
             })
             .catch((error) => {alert(error);})
     }
-
-    const doBackToProducts = () => {
-        navigate("/products");
-    }
-
+    
     return (
         <div>
             <FormTable

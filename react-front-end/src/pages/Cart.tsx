@@ -1,8 +1,9 @@
 import { ReactNode, useState } from "react";
-import { redirect } from "react-router";
+import { useNavigate } from "react-router";
 
 function Cart() {
     const [refreshThisPage, setRefreshThisPage] = useState(false);
+    const navigate = useNavigate();
 
     const changeQuantity = (products : any, thisProduct: any, change: number) => {
         products.map((product: any) => {
@@ -73,7 +74,7 @@ function Cart() {
             alert("You have nothing to checkout.")
         }
 
-        redirect("/checkout");
+        navigate("/browse/checkout");
     }
 
     return (

@@ -1,5 +1,5 @@
 import { ReactNode, useEffect, useState } from "react";
-import { isUserLoggedIn } from "../functions/UserUtils";
+import { isUserLoggedIn } from "../components/UserUtils";
 import { createSearchParams, useNavigate } from "react-router";
 import axios from "axios";
 
@@ -42,7 +42,7 @@ function Contacts() {
                                 <p>{contact.postcode}</p>
                                 <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded 
                                     focus:outline-none focus:shadow-outline" 
-                                    onClick={() => navigate({pathname: "/contacts/edit", search: createSearchParams({
+                                    onClick={() => navigate({pathname: "/browse/contacts/edit", search: createSearchParams({
                                         id: contact.id,
                                         firstname: contact.firstName,
                                         lastname: contact.lastName,
@@ -100,7 +100,7 @@ function Contacts() {
                 <>
                     <div>
                         <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded 
-                            focus:outline-none focus:shadow-outline" onClick={() => navigate("/contacts/add")}>
+                            focus:outline-none focus:shadow-outline" onClick={() => navigate("/browse/contacts/add")}>
                             ADD CONTACT
                         </button>
                     </div>
