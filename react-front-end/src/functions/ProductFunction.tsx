@@ -1,7 +1,6 @@
 import axios from "axios";
-import { Dispatch, FormEvent, RefObject, SetStateAction } from "react";
+import { Dispatch, FormEvent, SetStateAction } from "react";
 import { isStringEmpty } from "./Utils";
-import { ProductEntity } from "../type/EntityType";
 
 function getPaginatedProducts(props: {
   page: number,

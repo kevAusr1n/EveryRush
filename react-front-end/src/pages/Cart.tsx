@@ -39,9 +39,9 @@ function Cart() {
 
             return (
                 <>
-                    {productsInCartJson.products.map((product: any) => {
+                    {productsInCartJson.cartItems.map((product: any) => {
                     return (
-                        <div className="flex flex-col border-1 border-grey-200 rounded-lg w-100">
+                        <div key={product.productId} className="flex flex-col border-1 border-grey-200 rounded-lg w-100">
                             <p>Product: {product.name}</p>
                             <p>Price: {product.price}</p>
                             <div className="flex">
