@@ -1,38 +1,14 @@
 import axios from "axios";
 import { useNavigate, useParams, useSearchParams } from "react-router";
 import FormTable from "./FormTable";
+import { addOrUpdateContacts } from "../functions/ContactFunction";
+import { FormEvent } from "react";
 
 function AddOrUpdateContact() {
     const navigate = useNavigate();
     const { action } = useParams();
     const [searchParams, _] = useSearchParams();
-   
-    const doAddOrUpdateContact = (formData : FormData) => {
-        var requestBody = {
-            id: searchParams.get("id") as string,
-            userId: localStorage.getItem('userid'),
-            firstname: formData.get('firstname'),
-            lastname: formData.get('lastname'),
-            email: formData.get('email'),
-            phone: formData.get('phone'),
-            address: formData.get('address'),
-            city: formData.get('city'),
-            state: formData.get('state'),
-            postcode: formData.get('postcode'),
-        }
-        
-        axios
-            .post(`http://localhost:5175/api/contacts/${action}`, requestBody, {
-                headers: {
-                    Accept: 'application/json'
-                }
-            })
-            .then((_) => {
-                navigate("/contacts");
-            })
-            .catch((error) => {console.log(error);})
-    }
-
+    
     return (
         <div>
             <FormTable
@@ -49,8 +25,15 @@ function AddOrUpdateContact() {
                     searchParams.get("postcode") as string, 
                 ]}
                 actionName={action as string}
-                actionHandler={doAddOrUpdateContact}
-                backUrl="/contacts"/>
+                actionHandler={(event: FormEvent<HTMLFormElement>) => {
+                    addOrUpdateContacts({
+                        action: action as string, 
+                        id: searchParams.get("id") as string,
+                        formSubmitEvent: event
+                    });
+                    navigate("/browse/contacts");
+                }}
+                backUrl="/browse/contacts"/>
         </div>
     )
     

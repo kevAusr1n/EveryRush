@@ -1,8 +1,11 @@
-import { ReactNode } from "react"
+import { ReactNode, useState } from "react"
 import GenerateInputRowFormat from "../components/InputRowGenerator";
 import { BasicButton } from "../components/Button";
+import DropDown from "../components/Dropdown";
 
 function Checkout() {
+    const [dropdown, setDropdown] = useState(false);
+
     const displayProducts = () : ReactNode => {
         let productsInCart = sessionStorage.getItem("cart");
         let productsInCartJson = JSON.parse(productsInCart as string);
@@ -51,9 +54,10 @@ function Checkout() {
                     </tbody>
                 </table>
             </div>
-            <div className="ml-20 mt-20">
+            <div className="ml-20 mt-20 ">
             <strong className="text-2xl">Post Address</strong>
-                <BasicButton color="black" buttonName="USE CONTACT" clickHandler={() => alert("yes")}/>
+                <BasicButton color="black" buttonName="USE CONTACT" clickHandler={() => setDropdown(!dropdown)}/>
+                <DropDown isDropDown={dropdown} />
                 {doGenerateContactInput(inputNames, inputTypes, inputValues)}
             </div>
             <div className="ml-20 mt-20">

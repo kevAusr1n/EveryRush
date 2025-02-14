@@ -1,7 +1,7 @@
 import { ReactNode, useEffect, useState } from "react";
-import { isUserLoggedIn } from "../components/UserUtils";
 import { createSearchParams, useNavigate } from "react-router";
 import axios from "axios";
+import { isUserLoggedIn } from "../functions/UserFunction";
 
 function Contacts() {
     const navigate = useNavigate();

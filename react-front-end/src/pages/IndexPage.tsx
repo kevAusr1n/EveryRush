@@ -1,23 +1,10 @@
 import { Link, Outlet, useNavigate } from "react-router";
 import { ReactNode } from "react";
 import { googleLogout } from "@react-oauth/google";
-import { isUserLoggedIn } from "../components/UserUtils";
+import { isUserLoggedIn, SignOut } from "../functions/UserFunction";
 
-function BrowsePage() {
+function IndexPage() {
     const navigate = useNavigate();
-
-    const doLogOut = () => {
-        if (localStorage.getItem("provider") == "google") {
-            googleLogout();
-        }
-
-        localStorage.removeItem("userid");
-        localStorage.removeItem("email");
-        localStorage.removeItem("username");
-        localStorage.removeItem("role");
-        localStorage.removeItem("provider");
-        navigate("/");
-    };
 
     const loginSection = () : ReactNode => {
         if (!isUserLoggedIn()) {
@@ -31,7 +18,7 @@ function BrowsePage() {
             return (
                 <>
                     <p>{localStorage.getItem("username") as string}</p>
-                    <button onClick={() => doLogOut()}>SIGN OUT</button>
+                    <button onClick={() => {SignOut();navigate("/index")}}>SIGN OUT</button>
                 </>
             );
         }
@@ -54,4 +41,4 @@ function BrowsePage() {
     )
 }
 
-export default BrowsePage;
+export default IndexPage;

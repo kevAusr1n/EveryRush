@@ -1,17 +1,19 @@
 import { ReactNode, useEffect, useRef, useState } from "react";
 import axios from "axios";
-import Pagination from "./Pagination";
+import Pagination from "../components/Pagination";
 import ProductBox from "./ProductBox";
 import SearchBar from "./SearchBar";
 import { useNavigate } from "react-router";
 import { BasicButton } from "../components/Button";
+import Exhibition from "../components/Exhibition";
+import { GetPaginatedProducts } from "../functions/ProductFunction";
 
 function Products() {
     const navigate = useNavigate();
 
     const [size, setSize]  = useState(10);
     const [page, setPage] = useState(1);
-    const [products, setProducts] = useState<any>([]);
+    const [response, setResponse] = useState<any>([]);
     
     const [searchTerm, setSearchTerm] = useState("");
     const [orderTerm, setOrderTerm] = useState("Popularity");
@@ -19,67 +21,13 @@ function Products() {
     const totalCount = useRef(0);
     const totalPages = useRef(0);
 
-    useEffect(() => {
-        let orderBy = "";
-        let order = "";
-
-        if (orderTerm === "Popularity") {
-            orderBy = "";
-            order = "";
-        }
-        else if (orderTerm === "Price Asceding") {
-            orderBy = "price";
-            order = "asc";
-        }
-        else if (orderTerm === "Price Descending") {
-            orderBy = "price";
-            order = "desc";
-        }
-        else if (orderTerm === "Oldest Product") {
-            orderBy = "time";
-            order = "asc";
-        }
-        else if (orderTerm === "Newest Product") {
-            orderBy = "time";
-            order = "desc";
-        }
-        
-        let query : string = `page=${page}&size=${size}`;
-
-        if (searchTerm != undefined && searchTerm != null && searchTerm != '') {
-            query += `&keyword=${searchTerm}`;
-        }
-        if (orderBy != undefined && orderBy != null && orderBy != '') {
-            query += `&orderby=${orderBy}`;
-        }
-        if (order != undefined && order != null && order != '') {
-            query += `&order=${order}`;
-        }
-
-        axios
-            .get(`http://localhost:5175/api/products?${query}`, {
-                headers: {
-                    Accept: 'application/json'
-                }
-            })
-            .then((res) => {
-                setProducts(res.data.products);
-                totalCount.current = res.data.totoalCount;
-                totalPages.current = res.data.totalPages;
-            })
-            .catch((err) => console.log(err));
-
-    }, [searchTerm, orderTerm, page, size]);
-
-    const doDisplayAddProductButtonIfBusinessOwnerLoggedIn = () : ReactNode => {
-        return (
-            <>
-                <div>
-                    <BasicButton color="black" buttonName="CREATE PRODUCT" clickHandler={() => navigate("/browse/products/add")} />
-                </div>
-            </>
-        )
-    }
+    useEffect(() => GetPaginatedProducts({
+        page : page, 
+        size : size, 
+        searchKey : 
+        searchTerm, orderKey : orderTerm,
+        setResponse: setResponse
+    }), [searchTerm, orderTerm, page, size]);
 
     return (
         <>  
@@ -89,13 +37,11 @@ function Products() {
                 orderTerm={orderTerm}
                 setOrderTerm={setOrderTerm}
             /> 
-            {doDisplayAddProductButtonIfBusinessOwnerLoggedIn()}
-            <div className="grid grid-cols-4">
-                {products.map((product : any) => {
-                    return <ProductBox 
-                        product={product}/>
-                })}
-            </div>
+            <Exhibition
+                arrangement="grid"
+                items={products}
+                itemComponent={ProductBox}
+            />
             <Pagination 
                 size={size}
                 setSize={setSize}
