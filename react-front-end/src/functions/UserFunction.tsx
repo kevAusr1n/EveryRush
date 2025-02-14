@@ -28,7 +28,7 @@ function SignInWithCredential(props: { email: string, password: string }) : bool
     return false;
 }
 
-function isUserLoggedIn() : boolean {
+function isUserSignedIn() : boolean {
     return localStorage.getItem("userid") != null;
 }
 
@@ -65,7 +65,7 @@ function SignUp (props: { formSubmitEvent: FormEvent<HTMLFormElement> }) : boole
             Accept: 'application/json'
         }
     })
-    .then((res) => {
+    .then((_) => {
         return SignInWithCredential({email: formData.get("email") as string, password: formData.get("password") as string});
     })
     .catch((err) => {console.log(err)});
@@ -73,4 +73,4 @@ function SignUp (props: { formSubmitEvent: FormEvent<HTMLFormElement> }) : boole
     return false;
 }
 
-export { isUserLoggedIn, SignOut, SignIn, SignUp };
+export { isUserSignedIn , SignOut, SignIn, SignUp };

@@ -1,11 +1,11 @@
 import { Dispatch, SetStateAction, useRef } from "react";
-import { BasicButton } from "../components/Button";
+import { BasicButton } from "./Button";
 
 function SearchBar(props: {
     searchTerm : string,
     setSearchTerm : Dispatch<SetStateAction<string>>,
     orderTerm : string,
-    setOrderTerm : Dispatch<SetStateAction<string>>
+    setOrderTerm : Dispatch<SetStateAction<string>>,
 }) 
 {
     const tempSearchTerm = useRef("");

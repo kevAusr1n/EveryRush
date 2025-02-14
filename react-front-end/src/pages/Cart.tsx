@@ -74,7 +74,7 @@ function Cart() {
             alert("You have nothing to checkout.")
         }
 
-        navigate("/browse/checkout");
+        navigate("/index/checkout");
     }
 
     return (

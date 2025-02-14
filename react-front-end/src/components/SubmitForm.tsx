@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router";
-import GenerateInputRowFormat from "../components/InputRowGenerator";
-import { BasicButton, SubmitButton } from "../components/Button";
+import { BasicButton, SubmitButton } from "./Button";
+import InputField from "./InputField";
 
-function FormTable(props:{
+function SubmitForm(props:{
     inputNames: string[],
     inputTypes: string[],
     inputValues: any[],
@@ -17,7 +17,7 @@ function FormTable(props:{
             <form id={"form-" + props.actionName} onSubmit={props.actionHandler} encType="multipart/form-data">
                 {
                     props.inputNames.map((inputName, index) => {
-                        return GenerateInputRowFormat(inputName, props.inputTypes[index], props.inputValues[index]);
+                        return InputField(inputName, props.inputTypes[index], props.inputValues[index]);
                     })
                 }               
                 <SubmitButton color="black" buttonName={props.actionName.toLocaleUpperCase()} />              
@@ -27,4 +27,4 @@ function FormTable(props:{
     )
 }
 
-export default FormTable;
+export default SubmitForm;

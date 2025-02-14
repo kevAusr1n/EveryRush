@@ -1,13 +1,13 @@
 import { useNavigate } from 'react-router';
-import FormTable from './FormTable';
 import { SignUp } from '../functions/UserFunction';
 import { FormEvent } from 'react';
+import SubmitForm from '../components/SubmitForm';
 
 function SignUpPage() {
     const navigate = useNavigate()
 
     return (
-        <FormTable
+        <SubmitForm
             inputNames={["email", "username", "password", "role"]}
             inputTypes={["text", "text", "text", "option"]}
             inputValues={["", "", "", "Customer,BusinessOwner"]}

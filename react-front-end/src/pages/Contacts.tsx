@@ -1,7 +1,7 @@
 import { ReactNode, useEffect, useState } from "react";
 import { createSearchParams, useNavigate } from "react-router";
 import axios from "axios";
-import { isUserLoggedIn } from "../functions/UserFunction";
+import { isUserSignedIn } from "../functions/UserFunction";
 
 function Contacts() {
     const navigate = useNavigate();
@@ -71,7 +71,7 @@ function Contacts() {
     }
     
     const doDisplayContactPage = () : ReactNode => {
-        if (!isUserLoggedIn()){
+        if (!isUserSignedIn()){
             return (
                 <>
                     <p>Please sign in to manage your contacts.</p>

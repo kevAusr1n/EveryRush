@@ -1,16 +1,16 @@
 import { useNavigate } from 'react-router';
-import FormTable from './FormTable';
 import { BasicButton } from '../components/Button';
 import { FormEvent } from 'react';
 import { SignIn } from '../functions/UserFunction';
 import { googleOAuth } from '../functions/GoogleAuthFunction';
+import SubmitForm from '../components/SubmitForm';
 
 function SignInPage() {
     const navigate = useNavigate()
 
     return (
         <>
-            <FormTable 
+            <SubmitForm
                 inputNames={["email", "password"]}
                 inputTypes={["text", "text"]}
                 inputValues={["", ""]}

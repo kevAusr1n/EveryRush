@@ -1,17 +1,16 @@
-import axios from "axios";
 import { useNavigate, useParams, useSearchParams } from "react-router";
-import FormTable from "./FormTable";
 import { addOrUpdateContacts } from "../functions/ContactFunction";
 import { FormEvent } from "react";
+import SubmitForm from "../components/SubmitForm";
 
-function AddOrUpdateContact() {
+function AddOrUpdateContactPage() {
     const navigate = useNavigate();
     const { action } = useParams();
     const [searchParams, _] = useSearchParams();
     
     return (
         <div>
-            <FormTable
+            <SubmitForm
                 inputNames={["FirstName", "LastName", "Email", "Phone", "Address", "City", "State", "Postcode"]}
                 inputTypes={["text", "text", "text", "text", "text", "text", "text", "text"]}
                 inputValues={[
@@ -26,17 +25,18 @@ function AddOrUpdateContact() {
                 ]}
                 actionName={action as string}
                 actionHandler={(event: FormEvent<HTMLFormElement>) => {
-                    addOrUpdateContacts({
+                    if (addOrUpdateContacts({
                         action: action as string, 
                         id: searchParams.get("id") as string,
                         formSubmitEvent: event
-                    });
-                    navigate("/browse/contacts");
+                    })) {
+                        navigate("/index/contacts");
+                    }
                 }}
-                backUrl="/browse/contacts"/>
+                backUrl="/index/contacts"/>
         </div>
     )
     
 }
 
-export default AddOrUpdateContact;
+export default AddOrUpdateContactPage;

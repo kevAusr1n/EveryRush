@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-function ProductDetail() {
+function ProductDetailPage() {
     const [_, setProduct] = useState<any>([]);
 
     useEffect(() => {
@@ -24,4 +24,4 @@ function ProductDetail() {
     )
 }
 
-export default ProductDetail;
+export default ProductDetailPage;

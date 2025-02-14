@@ -1,7 +1,7 @@
 import { ReactNode, useState } from "react"
-import GenerateInputRowFormat from "../components/InputRowGenerator";
 import { BasicButton } from "../components/Button";
 import DropDown from "../components/Dropdown";
+import InputField from "../components/InputField";
 
 function Checkout() {
     const [dropdown, setDropdown] = useState(false);
@@ -30,7 +30,7 @@ function Checkout() {
         return (
             <div className="w-200">
                 {inputNames.map((name, index) => {
-                    return GenerateInputRowFormat(name, inputTypes[index], inputValues[index]);
+                    return InputField(name, inputTypes[index], inputValues[index]);
                 })}
             </div>
         )

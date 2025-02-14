@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-function GenerateInputRowFormat(
+function InputField(
     inputName : string, 
     inputType: string, 
     inputValue: string | [FileList | null, React.Dispatch<React.SetStateAction<FileList | null>>],
@@ -133,4 +133,4 @@ function GenerateInputRowFormat(
     }
 }
 
-export default GenerateInputRowFormat;
+export default InputField;

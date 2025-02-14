@@ -1,46 +1,50 @@
 import axios from "axios";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, FormEvent, RefObject, SetStateAction } from "react";
+import { isStringEmpty } from "./Utils";
+import { ProductEntity } from "../type/EntityType";
 
-function GetPaginatedProducts(props: {
+function getPaginatedProducts(props: {
   page: number,
   size: number,
-  searchKey: string, 
-  orderKey: string,
-  setResponse: Dispatch<SetStateAction<any>>,
-}){
+  searchTerm: string, 
+  orderTerm: string,
+  setResponse: Dispatch<SetStateAction<any>>
+}){    
     let orderBy = "";
     let order = "";
 
-    if (props.orderKey === "Popularity") {
-        orderBy = "";
-        order = "";
+    switch(props.orderTerm){
+        case "Popularity":
+            orderBy = "";
+            order = "";
+            break;
+        case "Price Asceding":
+            orderBy = "price";
+            order = "asc";
+            break;
+        case "Price Descending":
+            orderBy = "price";
+            order = "desc";
+            break;
+        case "Oldest Product":
+            orderBy = "time";
+            order = "asc";
+            break;
+        case "Newest Product":
+            orderBy = "time";
+            order = "desc";
+            break;
     }
-    else if (props.orderKey === "Price Asceding") {
-        orderBy = "price";
-        order = "asc";
-    }
-    else if (props.orderKey === "Price Descending") {
-        orderBy = "price";
-        order = "desc";
-    }
-    else if (props.orderKey === "Oldest Product") {
-        orderBy = "time";
-        order = "asc";
-    }
-    else if (props.orderKey === "Newest Product") {
-        orderBy = "time";
-        order = "desc";
-    }
-    
+       
     let query : string = `page=${props.page}&size=${props.size}`;
 
-    if (props.searchKey != undefined && props.searchKey != null && props.searchKey != '') {
-        query += `&keyword=${props.searchKey}`;
+    if (!isStringEmpty(props.searchTerm)) {
+        query += `&keyword=${props.searchTerm}`;
     }
-    if (orderBy != undefined && orderBy != null && orderBy != '') {
+    if (!isStringEmpty(orderBy)) {
         query += `&orderby=${orderBy}`;
     }
-    if (order != undefined && order != null && order != '') {
+    if (!isStringEmpty(order)) {
         query += `&order=${order}`;
     }
 
@@ -55,4 +59,35 @@ function GetPaginatedProducts(props: {
     .catch((err) => console.log(err));
 }
 
-export { GetPaginatedProducts };
+function addOrUpdateProducts(props: {
+    action: string,
+    id: string,
+    files: FileList | null,
+    formSubmitEvent: FormEvent<HTMLFormElement>
+}) : boolean {
+    props.formSubmitEvent.preventDefault();
+    let formData = new FormData(props.formSubmitEvent.currentTarget);
+    let succeed : boolean = false;
+
+    formData.append("userId", localStorage.getItem("userid") as string);
+    formData.append("id", props.id);
+
+    if (props.files != null) {
+        for (let i = 0; i < props.files.length; i++) {
+            formData.append("files", props.files[i]); 
+        }
+    }
+    
+    axios.post(`http://localhost:5175/api/products/${props.action}`, formData, {
+        headers: {
+            "Content-Type": "multipart/form-data"
+        }
+    })
+    .then((_) => succeed = true)
+    .catch((err) => console.log(err));
+
+    return succeed;
+}
+
+
+export { getPaginatedProducts as GetPaginatedProducts,  addOrUpdateProducts };

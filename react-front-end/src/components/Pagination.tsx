@@ -1,5 +1,5 @@
 import { Dispatch, ReactNode, SetStateAction, useRef} from "react";
-import { BasicButton, BorderlessButton } from "./Button";
+import { BorderlessButton } from "./Button";
 import SelectionMenu from "./SelectionMemu";
 
 export function Pagination(props: {
@@ -7,9 +7,10 @@ export function Pagination(props: {
     setSize : Dispatch<SetStateAction<number>>,
     page : number,
     setPage : Dispatch<SetStateAction<number>>,
-    totalPage : number,
+    totalPages : number,
     totalCount : number}) 
 {
+    const sizeOptions: number[] = [5, 10, 20, 50, 100];
     const fixDisplayPageCount = 10;
     const startPage = useRef(1);
     
@@ -24,8 +25,8 @@ export function Pagination(props: {
         } else if (currentPage <= startPage.current) {
             startPage.current = Math.max(1, currentPage - 1);
         }
-
-        return [...Array(Math.min(fixDisplayPageCount, props.totalPage - startPage.current + 1))].map((_, index) => {
+        
+        return [...Array(Math.min(fixDisplayPageCount, props.totalPages - startPage.current + 1))].map((_, index) => {
             const thisPage = startPage.current + index;
             let color = "black"
 
@@ -41,7 +42,7 @@ export function Pagination(props: {
     };
 
     const jumpToPage = (toPage : number) => {
-        if (toPage >= 1 && toPage <= props.totalPage) {
+        if (toPage >= 1 && toPage <= props.totalPages) {
             props.setPage(toPage);
         }
     }
@@ -50,8 +51,8 @@ export function Pagination(props: {
         <div className="flex justify-center items-center m-10">
             {props.page > 1 && <BorderlessButton color="black" buttonName="Previous" clickHandler={() => jumpToPage(props.page - 1)} />}
             {renderPageButton(props.page)}
-            {props.page < props.totalPage && <BorderlessButton color="black" buttonName="Next" clickHandler={() => jumpToPage(props.page + 1)} />}   
-            <SelectionMenu items={[5, 10, 20, 50]} inputChangeHandler={changePageSize} />
+            {props.page < props.totalPages && <BorderlessButton color="black" buttonName="Next" clickHandler={() => jumpToPage(props.page + 1)} />}   
+            <SelectionMenu default_value={props.size} values={sizeOptions} valueChangeHandler={changePageSize} />
         </div>
     )
 }

@@ -1,13 +1,12 @@
 import { Link, Outlet, useNavigate } from "react-router";
 import { ReactNode } from "react";
-import { googleLogout } from "@react-oauth/google";
-import { isUserLoggedIn, SignOut } from "../functions/UserFunction";
+import { isUserSignedIn, SignOut } from "../functions/UserFunction";
 
 function IndexPage() {
     const navigate = useNavigate();
 
     const loginSection = () : ReactNode => {
-        if (!isUserLoggedIn()) {
+        if (!isUserSignedIn()) {
             return (
                 <>
                     <Link to="/signin"><p className="text-black">SIGN IN</p></Link>
@@ -35,7 +34,7 @@ function IndexPage() {
                 {loginSection()}
             </header>
             <main>
-                <Outlet /> {/* This will render the matched child route */}
+                <Outlet />
             </main>
         </div>
     )
