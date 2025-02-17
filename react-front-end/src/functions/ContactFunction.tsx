@@ -1,29 +1,29 @@
 import axios from "axios";
 import { Dispatch, FormEvent, SetStateAction } from "react"
-import { useNavigate } from "react-router";
+import { GetContactsResponse } from "../type/ResponseType";
 
-function getPaginatedContacts (props: {
+async function getPaginatedContacts (props: {
     page: number,
     size: number,
     userid: string
-    setContacts: Dispatch<SetStateAction<any[]>>
+    setResponse: Dispatch<SetStateAction<GetContactsResponse>>
 }) {
-    axios.get(`http://localhost:5175/api/contacts?userid=${props.userid}&page=${props.page}&size=${props.size}`, {
+    await axios.get(`http://localhost:5175/api/contacts?userid=${props.userid}&page=${props.page}&size=${props.size}`, {
         headers: {
             Accept: 'application/json'
         }
     })
     .then((response) => {
-        props.setContacts(response.data.contacts);
+        props.setResponse(response.data);
     })
     .catch((error) => {console.log(error);})
 }
 
-function addOrUpdateContacts (props: {
+async function addOrUpdateContacts (props: {
     action : string,
     id: string,
     formSubmitEvent: FormEvent<HTMLFormElement>
-}) : boolean {
+}) : Promise<boolean> {
     props.formSubmitEvent.preventDefault();
     const formData = new FormData(props.formSubmitEvent.currentTarget);
     let isSucceed : boolean = false;
@@ -41,7 +41,7 @@ function addOrUpdateContacts (props: {
         postcode: formData.get('postcode'),
     }
 
-    axios.post(`http://localhost:5175/api/contacts/${props.action}`, requestBody, {
+    await axios.post(`http://localhost:5175/api/contacts/${props.action}`, requestBody, {
         headers: {
             Accept: 'application/json'
         }

@@ -19,6 +19,7 @@ function SignInPage() {
                         navigate("/index");
                     }
                 }}
+                style="small"
                 backUrl="/index"/>
             <div className="flex items-center justify-center">
                 <GoogleAuthButton />

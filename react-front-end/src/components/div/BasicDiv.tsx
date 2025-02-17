@@ -1,8 +1,8 @@
 import { ReactNode } from "react";
 
-function BasicDiv(props: {children: ReactNode, color: string}) {
+function BasicDiv(props: {children: ReactNode[], style: string}) {
     return (
-        <div className={"mb-10 bg-" + props.color}>
+        <div className={"mb-10 " + props.style}>
             {props.children}
         </div>
     );

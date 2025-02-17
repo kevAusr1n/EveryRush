@@ -24,8 +24,8 @@ function AddOrUpdateContactPage() {
                     searchParams.get("postcode") as string, 
                 ]}
                 actionName={action as string}
-                actionHandler={(event: FormEvent<HTMLFormElement>) => {
-                    if (addOrUpdateContacts({
+                actionHandler={async (event: FormEvent<HTMLFormElement>) => {
+                    if (await addOrUpdateContacts({
                         action: action as string, 
                         id: searchParams.get("id") as string,
                         formSubmitEvent: event

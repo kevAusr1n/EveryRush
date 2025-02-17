@@ -30,7 +30,7 @@ function Checkout() {
         return (
             <div className="w-200">
                 {inputNames.map((name, index) => {
-                    return InputField(name, inputTypes[index], inputValues[index]);
+                    return InputField(name, inputTypes[index], inputValues[index], "normal");
                 })}
             </div>
         )

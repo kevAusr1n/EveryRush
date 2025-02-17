@@ -1,6 +1,7 @@
 import { Dispatch, ReactNode, SetStateAction, useRef} from "react";
 import { BorderlessButton } from "./Button";
 import SelectionMenu from "./SelectionMemu";
+import FlexDiv from "./div/FlexDiv";
 
 export function Pagination(props: {
     size : number,
@@ -19,6 +20,9 @@ export function Pagination(props: {
     };
 
     const renderPageButton = (currentPage: number) : ReactNode => {
+        if (props.totalCount == null || props.totalCount == 0) {
+            return (<BorderlessButton buttonColor="white" textColor="black" buttonName="No Data" clickHandler={() => {}} />);
+        }
 
         if (currentPage >= startPage.current + fixDisplayPageCount - 1) {
             startPage.current = currentPage - fixDisplayPageCount + 2;
@@ -48,12 +52,12 @@ export function Pagination(props: {
     }
 
     return (
-        <div className="flex justify-center gap-5">
-            {props.page > 1 && <BorderlessButton buttonColor="blue-500" textColor="white" buttonName="Previous" clickHandler={() => jumpToPage(props.page - 1)} />}
-            {renderPageButton(props.page)}
-            {props.page < props.totalPages && <BorderlessButton buttonColor="blue-500" textColor="white" buttonName="Next" clickHandler={() => jumpToPage(props.page + 1)} />}   
+        <FlexDiv flexType="flow-row" style="justify-center gap-5" children={[
+            props.page > 1 && <BorderlessButton buttonColor="blue-500" textColor="white" buttonName="Previous" clickHandler={() => jumpToPage(props.page - 1)} />,
+            renderPageButton(props.page),
+            props.page < props.totalPages && <BorderlessButton buttonColor="blue-500" textColor="white" buttonName="Next" clickHandler={() => jumpToPage(props.page + 1)} />,   
             <SelectionMenu default_value={props.size} values={sizeOptions} valueChangeHandler={changePageSize} />
-        </div>
+        ]} />
     )
 }
 

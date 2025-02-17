@@ -1,4 +1,4 @@
-type ProductEntity = {
+type Product = {
     id: string;
     userId: string;
     name: string;
@@ -8,23 +8,23 @@ type ProductEntity = {
     imageUrl: string;
 }
 
-type ContactType = {
+type Contact = {
     id: string;
     userId: string;
     firstName: string;
     lastName: string;
     email: string;
-    mobile: string;
+    phone: string;
     address: string;
     city: string;
     state: string;
     postcode: string;
 }
 
-type CartItemType = {
+type CartItem = {
     id: string;
     userId: string;
     productId: string;
     quantity: number;
 }
-export type { ProductEntity, ContactType, CartItemType }
+export type { Product, Contact, CartItem }
