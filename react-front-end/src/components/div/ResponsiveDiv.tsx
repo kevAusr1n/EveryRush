@@ -1,12 +1,13 @@
 import { ReactNode } from "react";
 
 function ResponsiveDiv(props: {
+    id: string
     children: ReactNode, 
     style: string, 
-    eventHandlerMap: any
+    eventHandlerMap: { [key: string] : () => void }
 }) {
     return (
-        <div className={props.style} {...props.eventHandlerMap}>
+        <div id={props.id} className={props.style} {...props.eventHandlerMap}>
             {props.children}
         </div>
     );

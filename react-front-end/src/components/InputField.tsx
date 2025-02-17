@@ -125,10 +125,11 @@ function FileField(props: {
             <BasicDiv style="h-10" children={[<p className="text-red-500">{errorMsg}</p>]} />
             <FlexDiv style="h-40" flexType="flex-row" children={[
                 files && Array.from(files).map((file) => {
+                    const id = crypto.randomUUID();
                     const imageId = crypto.randomUUID();
                     const deleteButtonId = crypto.randomUUID();
                     return (
-                        <ResponsiveDiv style="relative m-1 h-32 w-32" eventHandlerMap={eventHandlerMap(imageId, deleteButtonId)} children={[
+                        <ResponsiveDiv id={id} style="relative m-1 h-32 w-32" eventHandlerMap={eventHandlerMap(imageId, deleteButtonId)} children={[
                             <img id={imageId} src={URL.createObjectURL(file)} alt="uploaded" className={visibleImageStyle} />,
                             <button id={deleteButtonId} className={invisibleDeleteButtonStyle} onClick={() => deleteFromFiles(file)}>
                                 <X />
