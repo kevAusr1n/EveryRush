@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useNavigate, useParams, useSearchParams } from "react-router";
 import { FormEvent, useState } from "react";
 import SubmitForm from "../components/SubmitForm";
@@ -17,14 +16,14 @@ function AddOrUpdateProductPage() {
                 inputTypes={["text", "text", "text", "text", "file"]}
                 inputValues={["", "",  "",  "",  [files, setFiles]]}
                 actionName={action as string}
-                actionHandler={(event: FormEvent<HTMLFormElement>) => {
-                    if (addOrUpdateProducts({
+                actionHandler={async (event: FormEvent<HTMLFormElement>) => {
+                    if (await addOrUpdateProducts({
                         action: action as string, 
                         id: searchParams.get("id") as string,
                         files: files,
                         formSubmitEvent: event
                     })) {
-                        navigate("/index/contacts");
+                        navigate("/index/products");
                     }
                 }}
                 backUrl="/index/products"/>

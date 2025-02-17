@@ -1,8 +1,9 @@
 import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
+import { BasicButton } from "./Button";
 
-function googleOAuth() {
-    useGoogleLogin({
+function GoogleAuthButton() {
+    const googleSignIn = useGoogleLogin({
         onSuccess: (tokenResponse) => {
             let email = "";
             const provider = "google";
@@ -40,6 +41,10 @@ function googleOAuth() {
         },
         onError: (err) => console.log(err)
     })
+
+    return (
+        <BasicButton buttonColor="green-500" textColor="white" buttonName="SIGN IN WITH GOOGLE" clickHandler={() => googleSignIn()} />
+    )
 }
 
-export { googleOAuth };
+export default GoogleAuthButton;

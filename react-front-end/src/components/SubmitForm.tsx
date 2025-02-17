@@ -20,9 +20,9 @@ function SubmitForm(props:{
                         return InputField(inputName, props.inputTypes[index], props.inputValues[index]);
                     })
                 }               
-                <SubmitButton color="black" buttonName={props.actionName.toLocaleUpperCase()} />              
+                <SubmitButton buttonColor="blue-500" textColor="white" buttonName={props.actionName.toLocaleUpperCase()} />              
             </form>
-            <BasicButton color="black" buttonName="BACK" clickHandler={() => navigate(props.backUrl)} />
+            <BasicButton buttonColor="blue-500" textColor="white" buttonName="BACK" clickHandler={() => navigate(props.backUrl)} />
         </div>
     )
 }

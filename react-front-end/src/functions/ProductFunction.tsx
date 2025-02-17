@@ -58,15 +58,15 @@ function getPaginatedProducts(props: {
     .catch((err) => console.log(err));
 }
 
-function addOrUpdateProducts(props: {
+async function addOrUpdateProducts(props: {
     action: string,
     id: string,
     files: FileList | null,
     formSubmitEvent: FormEvent<HTMLFormElement>
-}) : boolean {
+}) : Promise<boolean> {
     props.formSubmitEvent.preventDefault();
     let formData = new FormData(props.formSubmitEvent.currentTarget);
-    let succeed : boolean = false;
+    let isSucceed : boolean = false;
 
     formData.append("userId", localStorage.getItem("userid") as string);
     formData.append("id", props.id);
@@ -77,15 +77,15 @@ function addOrUpdateProducts(props: {
         }
     }
     
-    axios.post(`http://localhost:5175/api/products/${props.action}`, formData, {
+    await axios.post(`http://localhost:5175/api/products/${props.action}`, formData, {
         headers: {
             "Content-Type": "multipart/form-data"
         }
     })
-    .then((_) => succeed = true)
+    .then((_) => isSucceed = true)
     .catch((err) => console.log(err));
 
-    return succeed;
+    return isSucceed;
 }
 
 

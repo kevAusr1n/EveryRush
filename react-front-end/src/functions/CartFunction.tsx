@@ -39,4 +39,14 @@ function addToCart(props: {product: Product, quantity: number}): boolean {
     return true;
 }
 
-export { addToCart }
+function removeFromCart (props: {products : any, thisProduct: any}) : boolean {
+    if (props.products == null) {
+        sessionStorage.removeItem("cart");
+    } else {
+        props.products = props.products.filter((product : any) => product.id != props.thisProduct.id);
+        sessionStorage.setItem("cart", JSON.stringify({products: props.products}));
+    }
+    return true;
+}
+
+export { addToCart, removeFromCart }

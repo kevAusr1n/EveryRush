@@ -10,7 +10,7 @@ function Checkout() {
         let productsInCart = sessionStorage.getItem("cart");
         let productsInCartJson = JSON.parse(productsInCart as string);
 
-        return productsInCartJson.products.map((product: any) => {
+        return productsInCartJson.cartItems.map((product: any) => {
             return (             
                 <tr className="border-b border-gray-400">
                     <th><img src=""/></th>
@@ -56,13 +56,13 @@ function Checkout() {
             </div>
             <div className="ml-20 mt-20 ">
             <strong className="text-2xl">Post Address</strong>
-                <BasicButton color="black" buttonName="USE CONTACT" clickHandler={() => setDropdown(!dropdown)}/>
+                <BasicButton buttonColor="white" textColor="black" buttonName="USE CONTACT" clickHandler={() => setDropdown(!dropdown)}/>
                 <DropDown isDropDown={dropdown} />
                 {doGenerateContactInput(inputNames, inputTypes, inputValues)}
             </div>
             <div className="ml-20 mt-20">
                 <strong className="text-2xl">Billing Address</strong>
-                <BasicButton color="black" buttonName="SAME AS POST ADDRESS" clickHandler={() => alert("yes")}/>
+                <BasicButton buttonColor="white" textColor="black" buttonName="SAME AS POST ADDRESS" clickHandler={() => alert("yes")}/>
                 {doGenerateContactInput(inputNames, inputTypes, inputValues)}
             </div>
             <div className="ml-20 mt-20">

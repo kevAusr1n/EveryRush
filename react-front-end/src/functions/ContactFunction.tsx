@@ -26,7 +26,7 @@ function addOrUpdateContacts (props: {
 }) : boolean {
     props.formSubmitEvent.preventDefault();
     const formData = new FormData(props.formSubmitEvent.currentTarget);
-    let succeed : boolean = false;
+    let isSucceed : boolean = false;
 
     var requestBody = {
         id: props.id,
@@ -46,10 +46,10 @@ function addOrUpdateContacts (props: {
             Accept: 'application/json'
         }
     })
-    .then((_) => succeed = true)
+    .then((_) => isSucceed = true)
     .catch((error) => console.log(error))
 
-    return succeed;
+    return isSucceed;
 }
 
 function deleteContacts (props: {id: string}) {

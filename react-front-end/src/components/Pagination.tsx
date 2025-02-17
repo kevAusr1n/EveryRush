@@ -31,11 +31,11 @@ export function Pagination(props: {
             let color = "black"
 
             if (thisPage === currentPage) {
-                color = "green-500"
+                color = "blue-500"
             }
 
             return (
-                <BorderlessButton color={color} buttonName={thisPage.toString()} key={thisPage} 
+                <BorderlessButton buttonColor="white" textColor={color} buttonName={thisPage.toString()} key={thisPage} 
                     clickHandler={() => props.setPage(thisPage)} />
             )
         })
@@ -48,10 +48,10 @@ export function Pagination(props: {
     }
 
     return (
-        <div className="flex justify-center items-center m-10">
-            {props.page > 1 && <BorderlessButton color="black" buttonName="Previous" clickHandler={() => jumpToPage(props.page - 1)} />}
+        <div className="flex justify-center gap-5">
+            {props.page > 1 && <BorderlessButton buttonColor="blue-500" textColor="white" buttonName="Previous" clickHandler={() => jumpToPage(props.page - 1)} />}
             {renderPageButton(props.page)}
-            {props.page < props.totalPages && <BorderlessButton color="black" buttonName="Next" clickHandler={() => jumpToPage(props.page + 1)} />}   
+            {props.page < props.totalPages && <BorderlessButton buttonColor="blue-500" textColor="white" buttonName="Next" clickHandler={() => jumpToPage(props.page + 1)} />}   
             <SelectionMenu default_value={props.size} values={sizeOptions} valueChangeHandler={changePageSize} />
         </div>
     )

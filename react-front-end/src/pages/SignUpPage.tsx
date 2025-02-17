@@ -12,8 +12,8 @@ function SignUpPage() {
             inputTypes={["text", "text", "text", "option"]}
             inputValues={["", "", "", "Customer,BusinessOwner"]}
             actionName="REGISTER"
-            actionHandler={(event: FormEvent<HTMLFormElement>) => {
-                if (SignUp({formSubmitEvent: event})) {
+            actionHandler={async (event: FormEvent<HTMLFormElement>) => {
+                if (await SignUp({formSubmitEvent: event})) {
                     navigate("/index");
                 }
             }}

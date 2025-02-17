@@ -1,5 +1,9 @@
-import { ReactNode, useState } from "react";
+import { createElement, JSX, ReactNode, useState } from "react";
 import { useNavigate } from "react-router";
+import DisplayTable from "../components/DisplayTable";
+import CountEditor from "../components/CountEditor";
+import { BasicButton } from "../components/Button";
+import { removeFromCart } from "../functions/CartFunction";
 
 function Cart() {
     const [refreshThisPage, setRefreshThisPage] = useState(false);
@@ -19,16 +23,6 @@ function Cart() {
         })
     }
 
-    const removeFromCart = (products : any, thisProduct: any) => {
-        if (products == null) {
-            sessionStorage.removeItem("cart");
-        } else {
-            products = products.filter((product : any) => product.id != thisProduct.id);
-            sessionStorage.setItem("cart", JSON.stringify({products: products}));
-        }
-        setRefreshThisPage(!refreshThisPage);
-    }
-
     const displayCart = () : ReactNode => {
         let productsInCart = sessionStorage.getItem("cart");
 
@@ -36,34 +30,28 @@ function Cart() {
             return (<p>There is no product in your cart.</p>)
         } else {
             let productsInCartJson = JSON.parse(productsInCart);
+            let head: string[] = ["image", "name", "price", "qty", "operation"];
+            let nodeMatrix: ReactNode[][] = [];
+
+            productsInCartJson.cartItems.map((product: any, index: number) => {
+                nodeMatrix[index] = []
+                nodeMatrix[index].push(createElement("p", {}, product.name) as ReactNode);
+                nodeMatrix[index].push(createElement("p", {}, product.name) as ReactNode);
+                nodeMatrix[index].push(createElement("p", {}, product.price) as ReactNode);
+                nodeMatrix[index].push(<CountEditor initial_count={product.quantity} /> as ReactNode);
+                nodeMatrix[index].push(<BasicButton buttonColor="red-500" textColor="white" buttonName="DELETE" clickHandler={() => {
+                    if (removeFromCart({products: productsInCartJson.cartItems, thisProduct: product})) {
+                        setRefreshThisPage(!refreshThisPage);
+                    }
+                }}/> as ReactNode);
+            })
 
             return (
-                <>
-                    {productsInCartJson.cartItems.map((product: any) => {
-                    return (
-                        <div key={product.productId} className="flex flex-col border-1 border-grey-200 rounded-lg w-100">
-                            <p>Product: {product.name}</p>
-                            <p>Price: {product.price}</p>
-                            <div className="flex">
-                                <button onClick={() => changeQuantity(productsInCartJson.products, product, 1)} className="bg-blue-500 text-white w-5 h-5">+</button>
-                                <p>Qty:{product.quantity}</p>
-                                <button onClick={() => changeQuantity(productsInCartJson.products, product, -1)} className="bg-blue-500 text-white w-5 h-5">-</button>
-                            </div>
-                            <button onClick={() => removeFromCart(productsInCartJson.products, product)} className="bg-red-500 text-white">Remove</button>
-                        </div>
-                    )})}
-                    <div className="flex m-20">
-                        <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded 
-                                focus:outline-none focus:shadow-outline" onClick={() => removeFromCart(null, null)}>
-                                REMOVE ALL
-                        </button>
-                        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded 
-                                focus:outline-none focus:shadow-outline" onClick={() => goCheckout()}>
-                                CHECKOUT
-                        </button>
-                    </div>
-                </>
-            )    
+                <div>
+                    <DisplayTable head={head} nodeMatrix={nodeMatrix} />
+                    <BasicButton buttonColor="blue-500" textColor="white" buttonName="CHECKOUT" clickHandler={() => goCheckout()}/>
+                </div>
+            )
         }  
     }
 

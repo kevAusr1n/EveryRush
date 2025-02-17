@@ -2,13 +2,14 @@ import { googleLogout } from "@react-oauth/google";
 import axios from "axios";
 import { FormEvent } from "react";
 
-function SignInWithCredential(props: { email: string, password: string }) : boolean {
+async function SignInWithCredential(props: { email: string, password: string }) : Promise<boolean> {
+    let isSucceed : boolean = false;
     var requestJson = {
         email : props.email,
         password : props.password
     }
 
-    axios.post(`http://localhost:5175/api/auth/signin`, requestJson, {
+    await axios.post(`http://localhost:5175/api/auth/signin`, requestJson, {
         headers: {
             'Content-Type': 'application/json',
             'Accept': '*/*'
@@ -20,12 +21,12 @@ function SignInWithCredential(props: { email: string, password: string }) : bool
             localStorage.setItem("email", res.data.email);
             localStorage.setItem("username", res.data.userName);
             localStorage.setItem("role", res.data.role);
-            return true
+            isSucceed = true;
         }
     })
     .catch((err) => alert(err));
 
-    return false;
+    return isSucceed;
 }
 
 function isUserSignedIn() : boolean {
@@ -44,14 +45,16 @@ function SignOut() {
     localStorage.removeItem("provider");
 }
 
-function SignIn(props: { formSubmitEvent: FormEvent<HTMLFormElement> }) : boolean {
+async function SignIn(props: { formSubmitEvent: FormEvent<HTMLFormElement> }) : Promise<boolean> {
     props.formSubmitEvent.preventDefault();
     const formData = new FormData(props.formSubmitEvent.currentTarget);
-    return SignInWithCredential({email: formData.get("email") as string, password: formData.get("password") as string});
+    return await SignInWithCredential({email: formData.get("email") as string, password: formData.get("password") as string});
 }
 
-function SignUp (props: { formSubmitEvent: FormEvent<HTMLFormElement> }) : boolean {
+async function SignUp (props: { formSubmitEvent: FormEvent<HTMLFormElement> }) : Promise<boolean> {
     props.formSubmitEvent.preventDefault();
+
+    let isSucceed : boolean = false;
     const formData = new FormData(props.formSubmitEvent.currentTarget);
     const requestBody = {
         "email": formData.get("email"),
@@ -60,17 +63,21 @@ function SignUp (props: { formSubmitEvent: FormEvent<HTMLFormElement> }) : boole
         "role": formData.get("role")
     }
 
-    axios.post(`http://localhost:5175/api/auth/signup`, requestBody, {
+    await axios.post(`http://localhost:5175/api/auth/signup`, requestBody, {
         headers: {
             Accept: 'application/json'
         }
     })
     .then((_) => {
-        return SignInWithCredential({email: formData.get("email") as string, password: formData.get("password") as string});
+        isSucceed = true;
     })
     .catch((err) => {console.log(err)});
 
-    return false;
+    if (isSucceed) {
+        isSucceed = await SignInWithCredential({email: formData.get("email") as string, password: formData.get("password") as string});
+    }
+
+    return isSucceed;
 }
 
 export { isUserSignedIn , SignOut, SignIn, SignUp };
