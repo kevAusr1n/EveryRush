@@ -1,12 +1,13 @@
-import { Product } from "../type/EntityType";
-import { isUserSignedIn } from "./UserFunction";
+import { CartItem, Product } from "../type/EntityType";
 import { isStringEmpty } from "./Utils";
 
-function addToCart(props: {product: Product, quantity: number}): boolean {
+function addToCart(props: {item: Product | CartItem, quantity: number}): boolean {
     let thisCartItem = {
-        productId: props.product.id,
-        name: props.product.name,
-        price: props.product.price,
+        id: props.item.id,
+        productId: props.item.id,
+        name: props.item.name,
+        price: props.item.price,
+        imageUrl: props.item.imageUrl,
         quantity: props.quantity
     }
 
@@ -39,13 +40,16 @@ function addToCart(props: {product: Product, quantity: number}): boolean {
     return true;
 }
 
-function removeFromCart (props: {products : any, thisProduct: any}) : boolean {
-    if (props.products == null) {
+function removeFromCart (props: {cartItem: any}) : boolean {
+    let cartJson = JSON.parse(sessionStorage.getItem("cart") as string);
+    cartJson.cartItems = cartJson.cartItems.filter((cartItem : CartItem) => cartItem.productId != props.cartItem.productId);
+    
+    if (cartJson.cartItems.length == 0) {
         sessionStorage.removeItem("cart");
     } else {
-        props.products = props.products.filter((product : any) => product.id != props.thisProduct.id);
-        sessionStorage.setItem("cart", JSON.stringify({products: props.products}));
+        sessionStorage.setItem("cart", JSON.stringify({cartItems: cartJson.cartItems }));
     }
+
     return true;
 }
 

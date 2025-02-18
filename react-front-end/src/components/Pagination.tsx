@@ -1,7 +1,7 @@
 import { Dispatch, ReactNode, SetStateAction, useRef} from "react";
 import { BorderlessButton } from "./Button";
 import SelectionMenu from "./SelectionMemu";
-import FlexDiv from "./div/FlexDiv";
+import ResponsiveDiv from "./div/ResponsiveDiv";
 
 export function Pagination(props: {
     size : number,
@@ -52,7 +52,7 @@ export function Pagination(props: {
     }
 
     return (
-        <FlexDiv flexType="flow-row" style="justify-center gap-5" children={[
+        <ResponsiveDiv style="flex flex-row justify-center gap-5" children={[
             props.page > 1 && <BorderlessButton buttonColor="blue-500" textColor="white" buttonName="Previous" clickHandler={() => jumpToPage(props.page - 1)} />,
             renderPageButton(props.page),
             props.page < props.totalPages && <BorderlessButton buttonColor="blue-500" textColor="white" buttonName="Next" clickHandler={() => jumpToPage(props.page + 1)} />,   

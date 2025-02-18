@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 import { isUserSignedIn } from "../functions/UserFunction";
-import BasicDiv from "../components/div/BasicDiv";
-import FlexDiv from "../components/div/FlexDiv";
 import SignInRequiredPage from "./SignInRequiredPage";
 import { getPaginatedContacts } from "../functions/ContactFunction";
 import { Contact } from "../type/EntityType";
 import { GetContactsResponse } from "../type/ResponseType";
 import ContactDetailPage from "./ContactDetailPage";
 import Pagination from "../components/Pagination";
+import ResponsiveDiv from "../components/div/ResponsiveDiv";
 
 
 function ContactsPage() {
@@ -28,7 +27,7 @@ function ContactsPage() {
         (!isUserSignedIn() && <SignInRequiredPage message="contacts"/>) ||
         (isUserSignedIn() && 
             <>
-                <BasicDiv style="bg-gray-500 p-20" children={
+                <ResponsiveDiv style="flex flex-col bg-gray-500 p-20" children={
                     response.contacts.map((contact: Contact) => {
                         return <ContactDetailPage key={crypto.randomUUID()} contact={contact} />
                     })}/>

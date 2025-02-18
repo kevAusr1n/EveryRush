@@ -1,8 +1,7 @@
 import { useState } from 'react';
-import BasicDiv from './div/BasicDiv';
-import FlexDiv from './div/FlexDiv';
 import ResponsiveDiv from './div/ResponsiveDiv';
 import { X } from 'lucide-react';
+import ImageBrief from './ImageBrief';
 
 const basicFieldStyle = "shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline";
 const basicLabelStyle = "block text-gray-700 text-sm font-bold mb-2";
@@ -122,15 +121,15 @@ function FileField(props: {
             </label>
             <input id={props.inputName.toLocaleLowerCase()} name={props.inputName.toLocaleLowerCase()} 
                 type="file" multiple hidden onChange={(e) => addImage(e.target.files as FileList)}/>
-            <BasicDiv style="h-10" children={[<p className="text-red-500">{errorMsg}</p>]} />
-            <FlexDiv style="h-40" flexType="flex-row" children={[
+            <ResponsiveDiv style="m-10 h-10" children={[<p className="text-red-500">{errorMsg}</p>]} />
+            <ResponsiveDiv style="flex flex-row h-40" children={[
                 files && Array.from(files).map((file) => {
                     const id = crypto.randomUUID();
                     const imageId = crypto.randomUUID();
                     const deleteButtonId = crypto.randomUUID();
                     return (
                         <ResponsiveDiv id={id} style="relative m-1 h-32 w-32" eventHandlerMap={eventHandlerMap(imageId, deleteButtonId)} children={[
-                            <img id={imageId} src={URL.createObjectURL(file)} alt="uploaded" className={visibleImageStyle} />,
+                            <ImageBrief id={imageId} src={URL.createObjectURL(file)} style={visibleImageStyle} />,
                             <button id={deleteButtonId} className={invisibleDeleteButtonStyle} onClick={() => deleteFromFiles(file)}>
                                 <X />
                             </button>
@@ -142,20 +141,19 @@ function FileField(props: {
     )
 }
 
-function InputField(
+function InputField(props: {
     inputName : string, 
     inputType: string, 
     inputValue: string | [FileList | null, React.Dispatch<React.SetStateAction<FileList | null>>],
     style: string
-) {
-    style = style == "small" ? "w-50" : "w-200";
-    switch (inputType) {
+}) {
+    switch (props.inputType) {
         case "text":
-            return <TextField inputName={inputName} inputType={inputType} inputValue={inputValue as string} style={style} />
+            return <TextField inputName={props.inputName} inputType={props.inputType} inputValue={props.inputValue as string} style={props.style} />
         case "option":
-            return <OptionField inputName={inputName} inputType={inputType} inputValue={inputValue as string} style={style} />
+            return <OptionField inputName={props.inputName} inputType={props.inputType} inputValue={props.inputValue as string} style={props.style} />
         case "file":
-            return <FileField inputName={inputName} inputType={inputType} inputValue={inputValue as [FileList | null, React.Dispatch<React.SetStateAction<FileList | null>>]} style={style} />
+            return <FileField inputName={props.inputName} inputType={props.inputType} inputValue={props.inputValue as [FileList | null, React.Dispatch<React.SetStateAction<FileList | null>>]} style={props.style} />
         default:
             return <></> 
     }

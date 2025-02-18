@@ -33,6 +33,7 @@ function AddOrUpdateContactPage() {
                         navigate("/index/contacts");
                     }
                 }}
+                style="w-200"
                 backUrl="/index/contacts"/>
         </div>
     )

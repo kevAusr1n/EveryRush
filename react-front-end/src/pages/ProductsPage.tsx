@@ -6,10 +6,8 @@ import ProductBriefPage from "./ProductBriefPage";
 import DisplayArrangement from "../components/DisplayArrangement";
 import { GetProductsResponse } from "../type/ResponseType";
 import { Product } from "../type/EntityType";
-import ColumnDiv from "../components/div/ColumnDiv";
-import SideBar from "../components/SideBar";
-import BasicDiv from "../components/div/BasicDiv";
-import FlexDiv from "../components/div/FlexDiv";
+import FilterSide from "../components/FilterSide";
+import ResponsiveDiv from "../components/div/ResponsiveDiv";
 
 function ProductsPage() {
     const [size, setSize]  = useState(5);
@@ -29,38 +27,46 @@ function ProductsPage() {
     }), [page, size, searchTerm, orderTerm]);
 
     return (
-        <>  
-            <SearchBar 
-                searchTerm={searchTerm}
-                setSearchTerm={setSearchTerm}
-                orderTerm={orderTerm}
-                setOrderTerm={setOrderTerm}
-                setArrangement={setArrangement}
-            /> 
-            <BasicDiv style="bg-gray-500" children={[
-                <FlexDiv style="bg-gray-500" flexType="flex-row" children={[
-                    <ColumnDiv style="white" key={crypto.randomUUID()} children={<SideBar />} widthPercentage="1/4"/>,
-                    <ColumnDiv style="white" key={crypto.randomUUID()} children={
-                        <DisplayArrangement 
-                            arrangement={arrangement}
-                            exhibitedChildren={
-                                response.products.map((product: Product, index: number) => {
-                                    return (<ProductBriefPage key={index.toString()} product={product}/>)
-                                })
-                            }
-                        />
-                    } widthPercentage="3/4"/>
-                ]}/>
-            ]}/>
+        <ResponsiveDiv style="m-10 bg-white" children={[
+            <ResponsiveDiv style="flex flex-row bg-white" children={[
+                <ResponsiveDiv style="bg-white w-1/4" key={crypto.randomUUID()} children={[
+                    <FilterSide 
+                        orderTerms={["Popularity", "Price Ascending", "Price Desscending", "Newest Product", "Oldest Product"]}
+                        setOrderTerm={setOrderTerm}
+                        setArrangement={setArrangement}
+                    />]}
+                />,
+                <ResponsiveDiv style="bg-white w-3/4" key={crypto.randomUUID()} children={[
+                    <ResponsiveDiv style="flex flex-col bg-white" children={[
+                        <ResponsiveDiv style="flex flex-row justify-center bg-white" children={[
+                            <SearchBar 
+                                searchTerm={searchTerm}
+                                setSearchTerm={setSearchTerm}
+                            />, 
+                        ]} />,
+                        <ResponsiveDiv style="mt-10 bg-gray-200" children={[
+                            <DisplayArrangement 
+                                arrangement={arrangement}
+                                exhibitedChildren={
+                                    response.products.map((product: Product, index: number) => {
+                                        const display = arrangement == initialArrangement ? "grid" : "row";
+                                        return (<ProductBriefPage key={index.toString()} display={display} product={product}/>)
+                                    })
+                                }
+                            />
+                        ]} />
+                    ]} />,
+                ]} />
+            ]}/>,
             <Pagination 
                 size={size}
                 setSize={setSize}
                 page={page}
                 setPage={setPage}
                 totalPages={response.totalPages}
-                totalCount={response.totalCount}
+                totalCount={response.totalCount} 
             />
-        </>
+        ]}/>
     )
 }
 

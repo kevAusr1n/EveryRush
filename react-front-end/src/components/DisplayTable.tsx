@@ -1,25 +1,25 @@
-import { JSX, ReactNode } from "react";
+import { ReactNode } from "react";
 
 function DisplayTable(props: {
-    head: string[], 
-    nodeMatrix: ReactNode[][]
+    tableHead: string[], 
+    tableContent: ReactNode[][]
 }) {
     return (
-        <table className="table-auto w-200 h-100 text-right">
+        <table className="table-fixed w-300 text-center">
             <thead>
-                <tr className="border-b border-gray-400">
-                    {props.head.map((value: string, index: number) => {
-                        return <th key={index}>{value}</th>
+                <tr className="border-b border-gray-400 text-2xl">
+                    {props.tableHead.map((value: string, index: number) => {
+                        return <th key={index} className="p-5">{value}</th>
                     })}
                 </tr>
             </thead>
             <tbody>
-                {props.nodeMatrix.map((nodeRows : ReactNode[], row_index : number) => {
+                {props.tableContent.map((tableRow : ReactNode[], rowIndex : number) => {
                     return (
-                        <tr key={row_index} className="border-b border-gray-400">
-                            {nodeRows.map((node: ReactNode, col_index : number) => {
-                                return (<td key={(row_index + 1) * (col_index + 1)}>
-                                    {node}
+                        <tr key={rowIndex} className="border-b border-gray-400">
+                            {tableRow.map((value: ReactNode, colIndex : number) => {
+                                return (<td key={(rowIndex + 1) * (colIndex + 1)} className="h-50">
+                                    {value}
                                 </td>)
                             })}
                         </tr>

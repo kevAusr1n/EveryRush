@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router";
 import { BasicButton, SubmitButton } from "./Button";
 import InputField from "./InputField";
-import FlexDiv from "./div/FlexDiv";
+import ResponsiveDiv from "./div/ResponsiveDiv";
 
 function SubmitForm(props:{
     inputNames: string[],
@@ -15,11 +15,11 @@ function SubmitForm(props:{
     const navigate = useNavigate();
     
     return (
-        <FlexDiv flexType= "flow-cole" style="m-50 justify-center gap-5" children={[
+        <ResponsiveDiv style="flex flex-col m-50 justify-center gap-5" children={[
             <form id={"form-" + props.actionName} onSubmit={props.actionHandler} encType="multipart/form-data">
                 {
                     props.inputNames.map((inputName, index) => {
-                        return InputField(inputName, props.inputTypes[index], props.inputValues[index], props.style);
+                        return <InputField key={index} inputName={inputName} inputType={props.inputTypes[index]} inputValue={props.inputValues[index]} style={props.style} />;
                     })
                 }               
                 <SubmitButton buttonColor="blue-500" textColor="white" buttonName={props.actionName.toLocaleUpperCase()} />              

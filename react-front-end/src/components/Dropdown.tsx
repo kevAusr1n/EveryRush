@@ -1,6 +1,6 @@
 import ContactBoxPage from "../pages/ContactBoxPage";
 import { Contact, Product } from "../type/EntityType";
-import FlexDiv from "./div/FlexDiv";
+import ResponsiveDiv from "./div/ResponsiveDiv";
 
 function ContactBoxDropDown(props: {
     isDropDown: boolean
@@ -8,10 +8,10 @@ function ContactBoxDropDown(props: {
     eventHandlerMap: (...params : any) => { [key : string] : () => void}
 }) {
     return (
-        props.isDropDown && <FlexDiv flexType="flex-col" style="absolute bg-white border rounded-lg" children={[
+        props.isDropDown && <ResponsiveDiv style="absolute bg-white border" children={[
             props.items.map((contact: Contact) => {
                 const id = crypto.randomUUID();
-                const originStyle = "flex flex-col w-150 bg-white";
+                const originStyle = "flex flex-col w-100 bg-white border-b p-5";
                 return <ContactBoxPage id={id} style={originStyle} contact={contact} eventHandlerMap={props.eventHandlerMap(id, originStyle, contact)} />
             })
         ]}/>

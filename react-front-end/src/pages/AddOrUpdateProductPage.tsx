@@ -26,7 +26,7 @@ function AddOrUpdateProductPage() {
                         navigate("/index/products");
                     }
                 }}
-                style="normal"
+                style="w-200"
                 backUrl="/index/products"/>
         </div>
     )

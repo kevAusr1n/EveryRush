@@ -22,9 +22,8 @@ type Contact = {
 }
 
 type CartItem = {
-    id: string;
-    userId: string;
     productId: string;
     quantity: number;
-}
+} & Product;
+
 export type { Product, Contact, CartItem }

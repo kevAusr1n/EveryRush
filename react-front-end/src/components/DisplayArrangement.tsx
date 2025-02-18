@@ -1,13 +1,14 @@
 import { ReactNode, useState } from "react";
+import ResponsiveDiv from "./div/ResponsiveDiv";
 
 function DisplayArrangement(props: {
     arrangement: string,
     exhibitedChildren: ReactNode
 })  {
     return (
-        <div className={props.arrangement}>
-            {props.exhibitedChildren}
-        </div>
+        <ResponsiveDiv style={"w-full " + props.arrangement} children={[
+            props.exhibitedChildren
+        ]} />
     )
 }
 

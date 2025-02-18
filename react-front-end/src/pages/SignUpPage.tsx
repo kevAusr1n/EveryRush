@@ -17,7 +17,7 @@ function SignUpPage() {
                     navigate("/index");
                 }
             }}
-            style="small"
+            style="w-50"
             backUrl="/index"/>
     )
 }
