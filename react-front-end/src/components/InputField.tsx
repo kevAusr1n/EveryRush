@@ -53,8 +53,10 @@ function OptionInput(props: {
             },
             onClick: () => {
                 document.getElementById(props.inputName.toLocaleLowerCase())?.setAttribute("value", value);
-
                 setIsDropdown(!isDropdown);
+                if (props.inputChangeHandler != undefined) {
+                    props.inputChangeHandler(value);
+                }
             }
         }
     };
@@ -62,12 +64,7 @@ function OptionInput(props: {
     const optionLayout = () : ReactNode[] => {
         const nodes: ReactNode[] = [
             <BasicButton buttonColor="bg-white" textColor="text-black" borderColor="border-1" buttonName={props.inputName} clickHandler={() => setIsDropdown(!isDropdown)} />,
-            <input id={props.inputName.toLocaleLowerCase()} name={props.inputName.toLocaleLowerCase()} className={inputWidth + " border-1"} 
-            onChange={(e) => {
-                if (props.inputChangeHandler != undefined) {
-                    props.inputChangeHandler(e.target.value)
-                }
-            }} />
+            <input id={props.inputName.toLocaleLowerCase()} name={props.inputName.toLocaleLowerCase()} className={inputWidth + " border-1"} />
         ];
 
         if (position == "left") {
@@ -78,7 +75,7 @@ function OptionInput(props: {
     }
     
     return (
-        <ResponsiveDiv style="flex flex-col mt-5" children={[
+        <ResponsiveDiv style="flex flex-col" children={[
             <ResponsiveDiv style="flex flex-row justify-between" children={[
                 optionLayout()
             ]} />, 

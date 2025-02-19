@@ -11,7 +11,6 @@ export function Pagination(props: {
     totalPages : number,
     totalCount : number}) 
 {
-    const sizeOptions: number[] = [5, 10, 20, 50, 100];
     const fixDisplayPageCount = 10;
     const startPage = useRef(1);
    
@@ -28,14 +27,14 @@ export function Pagination(props: {
         
         return [...Array(Math.min(fixDisplayPageCount, props.totalPages - startPage.current + 1))].map((_, index) => {
             const thisPage = startPage.current + index;
-            let color = "text-black"
+            let buttonColor = "bg-white"
 
             if (thisPage === currentPage) {
-                color = "text-blue-500"
+                buttonColor = "bg-gray-200"
             }
 
             return (
-                <BorderlessButton buttonColor="bg-white" textColor={color} buttonName={thisPage.toString()} key={thisPage} 
+                <BorderlessButton buttonColor={buttonColor} textColor="text-black" buttonName={thisPage.toString()} key={thisPage} 
                     clickHandler={() => props.setPage(thisPage)} />
             )
         })
@@ -48,11 +47,11 @@ export function Pagination(props: {
     }
 
     return (
-        <ResponsiveDiv style="p-5 flex flex-row justify-center bg-white" children={[
+        <ResponsiveDiv style="p-3 flex flex-row items-center justify-center bg-white gap-3" children={[
             props.page > 1 && <BorderlessButton buttonColor="blue-500" textColor="white" buttonName="Previous" clickHandler={() => jumpToPage(props.page - 1)} />,
             renderPageButton(props.page),
             props.page < props.totalPages && <BorderlessButton buttonColor="blue-500" textColor="white" buttonName="Next" clickHandler={() => jumpToPage(props.page + 1)} />,   
-            <OptionInput inputName="/ Page" inputValue={"1,2,10,20,50"} style="right,w-20" inputChangeHandler={(value) => props.setSize(parseInt(value))} />
+            <OptionInput inputName="/ Page" inputValue={"5,10,20,50"} style="right,w-20" inputChangeHandler={(value) => props.setSize(parseInt(value))} />
         ]} />
     )
 }

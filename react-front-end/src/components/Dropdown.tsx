@@ -45,7 +45,7 @@ function NumberBoxDropdown(props: {
         props.isDropDown && <ResponsiveDiv style="absolute bg-white border" children={[
             props.items.map((item: string, index: number) => {
                 const id = crypto.randomUUID();
-                const originStyle = "flex flex-col w-20 bg-white border p-5";
+                const originStyle = "flex flex-col w-20 bg-white border p-1";
                 return <ResponsiveDiv id={id} key={index} style={originStyle} eventHandlerMap={props.eventHandlerMap(id, originStyle, item)} children={[
                     <p>{item}</p>
                 ]} />
