@@ -25,7 +25,7 @@ public class AuthService
         _appDbContext = appDbContext;
     }
 
-    public async Task<AppUser> ThirdPartyLoginUserExistCheckAsync(string email) 
+    public async Task<AppUser> ThirdPartySignInUserExistCheckAsync(string email) 
     {   
         AppUser user = await _userManager.FindByEmailAsync(email);
         if (user == null) {
@@ -36,9 +36,10 @@ public class AuthService
         return user;
     }
 
-    public async Task<GetUserResponse> LoginAsync(LoginRequest request) 
+    public async Task<GetUserResponse> SignInAsync(SignInRequest request) 
     {
         AppUser user = await _userManager.FindByEmailAsync(request.Email);
+
         if (user == null) 
         {
             return new GetUserResponse {
@@ -46,8 +47,20 @@ public class AuthService
             };
         }
 
+        await _signInManager.PasswordSignInAsync(request.Email, request.Password, false, false);
+
+        return new GetUserResponse {
+            Id = user.Id,
+            Email = user.Email,
+            UserName = user.UserName,
+            Role = "none"
+        };
+    }
+
+    public async Task<GetUserResponse> GetUserInfoAsync(string email) 
+    {
+        AppUser user = await _userManager.FindByEmailAsync(email);
         IList<string> roles = await _userManager.GetRolesAsync(user);
-        await _signInManager.SignInAsync(user, false);
 
         return new GetUserResponse {
             Id = user.Id,
@@ -57,7 +70,7 @@ public class AuthService
         };
     }
 
-    public async Task<GetUserResponse> RegisterAsync(RegisterRequest request) 
+    public async Task<GetUserResponse> SignUpAsync(SignUpRequest request) 
     {           
         var appUser = new AppUser {
             Email = request.Email,
@@ -74,18 +87,14 @@ public class AuthService
 
         if (userStoreResult.Succeeded && roleStoreResult.Succeeded && userRoleRelationStoreResult.Succeeded)
         {    
-            AppUser user = await _userManager.FindByEmailAsync(request.Email);
-            
-            return new GetUserResponse() {
-                Id = user.Id,
-                Email = request.Email,
-                UserName = request.UserName,
-                Role = request.Role
-            };
+            if (request.doSignInAfterSignUp) {
+                return await SignInAsync(new SignInRequest() {
+                    Email = request.Email,
+                    Password = request.Password
+                });
+            }
         }
 
-        return new GetUserResponse() {
-            Email = "none"
-        };
+        return new GetUserResponse();
     }
 }

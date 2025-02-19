@@ -84,14 +84,11 @@ public class ProductService
         {
             foreach (IFormFile file in request.Files) 
             {
-                var thisUrl = request.UserId + "-" + DateTime.Now.ToString("yyyyMMddHHmmss") 
-                    + "-" + file.ContentType;
-
                 using (var memoryStream = new MemoryStream())
                 {
                     await file.CopyToAsync(memoryStream);
                     
-                    byte[] chkbytes = new byte[256];
+                    /*byte[] chkbytes = new byte[256];
                     memoryStream.Position = 0;
                     memoryStream.Read(chkbytes, 0, chkbytes.Length);
                     string format = "";
@@ -102,22 +99,27 @@ public class ProductService
                         {
                             format = signature.Value;
                         }
-                    }
-                    
+                    }*/
+       
+                    var imageUrl = Path.Combine(StaticFileRootPath.GetImagePath(), 
+                    request.UserId + "-" + DateTime.Now.ToString("yyyyMMddHHmmss") + "-image." + file.ContentType.Split("/")[1]);
+                    var storePath = Path.Combine(StaticFileRootPath.GetStaticFileRootPath(), imageUrl);
+
                     AppFile newFile = new AppFile {
                         Id = Guid.NewGuid().ToString(),
-                        Name = thisUrl,
+                        Url = imageUrl,
                         ProductId = newProduct.Id,
-                        Content = memoryStream.ToArray(),
-                        Format = format,
+                        Format = file.ContentType,
                     };
 
                     savedFiles.Add(newFile);
+
+                    await file.CopyToAsync(new FileStream(storePath, FileMode.OpenOrCreate));
                 }
             } 
         }
 
-        newProduct.ImageUrl = String.Join(",", savedFiles.Select(f => f.Name));
+        newProduct.ImageUrl = String.Join(",", savedFiles.Select(f => f.Url));
         _appDbContext.Products.Add(newProduct);
         await _appDbContext.SaveChangesAsync();
 

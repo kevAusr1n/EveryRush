@@ -101,6 +101,7 @@ app.UseCors("AllowAnyOrigin");
 
 app.UseAuthentication();
 //app.UseAuthorization();
+app.MapStaticAssets();
 app.MapControllers();
 app.MapIdentityApi<AppUser>();
 

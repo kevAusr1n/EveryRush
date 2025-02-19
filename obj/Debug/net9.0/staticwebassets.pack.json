@@ -1,0 +1,29 @@
+{
+  "Files": [
+    {
+      "Id": "/Users/kevin/git-app/EveryRush/wwwroot/images/192c031c-97e8-4fa1-83bf-994eecb1f259-20250217224657-image.png",
+      "PackagePath": "staticwebassets/images/192c031c-97e8-4fa1-83bf-994eecb1f259-20250217224657-image.png"
+    },
+    {
+      "Id": "obj/Debug/net9.0/staticwebassets/msbuild.EveryRush.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssetEndpoints.props"
+    },
+    {
+      "Id": "obj/Debug/net9.0/staticwebassets/msbuild.EveryRush.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj/Debug/net9.0/staticwebassets/msbuild.build.EveryRush.props",
+      "PackagePath": "build\\EveryRush.props"
+    },
+    {
+      "Id": "obj/Debug/net9.0/staticwebassets/msbuild.buildMultiTargeting.EveryRush.props",
+      "PackagePath": "buildMultiTargeting\\EveryRush.props"
+    },
+    {
+      "Id": "obj/Debug/net9.0/staticwebassets/msbuild.buildTransitive.EveryRush.props",
+      "PackagePath": "buildTransitive\\EveryRush.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

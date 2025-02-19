@@ -1,25 +1,17 @@
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
 
 namespace EveryRush.Request;
-
-public class RegisterRequest 
-{   
+public class SignInRequest 
+{
     [Required]
-    [JsonPropertyName("username")]
-    public string? UserName {get;set;}
-
-    [Required]
+    [NotNull]
     [JsonPropertyName("email")]
     public string? Email {get;set;}
 
-    [JsonPropertyName("mobile")]
-    public string? Mobile {get;set;}
-
     [Required]
+    [NotNull]
     [JsonPropertyName("password")]
     public string? Password {get;set;}
-    
-    [JsonPropertyName("role")]
-    public string? Role {get;set;}
 }
