@@ -1,7 +1,7 @@
-import { Dispatch, ReactNode, SetStateAction, useRef} from "react";
+import { Dispatch, ReactNode, SetStateAction, useRef, useState} from "react";
 import { BorderlessButton } from "./Button";
-import SelectionMenu from "./SelectionMemu";
 import ResponsiveDiv from "./div/ResponsiveDiv";
+import { OptionInput } from "./InputField";
 
 export function Pagination(props: {
     size : number,
@@ -14,11 +14,7 @@ export function Pagination(props: {
     const sizeOptions: number[] = [5, 10, 20, 50, 100];
     const fixDisplayPageCount = 10;
     const startPage = useRef(1);
-    
-    const changePageSize = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        props.setSize(Number(e.target.value));
-    };
-
+   
     const renderPageButton = (currentPage: number) : ReactNode => {
         if (props.totalCount == null || props.totalCount == 0) {
             return (<BorderlessButton buttonColor="white" textColor="black" buttonName="No Data" clickHandler={() => {}} />);
@@ -32,14 +28,14 @@ export function Pagination(props: {
         
         return [...Array(Math.min(fixDisplayPageCount, props.totalPages - startPage.current + 1))].map((_, index) => {
             const thisPage = startPage.current + index;
-            let color = "black"
+            let color = "text-black"
 
             if (thisPage === currentPage) {
-                color = "blue-500"
+                color = "text-blue-500"
             }
 
             return (
-                <BorderlessButton buttonColor="white" textColor={color} buttonName={thisPage.toString()} key={thisPage} 
+                <BorderlessButton buttonColor="bg-white" textColor={color} buttonName={thisPage.toString()} key={thisPage} 
                     clickHandler={() => props.setPage(thisPage)} />
             )
         })
@@ -52,11 +48,11 @@ export function Pagination(props: {
     }
 
     return (
-        <ResponsiveDiv style="flex flex-row justify-center gap-5" children={[
+        <ResponsiveDiv style="p-5 flex flex-row justify-center bg-white" children={[
             props.page > 1 && <BorderlessButton buttonColor="blue-500" textColor="white" buttonName="Previous" clickHandler={() => jumpToPage(props.page - 1)} />,
             renderPageButton(props.page),
             props.page < props.totalPages && <BorderlessButton buttonColor="blue-500" textColor="white" buttonName="Next" clickHandler={() => jumpToPage(props.page + 1)} />,   
-            <SelectionMenu default_value={props.size} values={sizeOptions} valueChangeHandler={changePageSize} />
+            <OptionInput inputName="/ Page" inputValue={"1,2,10,20,50"} style="right,w-20" inputChangeHandler={(value) => props.setSize(parseInt(value))} />
         ]} />
     )
 }

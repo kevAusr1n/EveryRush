@@ -1,12 +1,19 @@
-import { useState } from 'react';
+import { Dispatch, ReactNode, SetStateAction, useState } from 'react';
 import ResponsiveDiv from './div/ResponsiveDiv';
 import { X } from 'lucide-react';
 import ImageBrief from './ImageBrief';
+import DropDown from './Dropdown';
+import { BasicButton } from './Button';
 
 const basicFieldStyle = "shadow appearance-none border py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline";
 const basicLabelStyle = "block text-gray-700 text-sm font-bold mb-2";
 
-function TextField(props: {inputName: string, inputType: string, inputValue: string, style: string}) {
+function TextInput(props: {
+    inputName: string, 
+    inputValue: string, 
+    style: string,
+    setState?: Dispatch<SetStateAction<string>>
+}) {
     const [_, setState] = useState(props.inputValue);
     
     return (
@@ -14,32 +21,74 @@ function TextField(props: {inputName: string, inputType: string, inputValue: str
             <label className={basicLabelStyle}>{props.inputName.toLocaleLowerCase()}</label>
             <input className={props.style + " " + basicFieldStyle} defaultValue={props.inputValue} 
                 id={props.inputName.toLocaleLowerCase()} name={props.inputName.toLocaleLowerCase()} type="text"
-                onChange={(e) => setState(e.target.value)}
+                onChange={(e) => {
+                    if (props.setState != undefined && props.setState != null) {
+                        props.setState(e.target.value)
+                    } else {
+                        setState(e.target.value)
+                    }
+                }}
             />
         </>
     )
 }
 
-function OptionField(props: {inputName: string, inputType: string, inputValue: string, style: string}) {
-    const optionValues = props.inputValue.split(",");
+function OptionInput(props: {
+    inputName: string, 
+    inputValue: string, 
+    style: string, 
+    inputChangeHandler?: (value: any) => void
+}) {
+    const optionValues: string[] = props.inputValue.split(",");
+    const [isDropdown, setIsDropdown] = useState(false);
+    const [position, inputWidth] = props.style == "" ? ["left", "w-80"] : props.style.split(",");
 
-    return (
-        <>
-            <label className={basicLabelStyle}>{props.inputName}</label>
-            <select>
-                {
-                    optionValues.map((optionValue) => {
-                        return <option value = {optionValue}>{optionValue}</option>
-                    })
+    const selectRoleHadnler = ( id: string , originStyle: string, value: string) => {
+        return {     
+            onMouseOver: () => {
+                document.getElementById(id)?.setAttribute("class", originStyle + " hover:bg-blue-500 hover:text-white");
+            },
+            onMouseOut: () => {
+                document.getElementById(id)?.setAttribute("class", originStyle);
+            },
+            onClick: () => {
+                document.getElementById(props.inputName.toLocaleLowerCase())?.setAttribute("value", value);
+
+                setIsDropdown(!isDropdown);
+            }
+        }
+    };
+
+    const optionLayout = () : ReactNode[] => {
+        const nodes: ReactNode[] = [
+            <BasicButton buttonColor="bg-white" textColor="text-black" borderColor="border-1" buttonName={props.inputName} clickHandler={() => setIsDropdown(!isDropdown)} />,
+            <input id={props.inputName.toLocaleLowerCase()} name={props.inputName.toLocaleLowerCase()} className={inputWidth + " border-1"} 
+            onChange={(e) => {
+                if (props.inputChangeHandler != undefined) {
+                    props.inputChangeHandler(e.target.value)
                 }
-            </select>
-        </>
+            }} />
+        ];
+
+        if (position == "left") {
+            return [nodes[0], nodes[1]] 
+        } else {
+            return [nodes[1], nodes[0]] 
+        }
+    }
+    
+    return (
+        <ResponsiveDiv style="flex flex-col mt-5" children={[
+            <ResponsiveDiv style="flex flex-row justify-between" children={[
+                optionLayout()
+            ]} />, 
+            <DropDown isDropDown={isDropdown} items={optionValues} eventHandlerMap={selectRoleHadnler} />
+        ]} />
     )
 }
 
-function FileField(props: {
+function FileInput(props: {
     inputName: string, 
-    inputType: string, 
     inputValue: [FileList | null, React.Dispatch<React.SetStateAction<FileList | null>>],
     style: string}) 
 {
@@ -145,18 +194,20 @@ function InputField(props: {
     inputName : string, 
     inputType: string, 
     inputValue: string | [FileList | null, React.Dispatch<React.SetStateAction<FileList | null>>],
-    style: string
+    style: string,
+    setState?: Dispatch<SetStateAction<string>>
 }) {
     switch (props.inputType) {
         case "text":
-            return <TextField inputName={props.inputName} inputType={props.inputType} inputValue={props.inputValue as string} style={props.style} />
+            return <TextInput inputName={props.inputName} inputValue={props.inputValue as string} style={props.style} setState={props.setState}/>
         case "option":
-            return <OptionField inputName={props.inputName} inputType={props.inputType} inputValue={props.inputValue as string} style={props.style} />
+            return <OptionInput inputName={props.inputName} inputValue={props.inputValue as string} style={props.style} />
         case "file":
-            return <FileField inputName={props.inputName} inputType={props.inputType} inputValue={props.inputValue as [FileList | null, React.Dispatch<React.SetStateAction<FileList | null>>]} style={props.style} />
+            return <FileInput inputName={props.inputName} inputValue={props.inputValue as [FileList | null, React.Dispatch<React.SetStateAction<FileList | null>>]} style={props.style} />
         default:
             return <></> 
     }
 }
 
 export default InputField;
+export { OptionInput }

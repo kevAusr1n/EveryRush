@@ -14,7 +14,8 @@ function AddOrUpdateContactPage() {
             <ResponsiveDiv style="mt-20 mb-20 gap-5 p-20 flex flex-col items-center bg-white shadow" children={[
                 <SubmitForm
                     inputNames={["FirstName", "LastName", "Email", "Phone", "Address", "City", "State", "Postcode"]}
-                    inputTypes={["text", "text", "text", "text", "text", "text", "text", "text"]}
+                    inputTypes={new Array<string>(8).fill("text")}
+                    inputStyles={new Array<string>(8).fill("w-200")}
                     inputValues={[
                         searchParams.get("firstname") as string, 
                         searchParams.get("lastname") as string, 
@@ -35,7 +36,6 @@ function AddOrUpdateContactPage() {
                             navigate("/index/contacts");
                         }
                     }}
-                    style="w-200"
                 />
             ]} />
         ]} />

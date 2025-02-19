@@ -14,13 +14,13 @@ function SignUpPage() {
                     inputNames={["email", "username", "password", "role"]}
                     inputTypes={["text", "text", "text", "option"]}
                     inputValues={["", "", "", "Customer,BusinessOwner"]}
+                    inputStyles={["w-100", "w-100", "w-100", "left,w-80"]}
                     actionName="REGISTER"
                     actionHandler={async (event: FormEvent<HTMLFormElement>) => {
                         if (await SignUp({formSubmitEvent: event})) {
                             navigate("/index");
                         }
                     }}
-                    style="w-100"
                 />
             ]} />
         ]} />

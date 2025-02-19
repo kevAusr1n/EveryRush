@@ -17,6 +17,7 @@ function AddOrUpdateProductPage() {
                     inputNames={["Name", "Description", "Price", "Stock", "Images"]}
                     inputTypes={["text", "text", "text", "text", "file"]}
                     inputValues={["", "",  "",  "",  [files, setFiles]]}
+                    inputStyles={["w-200", "w-200",  "w-200",  "w-200", "w-200"]}
                     actionName={action as string}
                     actionHandler={async (event: FormEvent<HTMLFormElement>) => {
                         if (await addOrUpdateProducts({
@@ -28,7 +29,6 @@ function AddOrUpdateProductPage() {
                             navigate("/index/products");
                         }
                     }}
-                    style="w-200"
                 />
             ]} />
         ]} /> 

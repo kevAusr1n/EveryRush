@@ -15,13 +15,13 @@ function SignInPage() {
                     inputNames={["email", "password"]}
                     inputTypes={["text", "text"]}
                     inputValues={["", ""]}
+                    inputStyles={["w-100", "w-100"]}
                     actionName="SIGN IN"
                     actionHandler={async (event: FormEvent<HTMLFormElement>) => {
                         if (await SignIn({formSubmitEvent: event})) {
                             navigate("/index");
                         }
                     }}
-                    style="w-100"
                 />,
                 <GoogleAuthButton />
             ]} />
