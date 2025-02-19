@@ -3,7 +3,7 @@ import ResponsiveDiv from './div/ResponsiveDiv';
 import { X } from 'lucide-react';
 import ImageBrief from './ImageBrief';
 
-const basicFieldStyle = "shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline";
+const basicFieldStyle = "shadow appearance-none border py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline";
 const basicLabelStyle = "block text-gray-700 text-sm font-bold mb-2";
 
 function TextField(props: {inputName: string, inputType: string, inputValue: string, style: string}) {

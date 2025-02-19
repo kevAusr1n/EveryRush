@@ -26,11 +26,12 @@ function ContactsPage() {
     return (   
         (!isUserSignedIn() && <SignInRequiredPage message="contacts"/>) ||
         (isUserSignedIn() && 
-            <>
-                <ResponsiveDiv style="flex flex-col bg-gray-500 p-20" children={
+            <ResponsiveDiv style="flex flex-col items-center" children={[
+                <ResponsiveDiv style="mt-20 mb-10 gap-5 flex flex-col items-center" children={[
                     response.contacts.map((contact: Contact) => {
                         return <ContactDetailPage key={crypto.randomUUID()} contact={contact} />
-                    })}/>
+                    })
+                ]} />,
                 <Pagination 
                     size={size}
                     setSize={setSize}
@@ -39,7 +40,7 @@ function ContactsPage() {
                     totalPages={response.totalPages}
                     totalCount={response.totalCount}
                 />
-            </>
+            ]} />
         )
     )
 }

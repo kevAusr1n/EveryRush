@@ -17,7 +17,7 @@ function getPaginatedProducts(props: {
             orderBy = "";
             order = "";
             break;
-        case "Price Asceding":
+        case "Price Ascending":
             orderBy = "price";
             order = "asc";
             break;

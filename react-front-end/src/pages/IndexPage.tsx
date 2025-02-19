@@ -1,10 +1,11 @@
 import { Link, Outlet } from "react-router";
 import LoginSection from "../components/LoginSection";
+import ResponsiveDiv from "../components/div/ResponsiveDiv";
 
 function IndexPage() {
     return (
         <>
-            <div className="items-center flex flex-col gap-4">
+            <div className="flex flex-col items-center">
                 <header className="flex gap-4 p-4 text-black">
                     <Link to="products"><p className="text-black">Products</p></Link>
                     <Link to="cart"><p className="text-black">Cart</p></Link>
@@ -14,9 +15,7 @@ function IndexPage() {
                     <LoginSection />
                 </header>
             </div>
-            <main>
-                <Outlet />
-            </main>
+            <ResponsiveDiv style="bg-gray-200 w-full h-full" children={[(<main><Outlet /></main>)]} />
         </>
     )
 }

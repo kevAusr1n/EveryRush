@@ -36,13 +36,13 @@ function CartPage() {
             })
 
             return (
-                <ResponsiveDiv style="flex flex-col justify-center" children={[
-                    <DisplayTable key={crypto.randomUUID()} tableHead={tableHead} tableContent={tableContent} />,
+                <>
+                    <DisplayTable key={crypto.randomUUID()} tableHead={tableHead} tableContent={tableContent} />
                     <ResponsiveDiv key={crypto.randomUUID()} style="flex flex-row m-20 justify-center gap-10" children={[
                         <BasicButton key={crypto.randomUUID()} buttonColor="bg-blue-500" textColor="text-white" buttonName="CHECKOUT" clickHandler={() => goCheckout()}/>,
                         <BasicButton key={crypto.randomUUID()} buttonColor="bg-blue-500" textColor="text-white" buttonName="BACK" clickHandler={() => navigate("/index/products")}/>
                     ]} />
-                ]} />
+                </>
             )
         }  
     }
@@ -57,11 +57,9 @@ function CartPage() {
     }
 
     return (
-        <>
-            <div className="flex m-20 items-center justify-center">
-                {displayCart()}
-            </div>
-        </>
+        <ResponsiveDiv style="flex flex-col items-center" children={[
+            <ResponsiveDiv style="mt-20 mb-20 bg-white shadow p-20 flex flex-col items-center" children={[displayCart()]} />
+        ]} />
     )
 }
 

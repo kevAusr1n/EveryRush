@@ -1,6 +1,5 @@
 import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
-import { BasicButton } from "./Button";
 
 function GoogleAuthButton() {
     const googleSignIn = useGoogleLogin({
@@ -43,7 +42,15 @@ function GoogleAuthButton() {
     })
 
     return (
-        <BasicButton buttonColor="green-500" textColor="white" buttonName="SIGN IN WITH GOOGLE" clickHandler={() => googleSignIn()} />
+        <button className="w-60 h-10 bg-white border" onClick={() => googleSignIn()}>
+            <span>SIGN IN WITH </span>
+            <span className="text-blue-500">G</span>
+            <span className="text-red-500">O</span>
+            <span className="text-yellow-500">O</span>
+            <span className="text-blue-500">G</span>
+            <span className="text-green-500">L</span>
+            <span className="text-red-500">E</span>
+        </button>
     )
 }
 

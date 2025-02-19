@@ -1,5 +1,4 @@
-import { useNavigate } from "react-router";
-import { BasicButton, SubmitButton } from "./Button";
+import { SubmitButton } from "./Button";
 import InputField from "./InputField";
 import ResponsiveDiv from "./div/ResponsiveDiv";
 
@@ -9,23 +8,19 @@ function SubmitForm(props:{
     inputValues: any[],
     actionName: string,
     actionHandler: any,
-    style: string,
-    backUrl: string,
+    style: string
 }) {
-    const navigate = useNavigate();
-    
     return (
-        <ResponsiveDiv style="flex flex-col m-50 justify-center gap-5" children={[
-            <form id={"form-" + props.actionName} onSubmit={props.actionHandler} encType="multipart/form-data">
-                {
-                    props.inputNames.map((inputName, index) => {
-                        return <InputField key={index} inputName={inputName} inputType={props.inputTypes[index]} inputValue={props.inputValues[index]} style={props.style} />;
-                    })
-                }               
-                <SubmitButton buttonColor="blue-500" textColor="white" buttonName={props.actionName.toLocaleUpperCase()} />              
-            </form>,
-            <BasicButton buttonColor="blue-500" textColor="white" buttonName="BACK" clickHandler={() => navigate(props.backUrl)} />
-        ]} />
+        <form className="flex flex-col" id={"form-" + props.actionName} onSubmit={props.actionHandler} encType="multipart/form-data">
+            {
+                props.inputNames.map((inputName, index) => {
+                    return <InputField key={index} inputName={inputName} inputType={props.inputTypes[index]} inputValue={props.inputValues[index]} style={props.style} />;
+                })
+            }         
+            <ResponsiveDiv style="mt-5 flex flex-col items-center" children={[
+                <SubmitButton style="bg-blue-500 text-white border w-60 h-10" buttonName={props.actionName.toLocaleUpperCase()} />              
+            ]} />
+        </form>
     )
 }
 

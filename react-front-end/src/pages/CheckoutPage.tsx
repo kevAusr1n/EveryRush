@@ -76,28 +76,30 @@ function CheckoutPage() {
     }
 
     return (
-        <ResponsiveDiv style="flex flex-col items-center justify-center gap-20" children={[
-            <DisplayTable tableHead={tableHead} tableContent={tableContent} />,
-            <ResponsiveDiv style="flex flex-col" children={[
-                <ResponsiveDiv style="flex flex-row gap-10" children={[
-                    <strong className="text-2xl">Post Address</strong>,
-                    <BasicButton buttonColor="bg-blue-500" textColor="text-white" buttonName="USE CONTACT" clickHandler={() => setDropdown(!dropdown)}/>,
-                    <ResponsiveDiv style="" children={[
-                        <DropDown isDropDown={dropdown} items={contactResponse.contacts} eventHandlerMap={useContactButtonHandler} />
-                    ]} />
+        <ResponsiveDiv style="flex flex-col items-center" children={[
+            <ResponsiveDiv style="mt-20 mb-20 gap-5 p-20 flex flex-col items-start bg-white shadow" children={[
+                <DisplayTable tableHead={tableHead} tableContent={tableContent} />,
+                <ResponsiveDiv style="flex flex-col mt-10" children={[
+                    <ResponsiveDiv style="flex flex-row gap-5" children={[
+                        <strong className="text-2xl">Post Address</strong>,
+                        <BasicButton buttonColor="bg-blue-500" textColor="text-white" buttonName="USE CONTACT" clickHandler={() => setDropdown(!dropdown)}/>,
+                        <ResponsiveDiv style="" children={[
+                            <DropDown isDropDown={dropdown} items={contactResponse.contacts} eventHandlerMap={useContactButtonHandler} />
+                        ]} />
+                    ]} />,
+                    contactInputFieldNames.map((name : string , index : number) => {
+                        return <InputField inputName={name} inputType={contactInputFieldTypes[index]} inputValue={postContactInputFieldValues.current[index]} style="w-200" />
+                    })
                 ]} />,
-                contactInputFieldNames.map((name : string , index : number) => {
-                    return <InputField inputName={name} inputType={contactInputFieldTypes[index]} inputValue={postContactInputFieldValues.current[index]} style="w-200" />
-                })
-            ]} />,
-            <ResponsiveDiv style="flex flex-col" children={[
-                <ResponsiveDiv style="flex flex-row gap-10" children={[
-                    <strong className="text-2xl">Billing Address</strong>,
-                    <BasicButton buttonColor="bg-blue-500" textColor="text-white" buttonName="SAME AS POST ADDRESS" clickHandler={() => copyBillContactFromPostContact()}/>
-                ]} />,
-                contactInputFieldNames.map((name : string , index : number) => {
-                    return <InputField inputName={name} inputType={contactInputFieldTypes[index]} inputValue={billContactInputFieldValues.current[index]} style="w-200" />
-                })
+                <ResponsiveDiv style="flex flex-col mt-10" children={[
+                    <ResponsiveDiv style="flex flex-row gap-5" children={[
+                        <strong className="text-2xl">Billing Address</strong>,
+                        <BasicButton buttonColor="bg-blue-500" textColor="text-white" buttonName="SAME AS POST ADDRESS" clickHandler={() => copyBillContactFromPostContact()}/>
+                    ]} />,
+                    contactInputFieldNames.map((name : string , index : number) => {
+                        return <InputField inputName={name} inputType={contactInputFieldTypes[index]} inputValue={billContactInputFieldValues.current[index]} style="w-200" />
+                    })
+                ]} />
             ]} />
         ]} />
     )

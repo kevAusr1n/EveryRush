@@ -28,12 +28,11 @@ function BasicButton(props: {
 }
 
 function SubmitButton(props: {
-    textColor: string,
-    buttonColor: string,
-    buttonName: string, 
+    style: string,
+    buttonName: string
 }) {
     return (    
-        <button type="submit" className={`${props.buttonColor} ${props.textColor} border w-40 h-10 px-3 py-2}`}>
+        <button type="submit" className={props.style}>
             {props.buttonName}
         </button>
     )

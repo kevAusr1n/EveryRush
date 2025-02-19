@@ -7,8 +7,8 @@ function LoginSection() {
     if (!isUserSignedIn()) {
         return (
             <>
-                <Link to="/signin"><p className="text-black">SIGN IN</p></Link>
-                <Link to="/signup"><p className="text-black">REGISTER</p></Link>
+                <Link to="signin"><p className="text-black">SIGN IN</p></Link>
+                <Link to="signup"><p className="text-black">REGISTER</p></Link>
             </>
         );
     } else {
