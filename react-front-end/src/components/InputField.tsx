@@ -68,7 +68,7 @@ function OptionInput(props: {
                     setIsDropdown(!isDropdown);
                 }}
             />,
-            <input id={props.inputName.toLocaleLowerCase()} name={props.inputName.toLocaleLowerCase()} className={inputWidth + " border-1"} />
+            <input id={props.inputName.toLocaleLowerCase()} name={props.inputName.toLocaleLowerCase()} className={inputWidth + " text-center border-b-1 border-black focus:outline-none"} readOnly />
         ];
 
         if (position == "left") {
@@ -80,7 +80,7 @@ function OptionInput(props: {
     
     return (
         <ResponsiveDiv style="flex flex-col" children={[
-            <ResponsiveDiv style="flex flex-row justify-between" children={[
+            <ResponsiveDiv style="flex flex-row justify-between gap-5" children={[
                 optionLayout()
             ]} />, 
             <DropDown isDropDown={isDropdown} items={optionValues} eventHandlerMap={selectRoleHadnler} />
