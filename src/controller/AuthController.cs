@@ -1,5 +1,9 @@
+using System.Security.Claims;
+using System.Text.Json.Nodes;
 using EveryRush.Entity;
 using EveryRush.Request;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,13 +30,33 @@ public class AuthController : ControllerBase
     [HttpPost("signin")]
     public async Task<ActionResult<GetUserResponse>> SignIn([FromBody] SignInRequest request) 
     {
-        return await _authService.SignInAsync(request);
+        GetUserResponse response = await _authService.SignInAsync(request);
+        // TODO: check if user is valid
+        await setAuthCookie(response);
+        
+        return response;
     }
 
-    [AllowAnonymous]
     [HttpPost("signup")]
     public async Task<ActionResult<GetUserResponse>> SignUp([FromBody] SignUpRequest request) 
     {
-        return await _authService.SignUpAsync(request);
+        GetUserResponse response = await _authService.SignUpAsync(request);
+        if (request.doSignInAfterSignUp) 
+        {
+            await setAuthCookie(response);
+        }
+        
+        return response;
+    }
+
+    public async Task setAuthCookie(GetUserResponse response) {
+        var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.Name, response.Email),
+            new Claim("UserName", response.UserName),
+            new Claim(ClaimTypes.Role, response.Role)
+        };
+        var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
     }
 }

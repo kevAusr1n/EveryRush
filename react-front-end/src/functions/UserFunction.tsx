@@ -1,6 +1,13 @@
 import { googleLogout } from "@react-oauth/google";
-import axios from "axios";
 import { FormEvent } from "react";
+import APICall from "../config/ApiConfig";
+
+function setLoginSuccessUserInfo(res : any) {
+    localStorage.setItem("userid", res.data.id);
+    localStorage.setItem("email", res.data.email);
+    localStorage.setItem("username", res.data.userName);
+    localStorage.setItem("role", res.data.role);
+}
 
 async function SignInWithCredential(props: { email: string, password: string }) : Promise<boolean> {
     let isSucceed : boolean = false;
@@ -9,18 +16,10 @@ async function SignInWithCredential(props: { email: string, password: string }) 
         password : props.password
     }
 
-    await axios.post(`http://localhost:5175/api/auth/signin`, requestJson, {
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': '*/*'
-        }
-    })
+    await APICall().post(`/api/auth/signin`, requestJson)
     .then((res) => {
-        if (res.data.email != "none") {
-            localStorage.setItem("userid", res.data.id);
-            localStorage.setItem("email", res.data.email);
-            localStorage.setItem("username", res.data.userName);
-            localStorage.setItem("role", res.data.role);
+        if (res.status == 200 && res.data.email != "none") {
+            setLoginSuccessUserInfo(res);
             isSucceed = true;
         }
     })
@@ -55,27 +54,28 @@ async function SignUp (props: { formSubmitEvent: FormEvent<HTMLFormElement> }) :
     props.formSubmitEvent.preventDefault();
 
     let isSucceed : boolean = false;
+    let signInRequired : boolean = true;
     const formData = new FormData(props.formSubmitEvent.currentTarget);
     const requestBody = {
         "email": formData.get("email"),
         "username": formData.get("username"),
         "password": formData.get("password"),
-        "role": formData.get("role")
+        "role": formData.get("role"),
+        "signin_required": signInRequired
     }
 
-    await axios.post(`http://localhost:5175/api/auth/signup`, requestBody, {
+    await APICall().post(`/api/auth/signup`, requestBody, {
         headers: {
             Accept: 'application/json'
         }
     })
-    .then((_) => {
+    .then((res) => {
+        if (signInRequired && res.status == 200) {
+            setLoginSuccessUserInfo(res);
+        }
         isSucceed = true;
     })
     .catch((err) => {console.log(err)});
-
-    if (isSucceed) {
-        isSucceed = await SignInWithCredential({email: formData.get("email") as string, password: formData.get("password") as string});
-    }
 
     return isSucceed;
 }

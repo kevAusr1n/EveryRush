@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "Z7vnVLV+4rEsi5UupNeZJO7P5nNsTCeR8ivoYJe3ZqQ=",
+  "Hash": "3QIiws9H1CufOIPjyEEGO8/nE7Qfyn+IMjX9rdvZHdQ=",
   "Source": "EveryRush",
   "BasePath": "_content/EveryRush",
   "Mode": "Default",
@@ -36,6 +36,69 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot/images/192c031c-97e8-4fa1-83bf-994eecb1f259-20250217224657-image.png"
+    },
+    {
+      "Identity": "/Users/kevin/git-app/EveryRush/wwwroot/images/192c031c-97e8-4fa1-83bf-994eecb1f259-20250218172158-image.jpeg",
+      "SourceId": "EveryRush",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/kevin/git-app/EveryRush/wwwroot/",
+      "BasePath": "_content/EveryRush",
+      "RelativePath": "images/192c031c-97e8-4fa1-83bf-994eecb1f259-20250218172158-image#[.{fingerprint}]?.jpeg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "b7ske8389j",
+      "Integrity": "ORaRn3nrD1aV3koSnnuWgIl2DhmRcuy6hYQlxMrQX0M=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/images/192c031c-97e8-4fa1-83bf-994eecb1f259-20250218172158-image.jpeg"
+    },
+    {
+      "Identity": "/Users/kevin/git-app/EveryRush/wwwroot/images/192c031c-97e8-4fa1-83bf-994eecb1f259-20250218172318-image.jpeg",
+      "SourceId": "EveryRush",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/kevin/git-app/EveryRush/wwwroot/",
+      "BasePath": "_content/EveryRush",
+      "RelativePath": "images/192c031c-97e8-4fa1-83bf-994eecb1f259-20250218172318-image#[.{fingerprint}]?.jpeg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "8nlrjq6hi0",
+      "Integrity": "VOGNiEEzqe4YxIXupyVdW6Ec2hd8Jj+NvqkQhWpJb+0=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/images/192c031c-97e8-4fa1-83bf-994eecb1f259-20250218172318-image.jpeg"
+    },
+    {
+      "Identity": "/Users/kevin/git-app/EveryRush/wwwroot/images/192c031c-97e8-4fa1-83bf-994eecb1f259-20250218172526-image.jpeg",
+      "SourceId": "EveryRush",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/kevin/git-app/EveryRush/wwwroot/",
+      "BasePath": "_content/EveryRush",
+      "RelativePath": "images/192c031c-97e8-4fa1-83bf-994eecb1f259-20250218172526-image#[.{fingerprint}]?.jpeg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "djd50iljdc",
+      "Integrity": "yWsrqnY9/9NiFFdC/aPeaedmt5gtdtbhJozwEuktOvU=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/images/192c031c-97e8-4fa1-83bf-994eecb1f259-20250218172526-image.jpeg"
     }
   ],
   "Endpoints": [
@@ -118,6 +181,252 @@
         {
           "Name": "integrity",
           "Value": "sha256-7JLETMLZEX8QQFVhhBg4Rn6hvEfGxsRmjhEsZ7BLK20="
+        }
+      ]
+    },
+    {
+      "Route": "images/192c031c-97e8-4fa1-83bf-994eecb1f259-20250218172158-image.b7ske8389j.jpeg",
+      "AssetFile": "/Users/kevin/git-app/EveryRush/wwwroot/images/192c031c-97e8-4fa1-83bf-994eecb1f259-20250218172158-image.jpeg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "96674"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"ORaRn3nrD1aV3koSnnuWgIl2DhmRcuy6hYQlxMrQX0M=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 18 Feb 2025 09:21:58 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "b7ske8389j"
+        },
+        {
+          "Name": "label",
+          "Value": "images/192c031c-97e8-4fa1-83bf-994eecb1f259-20250218172158-image.jpeg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-ORaRn3nrD1aV3koSnnuWgIl2DhmRcuy6hYQlxMrQX0M="
+        }
+      ]
+    },
+    {
+      "Route": "images/192c031c-97e8-4fa1-83bf-994eecb1f259-20250218172158-image.jpeg",
+      "AssetFile": "/Users/kevin/git-app/EveryRush/wwwroot/images/192c031c-97e8-4fa1-83bf-994eecb1f259-20250218172158-image.jpeg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "96674"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"ORaRn3nrD1aV3koSnnuWgIl2DhmRcuy6hYQlxMrQX0M=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 18 Feb 2025 09:21:58 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-ORaRn3nrD1aV3koSnnuWgIl2DhmRcuy6hYQlxMrQX0M="
+        }
+      ]
+    },
+    {
+      "Route": "images/192c031c-97e8-4fa1-83bf-994eecb1f259-20250218172318-image.8nlrjq6hi0.jpeg",
+      "AssetFile": "/Users/kevin/git-app/EveryRush/wwwroot/images/192c031c-97e8-4fa1-83bf-994eecb1f259-20250218172318-image.jpeg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "73221"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"VOGNiEEzqe4YxIXupyVdW6Ec2hd8Jj+NvqkQhWpJb+0=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 18 Feb 2025 09:23:18 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "8nlrjq6hi0"
+        },
+        {
+          "Name": "label",
+          "Value": "images/192c031c-97e8-4fa1-83bf-994eecb1f259-20250218172318-image.jpeg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-VOGNiEEzqe4YxIXupyVdW6Ec2hd8Jj+NvqkQhWpJb+0="
+        }
+      ]
+    },
+    {
+      "Route": "images/192c031c-97e8-4fa1-83bf-994eecb1f259-20250218172318-image.jpeg",
+      "AssetFile": "/Users/kevin/git-app/EveryRush/wwwroot/images/192c031c-97e8-4fa1-83bf-994eecb1f259-20250218172318-image.jpeg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "73221"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"VOGNiEEzqe4YxIXupyVdW6Ec2hd8Jj+NvqkQhWpJb+0=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 18 Feb 2025 09:23:18 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-VOGNiEEzqe4YxIXupyVdW6Ec2hd8Jj+NvqkQhWpJb+0="
+        }
+      ]
+    },
+    {
+      "Route": "images/192c031c-97e8-4fa1-83bf-994eecb1f259-20250218172526-image.djd50iljdc.jpeg",
+      "AssetFile": "/Users/kevin/git-app/EveryRush/wwwroot/images/192c031c-97e8-4fa1-83bf-994eecb1f259-20250218172526-image.jpeg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "108516"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"yWsrqnY9/9NiFFdC/aPeaedmt5gtdtbhJozwEuktOvU=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 18 Feb 2025 09:25:26 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "djd50iljdc"
+        },
+        {
+          "Name": "label",
+          "Value": "images/192c031c-97e8-4fa1-83bf-994eecb1f259-20250218172526-image.jpeg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-yWsrqnY9/9NiFFdC/aPeaedmt5gtdtbhJozwEuktOvU="
+        }
+      ]
+    },
+    {
+      "Route": "images/192c031c-97e8-4fa1-83bf-994eecb1f259-20250218172526-image.jpeg",
+      "AssetFile": "/Users/kevin/git-app/EveryRush/wwwroot/images/192c031c-97e8-4fa1-83bf-994eecb1f259-20250218172526-image.jpeg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "108516"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"yWsrqnY9/9NiFFdC/aPeaedmt5gtdtbhJozwEuktOvU=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 18 Feb 2025 09:25:26 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-yWsrqnY9/9NiFFdC/aPeaedmt5gtdtbhJozwEuktOvU="
         }
       ]
     }

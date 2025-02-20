@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EveryRush.Controller;
 
-[AllowAnonymous]
 [Route("api/contacts")]
 [ApiController]
 public class ContactController : ControllerBase 
@@ -19,6 +18,7 @@ public class ContactController : ControllerBase
     }
 
     [HttpGet]
+    [Authorize(Roles = "Customer")]
     public async Task<ActionResult<GetContactsResponse>> GetAllContacts([FromQuery] string userId) 
     {
         return await _contactService.GetAllContacts(userId);

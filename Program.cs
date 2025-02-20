@@ -12,20 +12,18 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
-builder.Services.AddControllers().AddNewtonsoftJson(options =>
-    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-);
-builder.Services.AddAuthentication();
-
-/*builder.Services.AddAuthorization
+builder.Services.AddControllers().AddNewtonsoftJson
 (
-    options =>
-    {
-        options.FallbackPolicy = new AuthorizationPolicyBuilder()
-            .RequireAuthenticatedUser()
-            .Build();
+    options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+);
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(
+    options => {
+        options.Cookie.HttpOnly = true;
+        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+        options.Cookie.SameSite = SameSiteMode.None;
     }
-);*/
+);
+builder.Services.AddAuthorization();
 
 builder.Services.AddDbContext<AppDbContext>
 (
@@ -34,6 +32,7 @@ builder.Services.AddDbContext<AppDbContext>
         "server=127.0.0.1;port=3306;user=root;password=key123456;database=identitymysqldatabase", 
         new MySqlServerVersion(new Version(8, 4, 3))
     )
+    .LogTo(Console.WriteLine, LogLevel.Error)
 );
 
 builder.Services
@@ -69,10 +68,11 @@ builder.Services.AddCors
 (
     options =>
     {
-        options.AddPolicy(name: "AllowAnyOrigin", policy =>
+        options.AddPolicy(name: "AllowSelfFrontEnd", policy =>
         {
             policy
-            .AllowAnyOrigin()
+            .WithOrigins("http://localhost:5173")
+            .AllowCredentials()
             .AllowAnyHeader()
             .AllowAnyMethod();
         });
@@ -95,14 +95,12 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseStaticFiles();
 app.UseRouting();
-app.UseCors("AllowAnyOrigin");
+app.UseCors("AllowSelfFrontEnd");
 
 app.UseAuthentication();
-//app.UseAuthorization();
-app.MapStaticAssets();
+app.UseAuthorization();
 app.MapControllers();
-app.MapIdentityApi<AppUser>();
+app.MapStaticAssets();
 
 app.Run();

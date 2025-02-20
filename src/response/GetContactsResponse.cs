@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 
 public class GetContactsResponse {
-    [JsonPropertyName("contacts")]
     public IList<Contact> Contacts { get; set; }
 }

@@ -8,14 +8,10 @@ using Microsoft.EntityFrameworkCore;
 public class ProductService 
 {   
     private readonly AppDbContext _appDbContext;
-    private readonly IAuthorizationService _authorizationService;
 
-    public ProductService(
-        AppDbContext appDbContext,
-        IAuthorizationService authorizationService) 
+    public ProductService(AppDbContext appDbContext) 
     {
         _appDbContext = appDbContext;
-        _authorizationService = authorizationService;
     }
 
     public async Task<GetPaginatedProductsResponse> GetPaginatedProducts(
@@ -28,7 +24,6 @@ public class ProductService
         var totalCount = await _appDbContext.Products.CountAsync();
         var totalPages = (int)Math.Ceiling((double)totalCount / size);
         IQueryable<Product> productsQuery = _appDbContext.Products.Where(p => 1 == 1);
-
         if (!String.IsNullOrEmpty(keyword)) 
         {
             productsQuery = productsQuery.Where(p => p.Name.Contains(keyword));
@@ -45,7 +40,6 @@ public class ProductService
                     break;
             }
         } 
-
         var response = new GetPaginatedProductsResponse {
             TotalCount = totalCount,
             TotalPages = totalPages,
@@ -54,10 +48,9 @@ public class ProductService
             .Take(size)
             .ToListAsync()
         };
-
         Console.WriteLine("GetPaginatedProducts: " + response.Products.Count);
-
-        foreach (Product product in response.Products) {
+        foreach (Product product in response.Products) 
+        {
             product.AppFiles = await _appDbContext.AppFiles
                 .Where(f => f.ProductId == product.Id)
                 .ToListAsync();
@@ -77,9 +70,7 @@ public class ProductService
             Price = request.Price,
             Stock = request.Stock
         };
-        
         List<AppFile> savedFiles = new List<AppFile>();
-
         if (request.Files != null && request.Files.Count > 0) 
         {
             foreach (IFormFile file in request.Files) 
@@ -104,25 +95,20 @@ public class ProductService
                     var imageUrl = Path.Combine(StaticFileRootPath.GetImagePath(), 
                     request.UserId + "-" + DateTime.Now.ToString("yyyyMMddHHmmss") + "-image." + file.ContentType.Split("/")[1]);
                     var storePath = Path.Combine(StaticFileRootPath.GetStaticFileRootPath(), imageUrl);
-
                     AppFile newFile = new AppFile {
                         Id = Guid.NewGuid().ToString(),
                         Url = imageUrl,
                         ProductId = newProduct.Id,
                         Format = file.ContentType,
                     };
-
                     savedFiles.Add(newFile);
-
                     await file.CopyToAsync(new FileStream(storePath, FileMode.OpenOrCreate));
                 }
             } 
         }
-
         newProduct.ImageUrl = String.Join(",", savedFiles.Select(f => f.Url));
         _appDbContext.Products.Add(newProduct);
         await _appDbContext.SaveChangesAsync();
-
         _appDbContext.AppFiles.AddRange(savedFiles);
         await _appDbContext.SaveChangesAsync();
 
@@ -134,14 +120,14 @@ public class ProductService
         try 
         {   
             var product = await _appDbContext.Products.FindAsync(id);
-
-            if (product == null) {
+            if (product == null) 
+            {
                 return true;
             }
-
             _appDbContext.AppFiles.RemoveRange(_appDbContext.AppFiles.Where(f => f.ProductId == id));
             _appDbContext.Products.Remove(product);
             await _appDbContext.SaveChangesAsync();
+
             return true;
         }
         catch (DbUpdateException e) 

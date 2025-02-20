@@ -5,6 +5,8 @@ using Google.Apis.Auth;
 using Google.Apis.Auth.OAuth2.Responses;
 using Google.Apis.Auth.OAuth2.Requests;
 using System.Security.Cryptography.X509Certificates;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 public class AuthService 
 {
@@ -33,59 +35,52 @@ public class AuthService
                 Email = "none"
             };
         }
+
         return user;
     }
 
     public async Task<GetUserResponse> SignInAsync(SignInRequest request) 
     {
         AppUser user = await _userManager.FindByEmailAsync(request.Email);
-
         if (user == null) 
         {
+            return new GetUserResponse();
+        }
+        var result = await _signInManager.PasswordSignInAsync(request.Email, request.Password, true, false);
+        if (result.Succeeded) 
+        {   
+            var role = await _userManager.GetRolesAsync(user);
             return new GetUserResponse {
-                Email = "none"
+                Id = user.Id,
+                Email = user.Email,
+                UserName = user.AlternativeName,
+                Role = role[0]
             };
         }
 
-        await _signInManager.PasswordSignInAsync(request.Email, request.Password, false, false);
-
-        return new GetUserResponse {
-            Id = user.Id,
-            Email = user.Email,
-            UserName = user.UserName,
-            Role = "none"
-        };
-    }
-
-    public async Task<GetUserResponse> GetUserInfoAsync(string email) 
-    {
-        AppUser user = await _userManager.FindByEmailAsync(email);
-        IList<string> roles = await _userManager.GetRolesAsync(user);
-
-        return new GetUserResponse {
-            Id = user.Id,
-            Email = user.Email,
-            UserName = user.UserName,
-            Role = roles[0]
-        };
+        return new GetUserResponse();
     }
 
     public async Task<GetUserResponse> SignUpAsync(SignUpRequest request) 
     {           
-        var appUser = new AppUser {
+        var user = new AppUser {
             Email = request.Email,
-            UserName = request.UserName
+            UserName = request.Email,
+            AlternativeName = request.UserName
         };
-
-        var appRole = new AppRole {
+        var role = new AppRole {
             Name = request.Role
         };
-
-        var roleStoreResult = await _roleManager.CreateAsync(appRole);
-        var userStoreResult = await _userManager.CreateAsync(appUser, request.Password);
-        var userRoleRelationStoreResult = await _userManager.AddToRoleAsync(appUser, appRole.Name);
-
-        if (userStoreResult.Succeeded && roleStoreResult.Succeeded && userRoleRelationStoreResult.Succeeded)
+        if (_roleManager.GetRoleNameAsync(role).Result != request.Role) 
+        {
+            var roleStoreResult = await _roleManager.CreateAsync(role);
+            if (!roleStoreResult.Succeeded) {
+                return new GetUserResponse();
+            }
+        }
+        var userStoreResult = await _userManager.CreateAsync(user, request.Password);
+        var userRoleRelationStoreResult = await _userManager.AddToRoleAsync(user, role.Name);
+        if (userStoreResult.Succeeded && userRoleRelationStoreResult.Succeeded)
         {    
             if (request.doSignInAfterSignUp) {
                 return await SignInAsync(new SignInRequest() {

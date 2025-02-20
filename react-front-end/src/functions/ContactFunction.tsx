@@ -1,6 +1,7 @@
 import axios from "axios";
 import { Dispatch, FormEvent, SetStateAction } from "react"
 import { GetContactsResponse } from "../type/ResponseType";
+import APICall from "../config/ApiConfig";
 
 async function getPaginatedContacts (props: {
     page: number,
@@ -8,11 +9,7 @@ async function getPaginatedContacts (props: {
     userid: string
     setResponse: Dispatch<SetStateAction<GetContactsResponse>>
 }) {
-    await axios.get(`http://localhost:5175/api/contacts?userid=${props.userid}&page=${props.page}&size=${props.size}`, {
-        headers: {
-            Accept: 'application/json'
-        }
-    })
+    await APICall().get(`/api/contacts?userid=${props.userid}&page=${props.page}&size=${props.size}`)
     .then((response) => {
         props.setResponse(response.data);
     })
@@ -41,7 +38,7 @@ async function addOrUpdateContacts (props: {
         postcode: formData.get('postcode'),
     }
 
-    await axios.post(`http://localhost:5175/api/contacts/${props.action}`, requestBody, {
+    await APICall().post(`/api/contacts/${props.action}`, requestBody, {
         headers: {
             Accept: 'application/json'
         }
@@ -53,7 +50,7 @@ async function addOrUpdateContacts (props: {
 }
 
 function deleteContacts (props: {id: string}) {
-    axios.delete(`http://localhost:5175/api/contacts?id=${props.id}`, {
+    APICall().delete(`/api/contacts?id=${props.id}`, {
         headers: {
             Accept: 'application/json'
         }

@@ -21,7 +21,7 @@ function BasicButton(props: {
     let buttonWidth : number = Math.max(40, props.buttonName.length * 3);
     
     return (
-        <button className={`${props.buttonColor} ${props.textColor} ${props.borderColor != undefined ? props.borderColor : ""} w-${buttonWidth} h-10 px-3 py-2`} onClick={props.clickHandler}>
+        <button type="button" className={`${props.buttonColor} ${props.textColor} ${props.borderColor != undefined ? props.borderColor : ""} w-${buttonWidth} h-10 px-3 py-2`} onClick={props.clickHandler}>
             {props.buttonName}
         </button>
     )

@@ -1,6 +1,7 @@
 import axios from "axios";
 import { Dispatch, FormEvent, SetStateAction } from "react";
 import { isStringEmpty } from "./Utils";
+import APICall from "../config/ApiConfig";
 
 function getPaginatedProducts(props: {
   page: number,
@@ -47,7 +48,7 @@ function getPaginatedProducts(props: {
         query += `&order=${order}`;
     }
 
-    axios.get(`http://localhost:5175/api/products?${query}`, {
+    APICall().get(`/api/products?${query}`, {
         headers: {
             Accept: 'application/json'
         }
@@ -77,7 +78,7 @@ async function addOrUpdateProducts(props: {
         }
     }
     
-    await axios.post(`http://localhost:5175/api/products/${props.action}`, formData, {
+    await APICall().post(`/api/products/${props.action}`, formData, {
         headers: {
             "Content-Type": "multipart/form-data"
         }

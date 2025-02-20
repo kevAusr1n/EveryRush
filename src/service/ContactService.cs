@@ -7,19 +7,16 @@ using Microsoft.EntityFrameworkCore;
 public class ContactService 
 {   
     private readonly AppDbContext _appDbContext;
-    private readonly IAuthorizationService _authorizationService;
 
-    public ContactService(
-        AppDbContext appDbContext,
-        IAuthorizationService authorizationService) 
+    public ContactService(AppDbContext appDbContext) 
     {
         _appDbContext = appDbContext;
-        _authorizationService = authorizationService;
     }
 
     public async Task<GetContactsResponse> GetAllContacts(string userId) 
     {       
         IList<Contact> contacts = await _appDbContext.Contacts.Where(c => c.AppUserId == userId).ToListAsync();
+
         return new GetContactsResponse() {
             Contacts = contacts
         };
@@ -39,11 +36,11 @@ public class ContactService
             State = request.State,
             Postcode = request.Postcode,
         };
-
         try 
         {
             _appDbContext.Contacts.Add(newContact);
             await _appDbContext.SaveChangesAsync();
+
             return newContact;
         }
         catch (DbUpdateException e) 
@@ -55,12 +52,10 @@ public class ContactService
     public async Task<Contact> EditContact(AddOrUpdateContactRequest request) 
     {   
         Contact contactForUpdate = _appDbContext.Contacts.FirstOrDefault(c => c.Id == request.Id);
-        
         if (contactForUpdate == null) 
         {
             return new Contact();
         }
-
         contactForUpdate.FirstName = request.FirstName;
         contactForUpdate.LastName = request.LastName;
         contactForUpdate.Email = request.Email;
@@ -69,11 +64,11 @@ public class ContactService
         contactForUpdate.City = request.City;
         contactForUpdate.State = request.State;
         contactForUpdate.Postcode = request.Postcode;
-
         try 
         {
             _appDbContext.Contacts.Update(contactForUpdate);
             await _appDbContext.SaveChangesAsync();
+            
             return contactForUpdate;
         }
         catch (DbUpdateException e) 
@@ -84,8 +79,8 @@ public class ContactService
 
     public async Task<Boolean> DeleteContact(string id) {
         Contact contactForDelete = _appDbContext.Contacts.FirstOrDefault(c => c.Id == id);
-
-        if (contactForDelete == null) {
+        if (contactForDelete == null) 
+        {
             return true;
         }
 
@@ -93,6 +88,7 @@ public class ContactService
         {
             _appDbContext.Contacts.Remove(contactForDelete);
             await _appDbContext.SaveChangesAsync();
+
             return true;
         }
         catch (DbUpdateException e) 

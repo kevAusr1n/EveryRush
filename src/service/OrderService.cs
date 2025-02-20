@@ -8,16 +8,11 @@ public class OrderService
 {   
     private readonly AppDbContext _appDbContext;
     private readonly UserManager<AppUser> _userManager;
-    private readonly IAuthorizationService _authorizationService;
 
-    public OrderService(
-        AppDbContext appDbContext,
-        UserManager<AppUser> userManager,
-        IAuthorizationService authorizationService) 
+    public OrderService(AppDbContext appDbContext, UserManager<AppUser> userManager) 
     {
         _appDbContext = appDbContext;
         _userManager = userManager;
-        _authorizationService = authorizationService;
     }
 
     public async Task<GetPaginatedOrdersResponse> GetPaginatedOrders(
@@ -36,7 +31,7 @@ public class OrderService
         {
             throw new Exception("User not found");
         }
-        
+
         return null;
     }
 }

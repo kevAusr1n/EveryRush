@@ -63,7 +63,11 @@ function OptionInput(props: {
 
     const optionLayout = () : ReactNode[] => {
         const nodes: ReactNode[] = [
-            <BasicButton buttonColor="bg-white" textColor="text-black" borderColor="border-1" buttonName={props.inputName} clickHandler={() => setIsDropdown(!isDropdown)} />,
+            <BasicButton buttonColor="bg-white" textColor="text-black" borderColor="border-1" buttonName={props.inputName} clickHandler={
+                () => {
+                    setIsDropdown(!isDropdown);
+                }}
+            />,
             <input id={props.inputName.toLocaleLowerCase()} name={props.inputName.toLocaleLowerCase()} className={inputWidth + " border-1"} />
         ];
 
