@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EveryRush.Controller;
 
-[AllowAnonymous]
 [Route("api/orders")]
 [ApiController]
 public class OrderController : ControllerBase 
@@ -25,7 +24,22 @@ public class OrderController : ControllerBase
     }
 
     [HttpPost("make")]
-    public async Task<ActionResult<Order>> Makeorder([FromBody] MakeOrderRequest request) 
+    [Authorize(Roles = "Customer")]
+    public async Task<ActionResult<Order>> MakeOrder([FromBody] MakeOrderRequest request) 
+    {
+        return await _orderService.MakeOrder(request);
+    }
+
+    [HttpPost("accept")]
+    [Authorize(Roles = "BusinessOwner")]
+    public async Task<ActionResult<Order>> AcceptOrder([FromBody] MakeOrderRequest request) 
+    {
+        return await _orderService.MakeOrder(request);
+    }
+
+    [HttpPost("cancel-initiative")]
+    [Authorize(Roles = "Customer")]
+    public async Task<ActionResult<Order>> RequestCancelOrder([FromBody] MakeOrderRequest request) 
     {
         return await _orderService.MakeOrder(request);
     }

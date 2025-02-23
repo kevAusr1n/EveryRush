@@ -1,12 +1,16 @@
 import { googleLogout } from "@react-oauth/google";
 import { FormEvent } from "react";
 import APICall from "../config/ApiConfig";
+import { getDefaultAuthScheme } from "../config/AuthConfig";
 
 function setLoginSuccessUserInfo(res : any) {
     localStorage.setItem("userid", res.data.id);
     localStorage.setItem("email", res.data.email);
     localStorage.setItem("username", res.data.userName);
     localStorage.setItem("role", res.data.role);
+    if (getDefaultAuthScheme() == "jwt") {
+        localStorage.setItem("jwt", res.data.jwt);
+    }
 }
 
 async function SignInWithCredential(props: { email: string, password: string }) : Promise<boolean> {
@@ -42,6 +46,7 @@ function SignOut() {
     localStorage.removeItem("username");
     localStorage.removeItem("role");
     localStorage.removeItem("provider");
+    localStorage.removeItem("jwt");
 }
 
 async function SignIn(props: { formSubmitEvent: FormEvent<HTMLFormElement> }) : Promise<boolean> {
@@ -64,11 +69,7 @@ async function SignUp (props: { formSubmitEvent: FormEvent<HTMLFormElement> }) :
         "signin_required": signInRequired
     }
 
-    await APICall().post(`/api/auth/signup`, requestBody, {
-        headers: {
-            Accept: 'application/json'
-        }
-    })
+    await APICall().post(`/api/auth/signup`, requestBody)
     .then((res) => {
         if (signInRequired && res.status == 200) {
             setLoginSuccessUserInfo(res);

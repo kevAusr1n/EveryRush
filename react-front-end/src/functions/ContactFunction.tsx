@@ -1,4 +1,3 @@
-import axios from "axios";
 import { Dispatch, FormEvent, SetStateAction } from "react"
 import { GetContactsResponse } from "../type/ResponseType";
 import APICall from "../config/ApiConfig";

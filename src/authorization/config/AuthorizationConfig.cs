@@ -24,4 +24,13 @@ namespace EveryRush.Authorization
         public static readonly string CustomerRole = "Customer";
         public static readonly string BusinessOwner = "BusinessOwner";
     }
+
+    public class AuthorizationScheme
+    {
+        public static readonly string Default = "Cookie";
+
+        public static readonly string Cookie = "Cookie";
+
+        public static readonly string JWT = "JWT";
+    }
 }

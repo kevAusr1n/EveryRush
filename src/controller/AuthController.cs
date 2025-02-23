@@ -1,3 +1,4 @@
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text.Json.Nodes;
 using EveryRush.Entity;
@@ -6,6 +7,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace EveryRush.Controller;
 
@@ -32,8 +34,13 @@ public class AuthController : ControllerBase
     {
         GetUserResponse response = await _authService.SignInAsync(request);
         // TODO: check if user is valid
-        await setAuthCookie(response);
-        
+        // await setAuthCookie(response);
+        if (response.Email != "none") 
+        {
+            await setAuthCookie(response);
+            response.Jwt = await GenerateAuthJWT(response);
+        }
+
         return response;
     }
 
@@ -41,7 +48,7 @@ public class AuthController : ControllerBase
     public async Task<ActionResult<GetUserResponse>> SignUp([FromBody] SignUpRequest request) 
     {
         GetUserResponse response = await _authService.SignUpAsync(request);
-        if (request.doSignInAfterSignUp) 
+        if (response.Email != "none" && request.doSignInAfterSignUp) 
         {
             await setAuthCookie(response);
         }
@@ -58,5 +65,22 @@ public class AuthController : ControllerBase
         };
         var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+    }
+
+    public async Task<String> GenerateAuthJWT(GetUserResponse response) {
+        var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.Name, response.Email),
+            new Claim("UserName", response.UserName),
+            new Claim(ClaimTypes.Role, response.Role)
+        };
+        var credentials = new SigningCredentials(new SymmetricSecurityKey(AuthenticationConfig.JWT.Key), SecurityAlgorithms.HmacSha256);
+        var token = new JwtSecurityToken(
+            claims: claims,
+            expires: DateTime.UtcNow.AddHours(1), // Token expiration time
+            signingCredentials: credentials
+        );
+
+        return new JwtSecurityTokenHandler().WriteToken(token);
     }
 }

@@ -1,5 +1,6 @@
 using EveryRush.Entity;
 using EveryRush.Request;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -18,7 +19,7 @@ public class ContactController : ControllerBase
     }
 
     [HttpGet]
-    [Authorize(Roles = "Customer")]
+    [Authorize(Roles = "Customer", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public async Task<ActionResult<GetContactsResponse>> GetAllContacts([FromQuery] string userId) 
     {
         return await _contactService.GetAllContacts(userId);
