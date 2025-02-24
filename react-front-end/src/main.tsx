@@ -13,6 +13,8 @@ import AddOrUpdateProductPage from './pages/AddOrUpdateProductPage.tsx'
 import CartPage from './pages/CartPage.tsx'
 import CheckoutPage from './pages/CheckoutPage.tsx'
 import { BrowserRouter, Route, Routes } from 'react-router'
+import UserInfoEditPage from './pages/UserInfoEditPage.tsx'
+import ProductDetailPage from './pages/ProductDetaiPage.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -26,6 +28,8 @@ createRoot(document.getElementById('root')!).render(
             <Route path="products" element={<ProductsPage />} />
             <Route path="cart" element={<CartPage />} />
             <Route path="orders" element={<Orders />} />
+            <Route path="user/edit" element={<UserInfoEditPage />} />
+            <Route path="product/:id" element={<ProductDetailPage />} />
             <Route path="contacts/:action" element={<AddOrUpdateContactPage />} />
             <Route path="products/:action" element={<AddOrUpdateProductPage />} />
             <Route path="contacts" element={<ContactsPage />} />

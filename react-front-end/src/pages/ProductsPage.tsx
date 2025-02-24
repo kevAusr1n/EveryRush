@@ -29,24 +29,20 @@ function ProductsPage() {
     return (
         <ResponsiveDiv style="" children={[
             <ResponsiveDiv style="flex flex-row" children={[
-                <ResponsiveDiv style="bg-gray-200 w-1/5" key={crypto.randomUUID()} children={[
-                    <ResponsiveDiv style="mt-20 mb-20 ml-5 py-10 flex flex-col items-center bg-white shadow" children={[
-                        <ResponsiveDiv style="mb-5" children={[
-                            <SearchBar 
-                                searchTerm={searchTerm}
-                                setSearchTerm={setSearchTerm}
-                            />
-                        ]} />,
+                <ResponsiveDiv style="w-1/5" key={crypto.randomUUID()} children={[
+                    <ResponsiveDiv style="mt-20 mb-20 ml-5 py-10 flex flex-col items-center bg-white shadow-xl" children={[
                         <ResponsiveDiv style="ml-5 mr-5" children={[
                             <FilterSide 
                                 orderTerms={["Popularity", "Price Ascending", "Price Descending", "Newest Product", "Oldest Product"]}
                                 setOrderTerm={setOrderTerm}
                                 setArrangement={setArrangement}
+                                searchTerm={searchTerm}
+                                setSearchTerm={setSearchTerm}
                             />
                         ]} />
                     ]} />
                 ]} />,
-                <ResponsiveDiv style="mt-20 mb-20 m-5 mr-5 w-4/5 bg-white shadow" key={crypto.randomUUID()} children={[   
+                <ResponsiveDiv style="mt-20 mb-20 m-5 mr-5 w-4/5" key={crypto.randomUUID()} children={[   
                     <DisplayArrangement 
                         arrangement={arrangement}
                         exhibitedChildren={

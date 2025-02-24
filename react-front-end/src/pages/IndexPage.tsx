@@ -1,21 +1,42 @@
-import { Link, Outlet } from "react-router";
-import LoginSection from "../components/LoginSection";
+import { Link, Outlet, useNavigate } from "react-router";
 import ResponsiveDiv from "../components/div/ResponsiveDiv";
+import { isUserSignedIn, SignOut } from "../functions/UserFunction";
+
+const headerItemStyle = "text-white p-4 transition hover:bg-white hover:text-black";
 
 function IndexPage() {
+    const navigate = useNavigate();
+
     return (
         <>
-            <div className="flex flex-col items-center">
-                <header className="flex gap-4 p-4 text-black">
-                    <Link to="products"><p className="text-black">Products</p></Link>
-                    <Link to="cart"><p className="text-black">Cart</p></Link>
-                    <Link to="orders"><p className="text-black">Orders</p></Link>
-                    <Link to="contacts"><p className="text-black">Contacts</p></Link>
-                    <Link to="messages"><p className="text-black">Messages</p></Link>
-                    <LoginSection />
-                </header>
-            </div>
-            <ResponsiveDiv style="bg-gray-200 w-full h-full" children={[(<main><Outlet /></main>)]} />
+            <ResponsiveDiv style="flex flex-row justify-center items-center bg-black" children={[
+                <header className="flex text-black">
+                    <Link to="products"><p className={headerItemStyle}>Products</p></Link>
+                    <Link to="cart"><p className={headerItemStyle}>Cart</p></Link>
+                    <Link to="orders"><p className={headerItemStyle}>Orders</p></Link>
+                    <Link to="contacts"><p className={headerItemStyle}>Contacts</p></Link>
+                    <Link to="messages"><p className={headerItemStyle}>Messages</p></Link>
+                </header>,
+                (!isUserSignedIn() && 
+                    <>
+                        <Link to="signin"><p className={headerItemStyle}>SIGN IN</p></Link>
+                        <Link to="signup"><p className={headerItemStyle}>REGISTER</p></Link>
+                    </>
+                ) ||
+                (
+                    isUserSignedIn() && 
+                    <>
+                        <Link to="/user/edit"><p className={headerItemStyle}>{localStorage.getItem("username") as string}</p></Link>
+                        <button className={headerItemStyle} onClick={() => {
+                            SignOut();
+                            navigate("/")
+                        }}>
+                            SIGN OUT
+                        </button>
+                    </>
+                )
+            ]} />
+            <ResponsiveDiv style="bg-white w-full h-full" children={[(<main><Outlet /></main>)]} />
         </>
     )
 }

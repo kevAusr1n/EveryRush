@@ -11,7 +11,7 @@ function AddOrUpdateContactPage() {
     
     return (
         <ResponsiveDiv style="flex flex-col items-center" children={[
-            <ResponsiveDiv style="mt-20 mb-20 gap-5 p-20 flex flex-col items-center bg-white shadow" children={[
+            <ResponsiveDiv style="mt-20 mb-20 gap-5 p-20 flex flex-col items-center" children={[
                 <SubmitForm
                     inputNames={["FirstName", "LastName", "Email", "Phone", "Address", "City", "State", "Postcode"]}
                     inputTypes={new Array<string>(8).fill("text")}
@@ -33,7 +33,7 @@ function AddOrUpdateContactPage() {
                             id: searchParams.get("id") as string,
                             formSubmitEvent: event
                         })) {
-                            navigate("/index/contacts");
+                            navigate("/contacts");
                         }
                     }}
                 />

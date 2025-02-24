@@ -1,11 +1,10 @@
 function BorderlessButton (props: {
-    textColor: string,
-    buttonColor: string,
+    style: string,
     buttonName: string, 
     clickHandler: () => void
 }) {
     return (
-        <button className={`${props.buttonColor} ${props.textColor} px-3 py-2`} onClick={props.clickHandler}>
+        <button className={`${props.style} px-3 py-2`} onClick={props.clickHandler}>
             {props.buttonName}
         </button>
     )
@@ -38,4 +37,40 @@ function SubmitButton(props: {
     )
 }
 
-export { BorderlessButton, BasicButton, SubmitButton };
+function BlackButton(props: {
+    buttonName: string,
+    size: string,
+    clickHandler: () => void
+}) {
+    return (
+        <button className={`bg-black text-white px-3 py-2 ${props.size} transition hover:scale-110`} onClick={props.clickHandler}>
+            {props.buttonName}
+        </button>
+    )
+}
+
+function WhiteButton(props: {
+    buttonName: string,
+    size: string,
+    clickHandler: () => void
+}) {
+    return (
+        <button className={`bg-white text-black px-3 py-2 border-1 ${props.size} transition hover:scale-110`} onClick={props.clickHandler}>
+            {props.buttonName}
+        </button>
+    )
+}
+
+function RedButton(props: {
+    buttonName: string,
+    size: string,
+    clickHandler: () => void
+}) {
+    return (
+        <button className={`bg-red-500 text-white px-3 py-2 ${props.size} transition hover:scale-110`} onClick={props.clickHandler}>
+            {props.buttonName}
+        </button>
+    )
+}
+
+export { BorderlessButton, BasicButton, SubmitButton, BlackButton, WhiteButton, RedButton };

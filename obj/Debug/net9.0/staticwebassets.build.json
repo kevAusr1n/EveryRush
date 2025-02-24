@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "3QIiws9H1CufOIPjyEEGO8/nE7Qfyn+IMjX9rdvZHdQ=",
+  "Hash": "a8Ru0LqHxEzsJC+Mw7rxVwAsYIs4vfsBdZqZQAU67T0=",
   "Source": "EveryRush",
   "BasePath": "_content/EveryRush",
   "Mode": "Default",
@@ -99,6 +99,69 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot/images/192c031c-97e8-4fa1-83bf-994eecb1f259-20250218172526-image.jpeg"
+    },
+    {
+      "Identity": "/Users/kevin/git-app/EveryRush/wwwroot/images/c03c5c5d-f8c2-480c-b12e-9fb58b00bc0f-20250224211400-image.jpeg",
+      "SourceId": "EveryRush",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/kevin/git-app/EveryRush/wwwroot/",
+      "BasePath": "_content/EveryRush",
+      "RelativePath": "images/c03c5c5d-f8c2-480c-b12e-9fb58b00bc0f-20250224211400-image#[.{fingerprint}]?.jpeg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "gzbuj8euca",
+      "Integrity": "LAukvIxo8+kO+xeMeopyGZ62m3NfATjck4tEbpGWz98=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/images/c03c5c5d-f8c2-480c-b12e-9fb58b00bc0f-20250224211400-image.jpeg"
+    },
+    {
+      "Identity": "/Users/kevin/git-app/EveryRush/wwwroot/images/c03c5c5d-f8c2-480c-b12e-9fb58b00bc0f-20250224211400-image.png",
+      "SourceId": "EveryRush",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/kevin/git-app/EveryRush/wwwroot/",
+      "BasePath": "_content/EveryRush",
+      "RelativePath": "images/c03c5c5d-f8c2-480c-b12e-9fb58b00bc0f-20250224211400-image#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "9tnn8lev49",
+      "Integrity": "swvObmKFFb7TlF25Z8V7Xti5ofsWE0htqN/b4PUEt/U=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/images/c03c5c5d-f8c2-480c-b12e-9fb58b00bc0f-20250224211400-image.png"
+    },
+    {
+      "Identity": "/Users/kevin/git-app/EveryRush/wwwroot/images/c03c5c5d-f8c2-480c-b12e-9fb58b00bc0f-20250224212114-image.jpeg",
+      "SourceId": "EveryRush",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/kevin/git-app/EveryRush/wwwroot/",
+      "BasePath": "_content/EveryRush",
+      "RelativePath": "images/c03c5c5d-f8c2-480c-b12e-9fb58b00bc0f-20250224212114-image#[.{fingerprint}]?.jpeg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "gzbuj8euca",
+      "Integrity": "LAukvIxo8+kO+xeMeopyGZ62m3NfATjck4tEbpGWz98=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/images/c03c5c5d-f8c2-480c-b12e-9fb58b00bc0f-20250224212114-image.jpeg"
     }
   ],
   "Endpoints": [
@@ -427,6 +490,252 @@
         {
           "Name": "integrity",
           "Value": "sha256-yWsrqnY9/9NiFFdC/aPeaedmt5gtdtbhJozwEuktOvU="
+        }
+      ]
+    },
+    {
+      "Route": "images/c03c5c5d-f8c2-480c-b12e-9fb58b00bc0f-20250224211400-image.9tnn8lev49.png",
+      "AssetFile": "/Users/kevin/git-app/EveryRush/wwwroot/images/c03c5c5d-f8c2-480c-b12e-9fb58b00bc0f-20250224211400-image.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "57511"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"swvObmKFFb7TlF25Z8V7Xti5ofsWE0htqN/b4PUEt/U=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 24 Feb 2025 13:14:00 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "9tnn8lev49"
+        },
+        {
+          "Name": "label",
+          "Value": "images/c03c5c5d-f8c2-480c-b12e-9fb58b00bc0f-20250224211400-image.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-swvObmKFFb7TlF25Z8V7Xti5ofsWE0htqN/b4PUEt/U="
+        }
+      ]
+    },
+    {
+      "Route": "images/c03c5c5d-f8c2-480c-b12e-9fb58b00bc0f-20250224211400-image.gzbuj8euca.jpeg",
+      "AssetFile": "/Users/kevin/git-app/EveryRush/wwwroot/images/c03c5c5d-f8c2-480c-b12e-9fb58b00bc0f-20250224211400-image.jpeg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "108516"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"LAukvIxo8+kO+xeMeopyGZ62m3NfATjck4tEbpGWz98=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 24 Feb 2025 13:14:00 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "gzbuj8euca"
+        },
+        {
+          "Name": "label",
+          "Value": "images/c03c5c5d-f8c2-480c-b12e-9fb58b00bc0f-20250224211400-image.jpeg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-LAukvIxo8+kO+xeMeopyGZ62m3NfATjck4tEbpGWz98="
+        }
+      ]
+    },
+    {
+      "Route": "images/c03c5c5d-f8c2-480c-b12e-9fb58b00bc0f-20250224211400-image.jpeg",
+      "AssetFile": "/Users/kevin/git-app/EveryRush/wwwroot/images/c03c5c5d-f8c2-480c-b12e-9fb58b00bc0f-20250224211400-image.jpeg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "108516"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"LAukvIxo8+kO+xeMeopyGZ62m3NfATjck4tEbpGWz98=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 24 Feb 2025 13:14:00 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-LAukvIxo8+kO+xeMeopyGZ62m3NfATjck4tEbpGWz98="
+        }
+      ]
+    },
+    {
+      "Route": "images/c03c5c5d-f8c2-480c-b12e-9fb58b00bc0f-20250224211400-image.png",
+      "AssetFile": "/Users/kevin/git-app/EveryRush/wwwroot/images/c03c5c5d-f8c2-480c-b12e-9fb58b00bc0f-20250224211400-image.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "57511"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"swvObmKFFb7TlF25Z8V7Xti5ofsWE0htqN/b4PUEt/U=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 24 Feb 2025 13:14:00 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-swvObmKFFb7TlF25Z8V7Xti5ofsWE0htqN/b4PUEt/U="
+        }
+      ]
+    },
+    {
+      "Route": "images/c03c5c5d-f8c2-480c-b12e-9fb58b00bc0f-20250224212114-image.gzbuj8euca.jpeg",
+      "AssetFile": "/Users/kevin/git-app/EveryRush/wwwroot/images/c03c5c5d-f8c2-480c-b12e-9fb58b00bc0f-20250224212114-image.jpeg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "108516"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"LAukvIxo8+kO+xeMeopyGZ62m3NfATjck4tEbpGWz98=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 24 Feb 2025 13:21:14 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "gzbuj8euca"
+        },
+        {
+          "Name": "label",
+          "Value": "images/c03c5c5d-f8c2-480c-b12e-9fb58b00bc0f-20250224212114-image.jpeg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-LAukvIxo8+kO+xeMeopyGZ62m3NfATjck4tEbpGWz98="
+        }
+      ]
+    },
+    {
+      "Route": "images/c03c5c5d-f8c2-480c-b12e-9fb58b00bc0f-20250224212114-image.jpeg",
+      "AssetFile": "/Users/kevin/git-app/EveryRush/wwwroot/images/c03c5c5d-f8c2-480c-b12e-9fb58b00bc0f-20250224212114-image.jpeg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "108516"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"LAukvIxo8+kO+xeMeopyGZ62m3NfATjck4tEbpGWz98=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 24 Feb 2025 13:21:14 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-LAukvIxo8+kO+xeMeopyGZ62m3NfATjck4tEbpGWz98="
         }
       ]
     }

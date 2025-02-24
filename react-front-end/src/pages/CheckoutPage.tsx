@@ -1,11 +1,11 @@
 import { createElement, ReactNode, useEffect, useRef, useState } from "react"
-import { BasicButton } from "../components/Button";
+import { BlackButton } from "../components/Button";
 import DropDown from "../components/Dropdown";
 import InputField from "../components/InputField";
 import { GetContactsResponse } from "../type/ResponseType";
 import { getPaginatedContacts } from "../functions/ContactFunction";
 import { CartItem, Contact } from "../type/EntityType";
-import ImageBrief from "../components/ImageBrief";
+import { ImageBrief } from "../components/Image";
 import ResponsiveDiv from "../components/div/ResponsiveDiv";
 import DisplayTable from "../components/DisplayTable";
 import { backServerEndpoint } from "../config/BackendServerConfig";
@@ -49,7 +49,7 @@ function CheckoutPage() {
     const useContactButtonHandler = ( id: string, originStyle: string, contact: Contact) => {
         return {     
             onMouseOver: () => {
-                document.getElementById(id)?.setAttribute("class", originStyle + " hover:bg-blue-500 hover:text-white");
+                document.getElementById(id)?.setAttribute("class", originStyle + " hover:bg-black hover:text-white");
             },
             onMouseOut: () => {
                 document.getElementById(id)?.setAttribute("class", originStyle);
@@ -77,12 +77,12 @@ function CheckoutPage() {
 
     return (
         <ResponsiveDiv style="flex flex-col items-center" children={[
-            <ResponsiveDiv style="mt-20 mb-20 gap-5 p-20 flex flex-col items-start bg-white shadow" children={[
+            <ResponsiveDiv style="mt-20 mb-20 gap-5 p-20 flex flex-col items-start" children={[
                 <DisplayTable tableHead={tableHead} tableContent={tableContent} />,
                 <ResponsiveDiv style="flex flex-col mt-10" children={[
                     <ResponsiveDiv style="flex flex-row gap-5" children={[
                         <strong className="text-2xl">Post Address</strong>,
-                        <BasicButton buttonColor="bg-blue-500" textColor="text-white" buttonName="USE CONTACT" clickHandler={() => setDropdown(!dropdown)}/>,
+                        <BlackButton buttonName="USE CONTACT" size="h-10 w-50" clickHandler={() => setDropdown(!dropdown)}/>,
                         <ResponsiveDiv style="" children={[
                             <DropDown isDropDown={dropdown} items={contactResponse.contacts} eventHandlerMap={useContactButtonHandler} />
                         ]} />
@@ -94,7 +94,7 @@ function CheckoutPage() {
                 <ResponsiveDiv style="flex flex-col mt-10" children={[
                     <ResponsiveDiv style="flex flex-row gap-5" children={[
                         <strong className="text-2xl">Billing Address</strong>,
-                        <BasicButton buttonColor="bg-blue-500" textColor="text-white" buttonName="SAME AS POST ADDRESS" clickHandler={() => copyBillContactFromPostContact()}/>
+                        <BlackButton buttonName="USE POST ADDRESS" size="h-10 w-50" clickHandler={() => copyBillContactFromPostContact()}/>
                     ]} />,
                     contactInputFieldNames.map((name : string , index : number) => {
                         return <InputField inputName={name} inputType={contactInputFieldTypes[index]} inputValue={billContactInputFieldValues.current[index]} style="w-200" />

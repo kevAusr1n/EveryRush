@@ -1,35 +1,38 @@
 import { Dispatch, ReactNode, SetStateAction, useState } from 'react';
 import ResponsiveDiv from './div/ResponsiveDiv';
 import { X } from 'lucide-react';
-import ImageBrief from './ImageBrief';
+import { ImageBrief } from './Image';
 import DropDown from './Dropdown';
-import { BasicButton } from './Button';
+import { BlackButton } from './Button';
 
-const basicFieldStyle = "shadow appearance-none border py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline";
+const basicTextFieldStyle = "shadow appearance-none border py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline";
+const readOnlyTestFieldStyle = "shadow appearance-none border py-2 px-3 bg-gray-200 text-black leading-tight focus:outline-none focus:shadow-outline";
 const basicLabelStyle = "block text-gray-700 text-sm font-bold mb-2";
 
 function TextInput(props: {
     inputName: string, 
     inputValue: string, 
+    inputType: string,
     style: string,
+    readonly?: boolean,
     setState?: Dispatch<SetStateAction<string>>
 }) {
     const [_, setState] = useState(props.inputValue);
-    
+
     return (
-        <>
-            <label className={basicLabelStyle}>{props.inputName.toLocaleLowerCase()}</label>
-            <input className={props.style + " " + basicFieldStyle} defaultValue={props.inputValue} 
-                id={props.inputName.toLocaleLowerCase()} name={props.inputName.toLocaleLowerCase()} type="text"
-                onChange={(e) => {
+        <ResponsiveDiv style="" children={[
+            <label className={basicLabelStyle}>{props.inputName.toLocaleLowerCase()}</label>,
+            <input className={props.readonly == true ? props.style + " " + readOnlyTestFieldStyle : props.style + " " + basicTextFieldStyle} 
+                defaultValue={props.inputValue} id={props.inputName.toLocaleLowerCase()} name={props.inputName.toLocaleLowerCase()}
+                type={props.inputType} onChange={(e) => {
                     if (props.setState != undefined && props.setState != null) {
                         props.setState(e.target.value)
                     } else {
                         setState(e.target.value)
                     }
-                }}
+                }} readOnly={props.readonly == true ? true : false}
             />
-        </>
+        ]}/>
     )
 }
 
@@ -46,7 +49,7 @@ function OptionInput(props: {
     const selectRoleHadnler = ( id: string , originStyle: string, value: string) => {
         return {     
             onMouseOver: () => {
-                document.getElementById(id)?.setAttribute("class", originStyle + " hover:bg-blue-500 hover:text-white");
+                document.getElementById(id)?.setAttribute("class", originStyle + " hover:bg-black hover:text-white");
             },
             onMouseOut: () => {
                 document.getElementById(id)?.setAttribute("class", originStyle);
@@ -63,7 +66,7 @@ function OptionInput(props: {
 
     const optionLayout = () : ReactNode[] => {
         const nodes: ReactNode[] = [
-            <BasicButton buttonColor="bg-white" textColor="text-black" borderColor="border-1" buttonName={props.inputName} clickHandler={
+            <BlackButton buttonName={props.inputName} size="h-10" clickHandler={
                 () => {
                     setIsDropdown(!isDropdown);
                 }}
@@ -164,14 +167,14 @@ function FileInput(props: {
     };
 
     return (
-        <>
-            <label className={basicLabelStyle}>{props.inputName}</label>
-            <label className={props.style + " " + basicFieldStyle} htmlFor={props.inputName.toLocaleLowerCase()}>
+        <ResponsiveDiv style="" children={[
+            <label className={basicLabelStyle}>{props.inputName}</label>,
+            <label className={props.style + " " + basicTextFieldStyle} htmlFor={props.inputName.toLocaleLowerCase()}>
                 Upload Product Pictures
-            </label>
+            </label>,
             <input id={props.inputName.toLocaleLowerCase()} name={props.inputName.toLocaleLowerCase()} 
-                type="file" multiple hidden onChange={(e) => addImage(e.target.files as FileList)}/>
-            <ResponsiveDiv style="m-10 h-10" children={[<p className="text-red-500">{errorMsg}</p>]} />
+                type="file" multiple hidden onChange={(e) => addImage(e.target.files as FileList)}/>,
+            <ResponsiveDiv style="m-10 h-10" children={[<p className="text-red-500">{errorMsg}</p>]} />,
             <ResponsiveDiv style="flex flex-row h-40" children={[
                 files && Array.from(files).map((file) => {
                     const id = crypto.randomUUID();
@@ -187,7 +190,7 @@ function FileInput(props: {
                     )
                 })
             ]}/>
-        </>
+        ]} />
     )
 }
 
@@ -200,7 +203,8 @@ function InputField(props: {
 }) {
     switch (props.inputType) {
         case "text":
-            return <TextInput inputName={props.inputName} inputValue={props.inputValue as string} style={props.style} setState={props.setState}/>
+        case "password":
+            return <TextInput inputName={props.inputName} inputType={props.inputType} inputValue={props.inputValue as string} style={props.style} setState={props.setState}/>
         case "option":
             return <OptionInput inputName={props.inputName} inputValue={props.inputValue as string} style={props.style} />
         case "file":
@@ -210,5 +214,7 @@ function InputField(props: {
     }
 }
 
+
+
 export default InputField;
-export { OptionInput }
+export { OptionInput, TextInput }

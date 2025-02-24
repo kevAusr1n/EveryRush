@@ -26,6 +26,12 @@ public class ProductController : ControllerBase
         return await _productService.GetPaginatedProducts(page, size, keyword, orderby, order);
     }
 
+    [HttpGet("{id}")]
+    public async Task<ActionResult<Product>> GetProduct([FromRoute] string id) 
+    {
+        return await _productService.GetProduct(id);
+    }
+
     [HttpPost("add")]
     public async Task<ActionResult<Product>> AddProduct([FromForm] AddOrUpdateProductRequest request) 
     {

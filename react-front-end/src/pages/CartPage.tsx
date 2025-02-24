@@ -2,9 +2,9 @@ import { createElement, JSX, ReactNode, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import DisplayTable from "../components/DisplayTable";
 import CountEditor from "../components/CountEditor";
-import { BasicButton } from "../components/Button";
+import { BlackButton, RedButton } from "../components/Button";
 import { addToCart, removeFromCart } from "../functions/CartFunction";
-import ImageBrief from "../components/ImageBrief";
+import { ImageBrief } from "../components/Image";
 import { backServerEndpoint } from "../config/BackendServerConfig";
 import ResponsiveDiv from "../components/div/ResponsiveDiv";
 import { CartItem } from "../type/EntityType";
@@ -29,7 +29,7 @@ function CartPage() {
                 tableContent[index].push(createElement("p", {key: crypto.randomUUID()}, cartItem.name) as ReactNode);
                 tableContent[index].push(createElement("p", {key: crypto.randomUUID()}, "$" + cartItem.price) as ReactNode);
                 tableContent[index].push(<CountEditor key={crypto.randomUUID()} initial_count={cartItem.quantity} target={cartItem} countChangeHandler={addToCart} /> as ReactNode);
-                tableContent[index].push(<BasicButton key={crypto.randomUUID()} buttonColor="bg-red-500" textColor="text-white" buttonName="DELETE" clickHandler={() => {
+                tableContent[index].push(<RedButton key={crypto.randomUUID()} buttonName="DELETE" size="w-40 h-10" clickHandler={() => {
                     removeFromCart({cartItem: cartItem});
                     setRefreshPage(!refreshPage);
                 }}/> as ReactNode);
@@ -39,8 +39,8 @@ function CartPage() {
                 <>
                     <DisplayTable key={crypto.randomUUID()} tableHead={tableHead} tableContent={tableContent} />
                     <ResponsiveDiv key={crypto.randomUUID()} style="flex flex-row m-20 justify-center gap-10" children={[
-                        <BasicButton key={crypto.randomUUID()} buttonColor="bg-blue-500" textColor="text-white" buttonName="CHECKOUT" clickHandler={() => goCheckout()}/>,
-                        <BasicButton key={crypto.randomUUID()} buttonColor="bg-blue-500" textColor="text-white" buttonName="BACK" clickHandler={() => navigate("/index/products")}/>
+                        <BlackButton key={crypto.randomUUID()} buttonName="CHECKOUT" size="w-50 h-20" clickHandler={() => goCheckout()}/>,
+                        <BlackButton key={crypto.randomUUID()} buttonName="BACK" size="w-50 h-20" clickHandler={() => navigate("/products")}/>
                     ]} />
                 </>
             )
@@ -53,12 +53,12 @@ function CartPage() {
             alert("You have nothing to checkout.");
             return;
         }
-        navigate("/index/checkout");
+        navigate("/checkout");
     }
 
     return (
         <ResponsiveDiv style="flex flex-col items-center" children={[
-            <ResponsiveDiv style="mt-20 mb-20 bg-white shadow p-20 flex flex-col items-center" children={[displayCart()]} />
+            <ResponsiveDiv style="mt-20 mb-20 p-20 flex flex-col items-center" children={[displayCart()]} />
         ]} />
     )
 }

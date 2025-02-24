@@ -1,4 +1,4 @@
-import { SubmitButton } from "./Button";
+import { BlackButton, SubmitButton } from "./Button";
 import InputField from "./InputField";
 import ResponsiveDiv from "./div/ResponsiveDiv";
 
@@ -22,7 +22,7 @@ function SubmitForm(props:{
                 })
             }         
             <ResponsiveDiv style="mt-5 flex flex-col items-center" children={[
-                <SubmitButton style="bg-blue-500 text-white border w-60 h-10" buttonName={props.actionName.toLocaleUpperCase()} />              
+                <BlackButton buttonName={props.actionName.toLocaleUpperCase()} size="w-50 h-20" clickHandler={() => {}} />              
             ]} />
         </form>
     )

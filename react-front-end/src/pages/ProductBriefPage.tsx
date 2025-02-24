@@ -1,53 +1,77 @@
-import { BasicButton } from "../components/Button";
+import { useNavigate } from "react-router";
+import { BlackButton, WhiteButton } from "../components/Button";
 import ResponsiveDiv from "../components/div/ResponsiveDiv";
-import ImageBrief from "../components/ImageBrief";
+import { ImageBrief } from "../components/Image";
 import { backServerEndpoint } from "../config/BackendServerConfig";
 import { addToCart } from "../functions/CartFunction";
 import { Product } from "../type/EntityType";
+import { ReactNode } from "react";
+import { isStringEmpty } from "../functions/Utils";
+
+const productBoxGridStyle = "gap-5 m-5 p-5 bg-white flex flex-col items-center shadow-xl transition hover:scale-105";
+const productBoxRowStyle="gap-5 m-5 p-5 bg-white flex flex-row justify-between shadow-xl transition hover:scale-101";
 
 function ProductBriefPage(props: {product : Product, display: string}) 
 {    
+    const navigate = useNavigate();
+    const goToDetailPage = () => {
+        navigate(`/product/${props.product.id}`)
+    }
+    
+    const descriptionTrim = (description : string, productId: string) : ReactNode => {
+        if (isStringEmpty(description))  {
+            return <></>;
+        }
+        
+        const words: string[] = description.split(" ");
+        if (words.length > 40) {
+            return <p className="text-gray-500">{words.slice(0, 40).join(" ") + " ... "}<a className="text-blue-500 underline" href={`/product/${productId}`}>detail</a></p>
+        }
+
+        return <p>{description}</p>;
+    }
+
     switch(props.display) {
         case "grid":
             return (
-                <ResponsiveDiv style="gap-5 m-5 p-5 bg-white flex flex-col items-center shadow-xl" children={[
+                <ResponsiveDiv style={productBoxGridStyle} eventHandlerMap={{onClick: () => goToDetailPage()}} children={[
                     props.product.imageUrl && <ImageBrief src={new URL((props.product.imageUrl as string).split(",")[0], backServerEndpoint).toString()} style="w-32 h-32"/>,
                     <strong>{props.product.name}</strong>,
                     <p>PRICE: ${props.product.price}</p>,
                     <p>STOCK: {props.product.stock}</p>,
-                    <BasicButton buttonColor="bg-blue-500" textColor="text-white" buttonName="ADD TO CART" clickHandler={() => addToCart({item: props.product, quantity: 1})} />,
-                    <BasicButton buttonColor="bg-white" textColor="text-blue-500" borderColor="border-1" buttonName="PURCHASE" clickHandler={() => {}} />,
+                    <BlackButton buttonName="ADD TO CART" size="h-10" clickHandler={() => addToCart({item: props.product, quantity: 1})} />,
+                    <WhiteButton buttonName="PURCHASE" size="h-10" clickHandler={() => {}} />
                 ]} />    
             )
         case "row":
             return (
-                <ResponsiveDiv style="gap-5 m-5 p-5 bg-white flex flex-row justify-between shadow-xl" children={[
-                    <ResponsiveDiv style="flex flex-row" children={[   
-                        <ResponsiveDiv style="w-50" children={[    
+                <ResponsiveDiv style={productBoxRowStyle} eventHandlerMap={{onClick: () => goToDetailPage()}} children={[
+                    <ResponsiveDiv style="flex flex-row w-4/5" children={[   
+                        <ResponsiveDiv style="w-1/6" children={[    
                             props.product.imageUrl && <ImageBrief src={new URL((props.product.imageUrl as string).split(",")[0], backServerEndpoint).toString()} style="w-32 h-32"/>
                         ]} />, 
-                        <ResponsiveDiv style="flex flex-col gap-5" children={[  
+                        <ResponsiveDiv style="flex flex-col gap-5 w-5/6" children={[  
                             <strong className="text-xl">{props.product.name}</strong>,
-                            <p className="text-gray-400">{props.product.description}</p>
+                            descriptionTrim(props.product.description, props.product.id)
                         ]} />
                     ]} />,
-                    <ResponsiveDiv style="flex flex-col gap-1" children={[    
+                    <ResponsiveDiv style="flex flex-col gap-1 w-1/5" children={[    
                         <p>PRICE: ${props.product.price}</p>,
                         <p>STOCK: {props.product.stock}</p>,
-                        <BasicButton buttonColor="bg-blue-500" textColor="text-white" buttonName="ADD TO CART" clickHandler={() => addToCart({item: props.product, quantity: 1})} />,
-                        <BasicButton buttonColor="bg-white" textColor="text-blue-500" borderColor="border-1" buttonName="PURCHASE" clickHandler={() => {}} />
+                        <BlackButton buttonName="ADD TO CART" size="h-10" clickHandler={() => addToCart({item: props.product, quantity: 1})} />,
+                        <WhiteButton buttonName="PURCHASE" size="h-10" clickHandler={() => {}} />
                     ]} />
                 ]} />    
             )
         default:
             return (
-                <ResponsiveDiv style="gap-5 m-5 p-5 bg-white flex flex-col items-center shadow-xl" children={[
+                <ResponsiveDiv style={productBoxGridStyle} eventHandlerMap={{onClick: () => goToDetailPage()}} children={[
                     props.product.imageUrl && <ImageBrief src={new URL((props.product.imageUrl as string).split(",")[0], backServerEndpoint).toString()} style="w-32 h-32"/>,
                     <strong>{props.product.name}</strong>,
                     <p>PRICE: ${props.product.price}</p>,
                     <p>STOCK: {props.product.stock}</p>,
-                    <BasicButton buttonColor="bg-blue-500" textColor="text-white" buttonName="ADD TO CART" clickHandler={() => addToCart({item: props.product, quantity: 1})} />,
-                    <BasicButton buttonColor="bg-white" textColor="text-blue-500" borderColor="border-1" buttonName="PURCHASE" clickHandler={() => {}} />,
+                    <BlackButton buttonName="ADD TO CART" size="h-10" clickHandler={() => addToCart({item: props.product, quantity: 1})} />,
+                    <WhiteButton buttonName="PURCHASE" size="h-10" clickHandler={() => {}} />
                 ]} />    
             )
 

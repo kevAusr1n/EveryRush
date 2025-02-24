@@ -59,6 +59,11 @@ public class ProductService
         return response;
     }
 
+    public async Task<Product> GetProduct(string id) 
+    {
+        return await _appDbContext.Products.Where(p => p.Id == id).FirstOrDefaultAsync();
+    }
+    
     public async Task<Product> AddProduct(AddOrUpdateProductRequest request) 
     {   
         var newProduct = new Product
@@ -93,7 +98,7 @@ public class ProductService
                     }*/
        
                     var imageUrl = Path.Combine(StaticFileRootPath.GetImagePath(), 
-                    request.UserId + "-" + DateTime.Now.ToString("yyyyMMddHHmmss") + "-image." + file.ContentType.Split("/")[1]);
+                    request.UserId + "-" + Guid.NewGuid().ToString() + "-" + DateTime.Now.ToString("yyyyMMddHHmmss") + "-image." + file.ContentType.Split("/")[1]);
                     var storePath = Path.Combine(StaticFileRootPath.GetStaticFileRootPath(), imageUrl);
                     AppFile newFile = new AppFile {
                         Id = Guid.NewGuid().ToString(),

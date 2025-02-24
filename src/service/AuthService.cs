@@ -7,6 +7,7 @@ using Google.Apis.Auth.OAuth2.Requests;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Google.Apis.Drive.v3.Data;
 
 public class AuthService 
 {
@@ -91,5 +92,23 @@ public class AuthService
         }
 
         return new GetUserResponse();
+    }
+
+    public async Task<Boolean> EditUserAsync(EditUserRequest request) 
+    {
+        // TODO: implement
+        AppUser user = await _userManager.FindByIdAsync(request.Id);
+        if (user == null) {
+            return false;
+        }
+        if (!String.IsNullOrEmpty(request.NewPassword) && !String.IsNullOrEmpty(request.OldPassword)) 
+        {
+            var result = await _userManager.ChangePasswordAsync(user, request.OldPassword, request.NewPassword);
+            return result.Succeeded;
+        }
+        user.AlternativeName = request.Username;
+        await _userManager.UpdateAsync(user);
+
+        return true;
     }
 }

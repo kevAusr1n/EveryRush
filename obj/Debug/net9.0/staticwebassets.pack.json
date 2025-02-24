@@ -17,6 +17,18 @@
       "PackagePath": "staticwebassets/images/192c031c-97e8-4fa1-83bf-994eecb1f259-20250218172526-image.jpeg"
     },
     {
+      "Id": "/Users/kevin/git-app/EveryRush/wwwroot/images/c03c5c5d-f8c2-480c-b12e-9fb58b00bc0f-20250224211400-image.jpeg",
+      "PackagePath": "staticwebassets/images/c03c5c5d-f8c2-480c-b12e-9fb58b00bc0f-20250224211400-image.jpeg"
+    },
+    {
+      "Id": "/Users/kevin/git-app/EveryRush/wwwroot/images/c03c5c5d-f8c2-480c-b12e-9fb58b00bc0f-20250224211400-image.png",
+      "PackagePath": "staticwebassets/images/c03c5c5d-f8c2-480c-b12e-9fb58b00bc0f-20250224211400-image.png"
+    },
+    {
+      "Id": "/Users/kevin/git-app/EveryRush/wwwroot/images/c03c5c5d-f8c2-480c-b12e-9fb58b00bc0f-20250224212114-image.jpeg",
+      "PackagePath": "staticwebassets/images/c03c5c5d-f8c2-480c-b12e-9fb58b00bc0f-20250224212114-image.jpeg"
+    },
+    {
       "Id": "obj/Debug/net9.0/staticwebassets/msbuild.EveryRush.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
       "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssetEndpoints.props"
     },

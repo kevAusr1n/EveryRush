@@ -12,7 +12,7 @@ function AddOrUpdateProductPage() {
   
     return (
         <ResponsiveDiv style="flex flex-col items-center" children={[
-            <ResponsiveDiv style="mt-20 mb-20 gap-5 p-20 flex flex-col items-center bg-white shadow" children={[
+            <ResponsiveDiv style="mt-20 mb-20 gap-5 p-20 flex flex-col items-center" children={[
                 <SubmitForm
                     inputNames={["Name", "Description", "Price", "Stock", "Images"]}
                     inputTypes={["text", "text", "text", "text", "file"]}
@@ -26,7 +26,7 @@ function AddOrUpdateProductPage() {
                             files: files,
                             formSubmitEvent: event
                         })) {
-                            navigate("/index/products");
+                            navigate("/products");
                         }
                     }}
                 />

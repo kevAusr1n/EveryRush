@@ -19,7 +19,7 @@ builder.Services.AddControllers().AddNewtonsoftJson
 (
     options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
 );
-builder.Services.AddAuthentication(
+/*builder.Services.AddAuthentication(
     options =>
     {
         options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -47,7 +47,7 @@ builder.Services.AddAuthentication(
                 ClockSkew = TimeSpan.Zero
         };  
     }
-);
+);*/
 
 builder.Services.AddAuthorization();
 

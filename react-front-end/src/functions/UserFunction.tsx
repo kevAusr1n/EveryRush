@@ -20,7 +20,7 @@ async function SignInWithCredential(props: { email: string, password: string }) 
         password : props.password
     }
 
-    await APICall().post(`/api/auth/signin`, requestJson)
+    await APICall().post(`/api/user/signin`, requestJson)
     .then((res) => {
         if (res.status == 200 && res.data.email != "none") {
             setLoginSuccessUserInfo(res);
@@ -69,16 +69,42 @@ async function SignUp (props: { formSubmitEvent: FormEvent<HTMLFormElement> }) :
         "signin_required": signInRequired
     }
 
-    await APICall().post(`/api/auth/signup`, requestBody)
+    await APICall().post(`/api/user/signup`, requestBody)
     .then((res) => {
         if (signInRequired && res.status == 200) {
             setLoginSuccessUserInfo(res);
+            isSucceed = true;
         }
-        isSucceed = true;
     })
     .catch((err) => {console.log(err)});
 
     return isSucceed;
 }
 
-export { isUserSignedIn , SignOut, SignIn, SignUp };
+async function EditUser(props: {
+    username?: string, 
+    oldPassword?: string,
+    newPassword?: string
+}) {
+    let isSucceed : boolean = false;
+
+    var request = {
+        id: localStorage.getItem("userid"),
+        username: props.username != undefined ? props.username : "",
+        oldPassword: props.oldPassword != undefined ? props.oldPassword : "",
+        newPassword: props.newPassword != undefined ? props.newPassword : ""
+    }
+
+    await APICall().post(`/api/user/edit`, request)
+    .then((res) => {
+        if (res.status == 200 || res.status == 201) {
+            localStorage.setItem("username", props.username != undefined ? props.username : localStorage.getItem("username") as string);
+            isSucceed = true;
+        }
+    })
+    .catch((err) => {console.log(err)});
+
+    return isSucceed;
+}
+
+export { isUserSignedIn , SignOut, SignIn, SignUp, EditUser };

@@ -72,5 +72,59 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\192c031c-97e8-4fa1-83bf-994eecb1f259-20250218172526-image.jpeg'))</OriginalItemSpec>
     </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\c03c5c5d-f8c2-480c-b12e-9fb58b00bc0f-20250224211400-image.jpeg'))">
+      <SourceType>Package</SourceType>
+      <SourceId>EveryRush</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/EveryRush</BasePath>
+      <RelativePath>images/c03c5c5d-f8c2-480c-b12e-9fb58b00bc0f-20250224211400-image.jpeg</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>gzbuj8euca</Fingerprint>
+      <Integrity>LAukvIxo8+kO+xeMeopyGZ62m3NfATjck4tEbpGWz98=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\c03c5c5d-f8c2-480c-b12e-9fb58b00bc0f-20250224211400-image.jpeg'))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\c03c5c5d-f8c2-480c-b12e-9fb58b00bc0f-20250224211400-image.png'))">
+      <SourceType>Package</SourceType>
+      <SourceId>EveryRush</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/EveryRush</BasePath>
+      <RelativePath>images/c03c5c5d-f8c2-480c-b12e-9fb58b00bc0f-20250224211400-image.png</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>9tnn8lev49</Fingerprint>
+      <Integrity>swvObmKFFb7TlF25Z8V7Xti5ofsWE0htqN/b4PUEt/U=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\c03c5c5d-f8c2-480c-b12e-9fb58b00bc0f-20250224211400-image.png'))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\c03c5c5d-f8c2-480c-b12e-9fb58b00bc0f-20250224212114-image.jpeg'))">
+      <SourceType>Package</SourceType>
+      <SourceId>EveryRush</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/EveryRush</BasePath>
+      <RelativePath>images/c03c5c5d-f8c2-480c-b12e-9fb58b00bc0f-20250224212114-image.jpeg</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>gzbuj8euca</Fingerprint>
+      <Integrity>LAukvIxo8+kO+xeMeopyGZ62m3NfATjck4tEbpGWz98=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\c03c5c5d-f8c2-480c-b12e-9fb58b00bc0f-20250224212114-image.jpeg'))</OriginalItemSpec>
+    </StaticWebAsset>
   </ItemGroup>
 </Project>

@@ -2,6 +2,7 @@ import axios from "axios";
 import { Dispatch, FormEvent, SetStateAction } from "react";
 import { isStringEmpty } from "./Utils";
 import APICall from "../config/ApiConfig";
+import { Product } from "../type/EntityType";
 
 function getPaginatedProducts(props: {
   page: number,
@@ -89,5 +90,15 @@ async function addOrUpdateProducts(props: {
     return isSucceed;
 }
 
+async function GetProduct(props: {id: string, setProduct: Dispatch<SetStateAction<Product>>}) {
+    await APICall().get(`/api/products/${props.id}`)
+    .then((res) => {
+        if (res.status == 200) {
+            props.setProduct(res.data);
+        }
+    })
+    .catch((err) => console.log(err));
+}
 
-export { getPaginatedProducts as GetPaginatedProducts,  addOrUpdateProducts };
+
+export { getPaginatedProducts as GetPaginatedProducts, addOrUpdateProducts, GetProduct };

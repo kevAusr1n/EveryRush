@@ -12,7 +12,7 @@ using Microsoft.IdentityModel.Tokens;
 namespace EveryRush.Controller;
 
 [AllowAnonymous]
-[Route("api/auth")]
+[Route("api/user")]
 [ApiController]
 public class AuthController : ControllerBase 
 {
@@ -37,8 +37,8 @@ public class AuthController : ControllerBase
         // await setAuthCookie(response);
         if (response.Email != "none") 
         {
-            await setAuthCookie(response);
-            response.Jwt = await GenerateAuthJWT(response);
+            //await setAuthCookie(response);
+            //response.Jwt = await GenerateAuthJWT(response);
         }
 
         return response;
@@ -50,10 +50,16 @@ public class AuthController : ControllerBase
         GetUserResponse response = await _authService.SignUpAsync(request);
         if (response.Email != "none" && request.doSignInAfterSignUp) 
         {
-            await setAuthCookie(response);
+            //await setAuthCookie(response);
         }
         
         return response;
+    }
+
+    [HttpPost("edit")]
+    public async Task<ActionResult<Boolean>> EditUser([FromBody] EditUserRequest request) 
+    {
+        return await _authService.EditUserAsync(request);
     }
 
     public async Task setAuthCookie(GetUserResponse response) {

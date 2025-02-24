@@ -10,16 +10,16 @@ function SignInPage() {
 
     return (
         <ResponsiveDiv style="flex flex-col items-center" children={[
-            <ResponsiveDiv style="mt-50 mb-50 gap-5 p-20 flex flex-col items-center bg-white shadow" children={[
+            <ResponsiveDiv style="mt-20 mb-50 gap-5 p-20 flex flex-col items-center bg-white shadow" children={[
                 <SubmitForm
                     inputNames={["email", "password"]}
-                    inputTypes={["text", "text"]}
+                    inputTypes={["text", "password"]}
                     inputValues={["", ""]}
                     inputStyles={["w-100", "w-100"]}
                     actionName="SIGN IN"
                     actionHandler={async (event: FormEvent<HTMLFormElement>) => {
                         if (await SignIn({formSubmitEvent: event})) {
-                            navigate("/index");
+                            navigate("/");
                         }
                     }}
                 />,
