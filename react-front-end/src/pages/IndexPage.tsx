@@ -1,6 +1,6 @@
 import { Link, Outlet, useNavigate } from "react-router";
 import ResponsiveDiv from "../components/div/ResponsiveDiv";
-import { isUserSignedIn, SignOut } from "../functions/UserFunction";
+import { isUserCustomer, isUserSignedIn, SignOut } from "../functions/UserFunction";
 
 const headerItemStyle = "text-white p-4 transition hover:bg-white hover:text-black";
 
@@ -12,7 +12,7 @@ function IndexPage() {
             <ResponsiveDiv style="flex flex-row justify-center items-center bg-black" children={[
                 <header className="flex text-black">
                     <Link to="products"><p className={headerItemStyle}>Products</p></Link>
-                    <Link to="cart"><p className={headerItemStyle}>Cart</p></Link>
+                    {isUserCustomer() && <Link to="cart"><p className={headerItemStyle}>Cart</p></Link>}
                     <Link to="orders"><p className={headerItemStyle}>Orders</p></Link>
                     <Link to="contacts"><p className={headerItemStyle}>Contacts</p></Link>
                     <Link to="messages"><p className={headerItemStyle}>Messages</p></Link>

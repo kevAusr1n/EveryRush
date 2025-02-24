@@ -8,12 +8,15 @@ public class Product
     public string? Description { get; set; }
     public decimal? Price { get; set; }
     public int? Stock { get; set; }
-
     public string? ImageUrl {get; set;}
 
     public int? Status {get; set;}
 
+    public DateTime CreatedAt {get; set;} = DateTime.Now;
+    
     public AppUser? User {get; set;}
 
     public ICollection<AppFile>? AppFiles {get; set;}
+
+    public ICollection<Comment>? Comments {get; set;}
 }

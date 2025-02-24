@@ -29,6 +29,22 @@
       "PackagePath": "staticwebassets/images/c03c5c5d-f8c2-480c-b12e-9fb58b00bc0f-20250224212114-image.jpeg"
     },
     {
+      "Id": "/Users/kevin/git-app/EveryRush/wwwroot/images/c03c5c5d-f8c2-480c-b12e-9fb58b00bc0f-311f5578-57d8-4c0c-a991-7a34de48e469-20250224212309-image.png",
+      "PackagePath": "staticwebassets/images/c03c5c5d-f8c2-480c-b12e-9fb58b00bc0f-311f5578-57d8-4c0c-a991-7a34de48e469-20250224212309-image.png"
+    },
+    {
+      "Id": "/Users/kevin/git-app/EveryRush/wwwroot/images/c03c5c5d-f8c2-480c-b12e-9fb58b00bc0f-4ac7e92f-f10a-463b-90a9-5ae88dbf7353-20250224212309-image.jpeg",
+      "PackagePath": "staticwebassets/images/c03c5c5d-f8c2-480c-b12e-9fb58b00bc0f-4ac7e92f-f10a-463b-90a9-5ae88dbf7353-20250224212309-image.jpeg"
+    },
+    {
+      "Id": "/Users/kevin/git-app/EveryRush/wwwroot/images/c03c5c5d-f8c2-480c-b12e-9fb58b00bc0f-b299c1b6-ec0a-46b0-a260-01f40b152583-20250224212309-image.jpeg",
+      "PackagePath": "staticwebassets/images/c03c5c5d-f8c2-480c-b12e-9fb58b00bc0f-b299c1b6-ec0a-46b0-a260-01f40b152583-20250224212309-image.jpeg"
+    },
+    {
+      "Id": "/Users/kevin/git-app/EveryRush/wwwroot/images/c03c5c5d-f8c2-480c-b12e-9fb58b00bc0f-bb10c217-64b9-4962-ab68-447c00a6b464-20250224212309-image.jpeg",
+      "PackagePath": "staticwebassets/images/c03c5c5d-f8c2-480c-b12e-9fb58b00bc0f-bb10c217-64b9-4962-ab68-447c00a6b464-20250224212309-image.jpeg"
+    },
+    {
       "Id": "obj/Debug/net9.0/staticwebassets/msbuild.EveryRush.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
       "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssetEndpoints.props"
     },

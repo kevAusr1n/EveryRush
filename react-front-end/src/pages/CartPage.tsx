@@ -1,4 +1,4 @@
-import { createElement, JSX, ReactNode, useRef, useState } from "react";
+import { createElement, JSX, ReactNode, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import DisplayTable from "../components/DisplayTable";
 import CountEditor from "../components/CountEditor";
@@ -8,16 +8,31 @@ import { ImageBrief } from "../components/Image";
 import { backServerEndpoint } from "../config/BackendServerConfig";
 import ResponsiveDiv from "../components/div/ResponsiveDiv";
 import { CartItem } from "../type/EntityType";
+import { isUserSignedIn } from "../functions/UserFunction";
+import SignInRequiredPage from "./SignInRequiredPage";
 
 function CartPage() {
     const [refreshPage, setRefreshPage] = useState(false);
+    const [cart, setCart] = useState<CartItem[]>([]);
+
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (isUserSignedIn()) {
+            
+        }
+    }, [refreshPage]);
 
     const displayCart = () : ReactNode => {
         let cart = sessionStorage.getItem("cart");
-
+        
         if (cart == null || cart == "null") {
-            return (<p>There is no product in your cart.</p>)
+            return (
+                <ResponsiveDiv style="flex flex-col items-center gap-5" children={[
+                    <p key={crypto.randomUUID()} className="text-xl">Your cart is empty</p>,
+                    <BlackButton key={crypto.randomUUID()} buttonName="SHOPPING" size="w-50 h-20" clickHandler={() => navigate("/products")} />
+                ]} />
+            )
         } else {
             let cartInJson = JSON.parse(cart);
             let tableHead: string[] = ["Product", "Name", "Price", "Quantity", ""];
@@ -35,7 +50,7 @@ function CartPage() {
                 }}/> as ReactNode);
             })
 
-            return (
+            return (            
                 <>
                     <DisplayTable key={crypto.randomUUID()} tableHead={tableHead} tableContent={tableContent} />
                     <ResponsiveDiv key={crypto.randomUUID()} style="flex flex-row m-20 justify-center gap-10" children={[
@@ -43,6 +58,7 @@ function CartPage() {
                         <BlackButton key={crypto.randomUUID()} buttonName="BACK" size="w-50 h-20" clickHandler={() => navigate("/products")}/>
                     ]} />
                 </>
+                
             )
         }  
     }
@@ -50,7 +66,6 @@ function CartPage() {
     const goCheckout = () => {
         let productsInCart = sessionStorage.getItem("cart");
         if (productsInCart == null || productsInCart == "null") {
-            alert("You have nothing to checkout.");
             return;
         }
         navigate("/checkout");
@@ -58,6 +73,7 @@ function CartPage() {
 
     return (
         <ResponsiveDiv style="flex flex-col items-center" children={[
+            (!isUserSignedIn() && <SignInRequiredPage message="Cart" />) || 
             <ResponsiveDiv style="mt-20 mb-20 p-20 flex flex-col items-center" children={[displayCart()]} />
         ]} />
     )

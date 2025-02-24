@@ -36,6 +36,10 @@ function isUserSignedIn() : boolean {
     return localStorage.getItem("userid") != null;
 }
 
+function isUserCustomerOrGuest() : boolean {
+    return localStorage.getItem("role") == "Customer" || localStorage.getItem("role") == undefined;
+}
+
 function SignOut() {
     if (localStorage.getItem("provider") == "google") {
         googleLogout();
@@ -107,4 +111,4 @@ async function EditUser(props: {
     return isSucceed;
 }
 
-export { isUserSignedIn , SignOut, SignIn, SignUp, EditUser };
+export { isUserSignedIn , SignOut, SignIn, SignUp, EditUser, isUserCustomerOrGuest as isUserCustomer };

@@ -9,4 +9,6 @@ public class AppUser : IdentityUser {
     public ICollection<CartItem>? CartItems { get; set;}
 
     public ICollection<Product>? Products { get; set;}
+
+    public ICollection<Comment>? Comments { get; set;} 
 }

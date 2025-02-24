@@ -19,4 +19,6 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, string>
     public DbSet<PurchaseProductSnapshot> PurchaseProductSnapshots {get;set;}
 
     public DbSet<AppFile> AppFiles {get;set;}
+
+    public DbSet<Comment> Comments {get;set;}
 }

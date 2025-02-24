@@ -48,9 +48,9 @@ export function Pagination(props: {
 
     return (
         <ResponsiveDiv style="p-3 flex flex-row items-center justify-center bg-white gap-3" children={[
-            props.page > 1 && <WhiteButton buttonName="Previous" size="w-25 h-10" clickHandler={() => jumpToPage(props.page - 1)} />,
+            <WhiteButton buttonName="Previous" size="w-25 h-10" clickHandler={() => jumpToPage(props.page - 1)} />,
             renderPageButton(props.page),
-            props.page < props.totalPages && <WhiteButton buttonName="Next" size="w-25 h-10" clickHandler={() => jumpToPage(props.page + 1)} />,   
+            <WhiteButton buttonName="Next" size="w-25 h-10" clickHandler={() => jumpToPage(props.page + 1)} />,   
             <OptionInput inputName="/ Page" inputValue={"5,10,20,50"} style="right,w-20" inputChangeHandler={(value) => props.setSize(parseInt(value))} />
         ]} />
     )
