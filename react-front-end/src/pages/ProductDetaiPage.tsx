@@ -10,7 +10,7 @@ import { BlackButton, WhiteButton } from "../components/Button";
 function ProductDetailPage() {
     const params = useParams();
     const productId = params.id as string;
-    const [product, setProduct] = useState<Product>({id: "", userId: "", name: "", price: 0, description: "", stock: 0, imageUrl: ""});
+    const [product, setProduct] = useState<Product>({id: "", userId: "", name: "", price: 0, description: "", stock: 0, imageUrl: ""} as Product);
 
     let images: string[] = (product.imageUrl as string).split(",").map((image: string) => 
         new URL(image, backServerEndpoint).toString()

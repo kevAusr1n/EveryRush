@@ -13,11 +13,20 @@ public class ContactService
         _appDbContext = appDbContext;
     }
 
-    public async Task<GetContactsResponse> GetAllContacts(string userId) 
+    public async Task<GetContactsResponse> GetPaginatedContacts(string userId, int page, int size) 
     {       
-        IList<Contact> contacts = await _appDbContext.Contacts.Where(c => c.AppUserId == userId).ToListAsync();
+        var totalCount = await _appDbContext.Contacts.Where(c => c.AppUserId == userId).CountAsync();
+        var totalPages = (int)Math.Ceiling((double)totalCount / size);
+
+        IList<Contact> contacts = await _appDbContext.Contacts
+            .Where(c => c.AppUserId == userId)
+            .Skip((page - 1) * size)
+            .Take(size)
+            .ToListAsync();
 
         return new GetContactsResponse() {
+            TotalPages = totalPages,
+            TotalCount = totalCount,
             Contacts = contacts
         };
     }

@@ -7,32 +7,50 @@ import { GetContactsResponse } from "../type/ResponseType";
 import ContactDetailPage from "./ContactDetailPage";
 import Pagination from "../components/Pagination";
 import ResponsiveDiv from "../components/div/ResponsiveDiv";
+import { BlackButton } from "../components/Button";
+import { useNavigate } from "react-router";
 
 
 function ContactsPage() {
+    const navigate = useNavigate();
     const [size, setSize]  = useState(5);
     const [page, setPage] = useState(1);
+    const [refresh, setRefresh] = useState(false);
     const [response, setResponse] = useState<GetContactsResponse>({contacts: [], totalPages: 0, totalCount: 0});
 
     useEffect(() => {
         getPaginatedContacts({
-            page: 1, 
-            size: 10, 
+            page: page, 
+            size: size, 
             userid: localStorage.getItem("userid") as string,
             setResponse: setResponse
         })
-    }, [])
+    }, [page, size, refresh])
 
     return (   
         (!isUserSignedIn() && <SignInRequiredPage message="contacts"/>) ||
         (isUserSignedIn() && 
-            <ResponsiveDiv style="flex flex-col items-center" children={[
-                <ResponsiveDiv style="mt-20 mb-10 gap-5 flex flex-col items-center" children={[
-                    response.contacts.map((contact: Contact) => {
-                        return <ContactDetailPage key={crypto.randomUUID()} contact={contact} />
-                    })
-                ]} />,
-                <Pagination 
+            <ResponsiveDiv style="m-20 gap-5 flex flex-col items-center" children={[
+                (
+                    response.contacts.length == 0 && <ResponsiveDiv style="flex flex-col items-center gap-5" children={[
+                        <p key={crypto.randomUUID()} className="text-xl">Your have no contact</p>,
+                        <BlackButton key={crypto.randomUUID()} buttonName="ADD CONTACT" size="w-50 h-20" clickHandler={() => navigate("/contacts/add")} />
+                    ]} />
+                ) ||     
+                (
+                    <ResponsiveDiv style="w-full flex flex-col items-start" children={[
+                        <BlackButton key={crypto.randomUUID()} buttonName="ADD CONTACT" size="w-40 h-10" clickHandler={() => navigate("/contacts/add")} />,
+                        response.contacts.map((contact: Contact) => {
+                            return <ContactDetailPage 
+                                key={crypto.randomUUID()} 
+                                contact={contact} 
+                                refresh={refresh}
+                                setRefresh={setRefresh}
+                            />
+                        })
+                    ]} />
+                ),
+                response.contacts.length != 0 && <Pagination 
                     size={size}
                     setSize={setSize}
                     page={page}

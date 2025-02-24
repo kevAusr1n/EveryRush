@@ -19,10 +19,13 @@ public class ContactController : ControllerBase
     }
 
     [HttpGet]
-    [Authorize(Roles = "Customer", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public async Task<ActionResult<GetContactsResponse>> GetAllContacts([FromQuery] string userId) 
+    //[Authorize(Roles = "Customer", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    public async Task<ActionResult<GetContactsResponse>> GetPaginatedContacts(
+        [FromQuery] string userId, 
+        [FromQuery] int page = 1,
+        [FromQuery] int size = 10) 
     {
-        return await _contactService.GetAllContacts(userId);
+        return await _contactService.GetPaginatedContacts(userId, page, size);
     }
 
     [HttpPost("add")]

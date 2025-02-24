@@ -1,56 +1,44 @@
-import { CartItem, Product } from "../type/EntityType";
+import { Dispatch, SetStateAction } from "react";
+import APICall from "../config/ApiConfig";
+import { CartItem } from "../type/EntityType";
 import { isStringEmpty } from "./Utils";
 
-function addToCart(props: {item: Product | CartItem, quantity: number}): boolean {
+function getCart(props: {userId : string, setCart: Dispatch<SetStateAction<CartItem[]>>}) {
+    APICall()
+    .get(`/api/cart?userid=${props.userId}`)
+    .then((res) => {
+        props.setCart(res.data.cartItems);
+    })
+    .catch((error) => {
+        console.log(error);
+    });
+}
+
+function addOrUpdateCartItem(props: {item: CartItem}) {
     let thisCartItem = {
         id: props.item.id,
-        productId: props.item.id,
-        name: props.item.name,
-        price: props.item.price,
-        imageUrl: props.item.imageUrl,
-        quantity: props.quantity
+        userId: localStorage.getItem("userid") as string,
+        productId: props.item.productId,
+        quantity: props.item.quantity
     }
 
-    const key = "cart";
-    let cart = sessionStorage.getItem(key) as string;
+    let action: string = isStringEmpty(props.item.id) ? "add" : "update";
 
-    if (!isStringEmpty(cart)) {
-        let cartJson = JSON.parse(cart);
-        const index = cartJson.cartItems.findIndex((cartItem: any)=> cartItem.productId === thisCartItem.productId);
-
-        if (index == -1) {
-            cartJson.cartItems.push(thisCartItem);
-        } else {
-            cartJson.cartItems[index].quantity = cartJson.cartItems[index].quantity + thisCartItem.quantity;
-        }
-
-        sessionStorage.setItem(key, JSON.stringify(cartJson));
-    } else {
-        let productsInCartJson = { cartItems: [thisCartItem] };
-        sessionStorage.setItem(key, JSON.stringify(productsInCartJson));
-    }
-
-    /*if (isUserSignedIn()) {
-
-    } else {
-        let productsInCartJson = { cartItems: [thisCartItem] };
-        sessionStorage.setItem(key, JSON.stringify(productsInCartJson));
-    }*/
-
-    return true;
+    APICall()
+    .post(`/api/cart/${action}` , thisCartItem)
+    .then((_) => {})
+    .catch((error) => {
+        console.log(error);
+    });
 }
 
-function removeFromCart (props: {cartItem: any}) : boolean {
-    let cartJson = JSON.parse(sessionStorage.getItem("cart") as string);
-    cartJson.cartItems = cartJson.cartItems.filter((cartItem : CartItem) => cartItem.productId != props.cartItem.productId);
-    
-    if (cartJson.cartItems.length == 0) {
-        sessionStorage.removeItem("cart");
-    } else {
-        sessionStorage.setItem("cart", JSON.stringify({cartItems: cartJson.cartItems }));
-    }
-
-    return true;
+function removeFromCart (props: {id: string}) {
+    APICall()
+    .delete(`/api/cart/delete/${props.id}`)
+    .then((_) => {})
+    .catch((error) => {
+        console.log(error);
+    });
 }
 
-export { addToCart, removeFromCart }
+export { getCart, addOrUpdateCartItem, removeFromCart }

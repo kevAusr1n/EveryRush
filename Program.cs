@@ -108,6 +108,7 @@ builder.Services.AddCors
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<ProductService>();
 builder.Services.AddScoped<ContactService>();
+builder.Services.AddScoped<CartService>();
 
 //builder.Services.AddScoped<IAuthorizationHandler, CustomerAuthorizationHandler>();
 //builder.Services.AddScoped<IAuthorizationHandler, BusinessOwnerAuthorizationHandler>();

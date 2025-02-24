@@ -37,6 +37,7 @@ async function addOrUpdateContacts (props: {
         postcode: formData.get('postcode'),
     }
 
+    alert(JSON.stringify(requestBody));
     await APICall().post(`/api/contacts/${props.action}`, requestBody, {
         headers: {
             Accept: 'application/json'

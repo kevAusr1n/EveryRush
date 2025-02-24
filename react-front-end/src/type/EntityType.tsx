@@ -5,7 +5,9 @@ type Product = {
     description: string;
     price: number;
     stock: number;
+    status: number;
     imageUrl: string;
+    createAt: Date
 }
 
 type Contact = {

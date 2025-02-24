@@ -1,4 +1,3 @@
-import axios from "axios";
 import { Dispatch, FormEvent, SetStateAction } from "react";
 import { isStringEmpty } from "./Utils";
 import APICall from "../config/ApiConfig";
