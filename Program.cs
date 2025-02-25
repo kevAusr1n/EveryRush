@@ -1,11 +1,11 @@
 using System.Text;
-using ContactManager.Authorization;
 using EveryRush.Entity;
 using Google.Apis.Auth.AspNetCore3;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
@@ -19,38 +19,8 @@ builder.Services.AddControllers().AddNewtonsoftJson
 (
     options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
 );
-/*builder.Services.AddAuthentication(
-    options =>
-    {
-        options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-    }
-)
-.AddCookie(
-    options => 
-    {
-        options.Cookie.HttpOnly = true;
-        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-        options.Cookie.SameSite = SameSiteMode.None;
-    }
-)
-.AddJwtBearer(
-    options =>
-    {
-        options.RequireHttpsMetadata = false;
-        options.SaveToken = true;
-        options.TokenValidationParameters = new TokenValidationParameters {
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(AuthenticationConfig.JWT.Key),
-                ValidateIssuer = false,
-                ValidateAudience = false,
-                ValidateLifetime = true,
-                ClockSkew = TimeSpan.Zero
-        };  
-    }
-);*/
 
 builder.Services.AddAuthorization();
-
 builder.Services.AddDbContext<AppDbContext>
 (
     connDbOptions => connDbOptions.UseMySql
@@ -62,9 +32,17 @@ builder.Services.AddDbContext<AppDbContext>
 );
 
 builder.Services
-.AddIdentityApiEndpoints<AppUser>()
+.AddIdentityApiEndpoints<AppUser>
+(   
+    /*options => 
+    { 
+        options.Tokens.PasswordResetTokenProvider = "NumericTokenProvider"; 
+        options.Tokens.EmailConfirmationTokenProvider = "NumericTokenProvider"; 
+    }*/
+)
 .AddRoles<AppRole>()
-.AddEntityFrameworkStores<AppDbContext>();
+.AddEntityFrameworkStores<AppDbContext>()
+.AddTokenProvider<NumericPasswordResetTokenProvider<AppUser>>("NumericTokenProvider");
 
 builder.Services.Configure<IdentityOptions>
 (
@@ -105,10 +83,14 @@ builder.Services.AddCors
     }
 );
 
+builder.Services.AddTransient<EmailSender>();
+builder.Services.Configure<AuthMessageSenderConfig>(builder.Configuration);
+
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<ProductService>();
 builder.Services.AddScoped<ContactService>();
 builder.Services.AddScoped<CartService>();
+builder.Services.AddSingleton<OrderStatusCheck>();
 
 //builder.Services.AddScoped<IAuthorizationHandler, CustomerAuthorizationHandler>();
 //builder.Services.AddScoped<IAuthorizationHandler, BusinessOwnerAuthorizationHandler>();

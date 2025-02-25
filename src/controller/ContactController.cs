@@ -19,7 +19,7 @@ public class ContactController : ControllerBase
     }
 
     [HttpGet]
-    //[Authorize(Roles = "Customer", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(Roles = "Customer")]
     public async Task<ActionResult<GetContactsResponse>> GetPaginatedContacts(
         [FromQuery] string userId, 
         [FromQuery] int page = 1,

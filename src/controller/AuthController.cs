@@ -30,30 +30,27 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("signin")]
-    public async Task<ActionResult<GetUserResponse>> SignIn([FromBody] SignInRequest request) 
+    public async Task<ActionResult<GetUserResponse>> SignInAsync([FromBody] SignInRequest request) 
     {
-        GetUserResponse response = await _authService.SignInAsync(request);
-        // TODO: check if user is valid
-        // await setAuthCookie(response);
-        if (response.Email != "none") 
-        {
-            //await setAuthCookie(response);
-            //response.Jwt = await GenerateAuthJWT(response);
-        }
-
-        return response;
+        return await _authService.SignInAsync(request);      
     }
 
     [HttpPost("signup")]
-    public async Task<ActionResult<GetUserResponse>> SignUp([FromBody] SignUpRequest request) 
+    public async Task<ActionResult<SignUpResponse>> SignUpAsync([FromBody] SignUpRequest request) 
     {
-        GetUserResponse response = await _authService.SignUpAsync(request);
-        if (response.Email != "none" && request.doSignInAfterSignUp) 
-        {
-            //await setAuthCookie(response);
-        }
-        
-        return response;
+        return await _authService.SignUpAsync(request);
+    }
+
+    [HttpPost("signup-confirm")]
+    public async Task<ActionResult<SignUpConfirmResponse>> SignUpConfirmAsync([FromBody] SignUpConfirmRequest request) 
+    {
+        return await _authService.SignUpConfirmAsync(request);
+    }
+
+    [HttpPost("signout")]
+    public async Task<ActionResult<Boolean>> SignOutAsync() 
+    {
+        return await _authService.SignOutAsync();
     }
 
     [HttpPost("edit")]
@@ -62,31 +59,15 @@ public class AuthController : ControllerBase
         return await _authService.EditUserAsync(request);
     }
 
-    public async Task setAuthCookie(GetUserResponse response) {
-        var claims = new List<Claim>
-        {
-            new Claim(ClaimTypes.Name, response.Email),
-            new Claim("UserName", response.UserName),
-            new Claim(ClaimTypes.Role, response.Role)
-        };
-        var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+    [HttpPost("send-password-reset-email")]
+    public async Task<ActionResult<SendPasswordResetEmailResponse>> SendPasswordResetEmail([FromQuery] string email) 
+    {
+        return await _authService.SendPasswordResetEmailAsync(email);
     }
 
-    public async Task<String> GenerateAuthJWT(GetUserResponse response) {
-        var claims = new List<Claim>
-        {
-            new Claim(ClaimTypes.Name, response.Email),
-            new Claim("UserName", response.UserName),
-            new Claim(ClaimTypes.Role, response.Role)
-        };
-        var credentials = new SigningCredentials(new SymmetricSecurityKey(AuthenticationConfig.JWT.Key), SecurityAlgorithms.HmacSha256);
-        var token = new JwtSecurityToken(
-            claims: claims,
-            expires: DateTime.UtcNow.AddHours(1), // Token expiration time
-            signingCredentials: credentials
-        );
-
-        return new JwtSecurityTokenHandler().WriteToken(token);
+    [HttpPost("password-reset")]
+    public async Task<ActionResult<ResetPasswordResponse>> ResetPassword([FromBody] ResetPasswordRequest request) 
+    {
+        return await _authService.ResetPasswordAsync(request);
     }
 }

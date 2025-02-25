@@ -13,8 +13,8 @@ function setLoginSuccessUserInfo(res : any) {
     }
 }
 
-async function SignInWithCredential(props: { email: string, password: string }) : Promise<boolean> {
-    let isSucceed : boolean = false;
+async function signInWithCredential(props: { email: string, password: string }) : Promise<string> {
+    let result : string = "failure";
     var requestJson = {
         email : props.email,
         password : props.password
@@ -24,12 +24,14 @@ async function SignInWithCredential(props: { email: string, password: string }) 
     .then((res) => {
         if (res.status == 200 && res.data.email != "none") {
             setLoginSuccessUserInfo(res);
-            isSucceed = true;
+            result = "success";
+        } else if (res.data.result == "failure") {
+            result = "email not confirmed";
         }
     })
     .catch((err) => alert(err));
 
-    return isSucceed;
+    return result;
 }
 
 function isUserSignedIn() : boolean {
@@ -40,11 +42,12 @@ function isUserCustomerOrGuest() : boolean {
     return localStorage.getItem("role") == "Customer" || localStorage.getItem("role") == undefined;
 }
 
-function SignOut() {
+function signOut() {
     if (localStorage.getItem("provider") == "google") {
         googleLogout();
+    } else {
+        APICall().post(`/api/user/signout`);
     }
-
     localStorage.removeItem("userid");
     localStorage.removeItem("email");
     localStorage.removeItem("username");
@@ -53,13 +56,13 @@ function SignOut() {
     localStorage.removeItem("jwt");
 }
 
-async function SignIn(props: { formSubmitEvent: FormEvent<HTMLFormElement> }) : Promise<boolean> {
+async function signIn(props: { formSubmitEvent: FormEvent<HTMLFormElement> }) : Promise<string> {
     props.formSubmitEvent.preventDefault();
     const formData = new FormData(props.formSubmitEvent.currentTarget);
-    return await SignInWithCredential({email: formData.get("email") as string, password: formData.get("password") as string});
+    return await signInWithCredential({email: formData.get("email") as string, password: formData.get("password") as string});
 }
 
-async function SignUp (props: { formSubmitEvent: FormEvent<HTMLFormElement> }) : Promise<boolean> {
+async function signUp (props: { formSubmitEvent: FormEvent<HTMLFormElement> }) : Promise<boolean> {
     props.formSubmitEvent.preventDefault();
 
     let isSucceed : boolean = false;
@@ -75,8 +78,27 @@ async function SignUp (props: { formSubmitEvent: FormEvent<HTMLFormElement> }) :
 
     await APICall().post(`/api/user/signup`, requestBody)
     .then((res) => {
-        if (signInRequired && res.status == 200) {
-            setLoginSuccessUserInfo(res);
+        if (res.status == 200) {
+            isSucceed = true;
+        }
+    })
+    .catch((err) => {console.log(err)});
+
+    return isSucceed;
+}
+
+async function signUpConfirm(props: { email: string, code: string }) : Promise<boolean> {
+    let isSucceed : boolean = false;
+
+    var request = {
+        email: props.email,
+        code: props.code
+    }
+
+    await APICall()
+    .post(`/api/user/signup-confirm`, request)
+    .then((res) => {
+        if (res.data.result == "success") {
             isSucceed = true;
         }
     })
@@ -111,4 +133,38 @@ async function EditUser(props: {
     return isSucceed;
 }
 
-export { isUserSignedIn , SignOut, SignIn, SignUp, EditUser, isUserCustomerOrGuest as isUserCustomer };
+async function sendPasswordResetEmail(props: { email: string }) : Promise<boolean> {
+    let isSucceed : boolean = false;
+
+    await APICall()
+    .post(`/api/user/send-password-reset-email?email=${props.email}`)
+    .then((res) => {
+        if (res.data.result == "success") {
+            isSucceed = true;
+        }
+    })
+    .catch((err) => {console.log(err)});
+
+    return isSucceed;
+}
+
+async function resetPassword(props: { email: string, code: string, newPassword: string }) : Promise<boolean> {
+    let isSucceed : boolean = false;
+
+    var request = {
+        email: props.email,
+        code: props.code,
+        newPassword: props.newPassword
+    }
+    await APICall().post(`/api/user/password-reset`, request)
+    .then((res) => {
+        if (res.data.result == "success") {
+            isSucceed = true;
+        }
+    })
+    .catch((err) => {console.log(err)});
+
+    return isSucceed;
+}
+
+export { isUserSignedIn , signOut , signIn, signUp, EditUser, isUserCustomerOrGuest, sendPasswordResetEmail, resetPassword, signUpConfirm };

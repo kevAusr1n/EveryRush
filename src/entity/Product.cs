@@ -10,10 +10,10 @@ public class Product
     public int? Stock { get; set; }
     public string? ImageUrl {get; set;}
 
-    public int? Status {get; set;}
+    public int Status {get; set;} = default!;
 
     public DateTime CreatedAt {get; set;} = DateTime.Now;
-    
+
     public AppUser? User {get; set;}
 
     public ICollection<AppFile>? AppFiles {get; set;}

@@ -36,6 +36,32 @@ function TextInput(props: {
     )
 }
 
+function TextAreaInput(props: {
+    inputName: string, 
+    inputValue: string, 
+    style: string,
+    readonly?: boolean,
+    setState?: Dispatch<SetStateAction<string>>
+}) {
+    const [_, setState] = useState(props.inputValue);
+
+    return (
+        <ResponsiveDiv style="" children={[
+            <label className={basicLabelStyle}>{props.inputName.toLocaleLowerCase()}</label>,
+            <textarea className={props.style + " h-50 " + basicTextFieldStyle} 
+                defaultValue={props.inputValue} id={props.inputName.toLocaleLowerCase()} name={props.inputName.toLocaleLowerCase()}
+                onChange={(e) => {
+                    if (props.setState != undefined && props.setState != null) {
+                        props.setState(e.target.value)
+                    } else {
+                        setState(e.target.value)
+                    }
+                }}
+            />
+        ]}/>
+    )
+}
+
 function OptionInput(props: {
     inputName: string, 
     inputValue: string, 
@@ -43,7 +69,7 @@ function OptionInput(props: {
     inputChangeHandler?: (value: any) => void
 }) {
     const optionValues: string[] = props.inputValue.split(",");
-    const [isDropdown, setIsDropdown] = useState(false);
+    const [dropDown, setDropDown] = useState(false);
     const [position, inputWidth] = props.style == "" ? ["left", "w-80"] : props.style.split(",");
 
     const selectRoleHadnler = ( id: string , originStyle: string, value: string) => {
@@ -56,7 +82,7 @@ function OptionInput(props: {
             },
             onClick: () => {
                 document.getElementById(props.inputName.toLocaleLowerCase())?.setAttribute("value", value);
-                setIsDropdown(!isDropdown);
+                setDropDown(!dropDown);
                 if (props.inputChangeHandler != undefined) {
                     props.inputChangeHandler(value);
                 }
@@ -68,7 +94,7 @@ function OptionInput(props: {
         const nodes: ReactNode[] = [
             <BlackButton buttonName={props.inputName} size="h-10" clickHandler={
                 () => {
-                    setIsDropdown(!isDropdown);
+                    setDropDown(!dropDown);
                 }}
             />,
             <input id={props.inputName.toLocaleLowerCase()} name={props.inputName.toLocaleLowerCase()} className={inputWidth + " text-center border-b-1 border-black focus:outline-none"} readOnly />
@@ -86,12 +112,12 @@ function OptionInput(props: {
             <ResponsiveDiv style="flex flex-row justify-between gap-5" children={[
                 optionLayout()
             ]} />, 
-            <DropDown isDropDown={isDropdown} items={optionValues} eventHandlerMap={selectRoleHadnler} />
+            <DropDown dropDown={dropDown} items={optionValues} eventHandlerMap={selectRoleHadnler} />
         ]} />
     )
 }
 
-function FileInput(props: {
+function ImageInput(props: {
     inputName: string, 
     inputValue: [FileList | null, React.Dispatch<React.SetStateAction<FileList | null>>],
     style: string}) 
@@ -148,10 +174,10 @@ function FileInput(props: {
         setFiles(dataTransfer.files);
     }
 
-    const visibleImageStyle = "w-32 h-32 opacity-100";
-    const halfTransparentImageStyle = "w-32 h-32 opacity-50";
-    const invisibleDeleteButtonStyle = "opacity-0 h-16 w-16 absolute inset-8 flex items-center justify-center bg-red-500 text-white";
-    const visibleDeleteButtonStyle = "opacity-100 h-16 w-16 absolute inset-8 flex items-center justify-center bg-red-500 text-white";
+    const visibleImageStyle = "p-2 border-2 w-32 h-32 opacity-100";
+    const halfTransparentImageStyle = "p-2 border-2 w-32 h-32 opacity-50";
+    const invisibleDeleteButtonStyle = "opacity-0 h-8 w-8 absolute inset-12 flex items-center justify-center bg-red-500 text-white";
+    const visibleDeleteButtonStyle = "opacity-100 h-8 w-8 absolute inset-12 flex items-center justify-center bg-red-500 text-white";
 
     const eventHandlerMap = (imageId: string, buttonId: string) => {
         return {
@@ -174,14 +200,14 @@ function FileInput(props: {
             </label>,
             <input id={props.inputName.toLocaleLowerCase()} name={props.inputName.toLocaleLowerCase()} 
                 type="file" multiple hidden onChange={(e) => addImage(e.target.files as FileList)}/>,
-            <ResponsiveDiv style="m-10 h-10" children={[<p className="text-red-500">{errorMsg}</p>]} />,
-            <ResponsiveDiv style="flex flex-row h-40" children={[
+            <ResponsiveDiv style="mt-2 mb-2" children={[<p className="text-red-500">{errorMsg}</p>]} />,
+            <ResponsiveDiv style="flex flex-row mt-3 mb-3 gap-2" children={[
                 files && Array.from(files).map((file) => {
                     const id = crypto.randomUUID();
                     const imageId = crypto.randomUUID();
                     const deleteButtonId = crypto.randomUUID();
                     return (
-                        <ResponsiveDiv id={id} style="relative m-1 h-32 w-32" eventHandlerMap={eventHandlerMap(imageId, deleteButtonId)} children={[
+                        <ResponsiveDiv id={id} style="relative h-32 w-32" eventHandlerMap={eventHandlerMap(imageId, deleteButtonId)} children={[
                             <ImageBrief id={imageId} src={URL.createObjectURL(file)} style={visibleImageStyle} />,
                             <button id={deleteButtonId} className={invisibleDeleteButtonStyle} onClick={() => deleteFromFiles(file)}>
                                 <X />
@@ -205,10 +231,12 @@ function InputField(props: {
         case "text":
         case "password":
             return <TextInput inputName={props.inputName} inputType={props.inputType} inputValue={props.inputValue as string} style={props.style} setState={props.setState}/>
+        case "textarea":
+            return <TextAreaInput inputName={props.inputName} inputValue={props.inputValue as string} style={props.style} setState={props.setState} />
         case "option":
             return <OptionInput inputName={props.inputName} inputValue={props.inputValue as string} style={props.style} />
         case "file":
-            return <FileInput inputName={props.inputName} inputValue={props.inputValue as [FileList | null, React.Dispatch<React.SetStateAction<FileList | null>>]} style={props.style} />
+            return <ImageInput inputName={props.inputName} inputValue={props.inputValue as [FileList | null, React.Dispatch<React.SetStateAction<FileList | null>>]} style={props.style} />
         default:
             return <></> 
     }

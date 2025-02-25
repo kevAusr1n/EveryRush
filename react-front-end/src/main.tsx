@@ -15,6 +15,8 @@ import CheckoutPage from './pages/CheckoutPage.tsx'
 import { BrowserRouter, Route, Routes } from 'react-router'
 import UserInfoEditPage from './pages/UserInfoEditPage.tsx'
 import ProductDetailPage from './pages/ProductDetaiPage.tsx'
+import PasswordResetPage from './pages/PasswordResetPage.tsx'
+import SignUpConfirmPage from './pages/SignUpConfirmPage.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -25,6 +27,8 @@ createRoot(document.getElementById('root')!).render(
             <Route index element={<ProductsPage />} /> 
             <Route path="signin" element={<SignInPage />} /> 
             <Route path="signup" element={<SignUpPage />} /> 
+            <Route path="signup-confirm" element={<SignUpConfirmPage />} />
+            <Route path="password-reset" element={<PasswordResetPage />} /> 
             <Route path="products" element={<ProductsPage />} />
             <Route path="cart" element={<CartPage />} />
             <Route path="orders" element={<Orders />} />

@@ -49,8 +49,8 @@ function ProductDetailPage() {
                         <p className="text-gray-500 text-xl">{product.description}</p>
                     ]} />,
                     <ResponsiveDiv style="flex flex-row items-center justify-end gap-5 mt-20" children={[  
-                        <BlackButton buttonName="ADD TO CART" size="w-50 h-20" clickHandler={() => {}} />,
-                        <WhiteButton buttonName="PURCHASE" size="w-50 h-20" clickHandler={() => {}} />,
+                        <BlackButton buttonName="ADD TO CART" size="w-40 h-10" clickHandler={() => {}} />,
+                        <WhiteButton buttonName="PURCHASE" size="w-40 h-10" clickHandler={() => {}} />,
                     ]} />
                 ]} />
             ]} />

@@ -445,3 +445,6 @@
 /Users/kevin/git-app/EveryRush/bin/Debug/net9.0/EveryRush.staticwebassets.runtime.json
 /Users/kevin/git-app/EveryRush/bin/Debug/net9.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
 /Users/kevin/git-app/EveryRush/bin/Debug/net9.0/Microsoft.IdentityModel.Abstractions.dll
+/Users/kevin/git-app/EveryRush/bin/Debug/net9.0/Postmark.dll
+/Users/kevin/git-app/EveryRush/bin/Debug/net9.0/SendGrid.dll
+/Users/kevin/git-app/EveryRush/bin/Debug/net9.0/StarkbankEcdsa.dll

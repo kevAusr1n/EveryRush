@@ -84,7 +84,7 @@ function CheckoutPage() {
                         <strong className="text-2xl">Post Address</strong>,
                         <BlackButton buttonName="USE CONTACT" size="h-10 w-50" clickHandler={() => setDropdown(!dropdown)}/>,
                         <ResponsiveDiv style="" children={[
-                            <DropDown isDropDown={dropdown} items={contactResponse.contacts} eventHandlerMap={useContactButtonHandler} />
+                            <DropDown dropDown={dropdown} items={contactResponse.contacts} eventHandlerMap={useContactButtonHandler} />
                         ]} />
                     ]} />,
                     contactInputFieldNames.map((name : string , index : number) => {

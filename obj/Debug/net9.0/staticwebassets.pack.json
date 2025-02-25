@@ -1,6 +1,14 @@
 {
   "Files": [
     {
+      "Id": "/Users/kevin/git-app/EveryRush/wwwroot/images/0063a0e8-e2ae-40c1-b925-75cfe9a29bdc-69391392-119e-427c-8d2d-e8d6eca3e79a-20250225224509-image.png",
+      "PackagePath": "staticwebassets/images/0063a0e8-e2ae-40c1-b925-75cfe9a29bdc-69391392-119e-427c-8d2d-e8d6eca3e79a-20250225224509-image.png"
+    },
+    {
+      "Id": "/Users/kevin/git-app/EveryRush/wwwroot/images/0063a0e8-e2ae-40c1-b925-75cfe9a29bdc-d8121eba-bd98-448c-b5db-7124d071941b-20250225224921-image.jpeg",
+      "PackagePath": "staticwebassets/images/0063a0e8-e2ae-40c1-b925-75cfe9a29bdc-d8121eba-bd98-448c-b5db-7124d071941b-20250225224921-image.jpeg"
+    },
+    {
       "Id": "/Users/kevin/git-app/EveryRush/wwwroot/images/192c031c-97e8-4fa1-83bf-994eecb1f259-20250217224657-image.png",
       "PackagePath": "staticwebassets/images/192c031c-97e8-4fa1-83bf-994eecb1f259-20250217224657-image.png"
     },

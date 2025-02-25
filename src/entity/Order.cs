@@ -4,8 +4,8 @@ using EveryRush.Entity;
 public class Order {
     public string? Id {get; set;}
     public string? AppUserId {get;set;}
-    
-    public DateTime? Date {get;set;}
+
+    public DateTime? CreateAt {get;set;}
 
     public AppUser? AppUser {get;set;}
 

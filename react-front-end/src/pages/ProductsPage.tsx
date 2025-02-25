@@ -1,16 +1,20 @@
 import { useEffect, useState } from "react";
 import Pagination from "../components/Pagination";
-import { GetPaginatedProducts } from "../functions/ProductFunction";
+import { deleteProducts, getPaginatedProducts, updateProductStatus } from "../functions/ProductFunction";
 import ProductBriefPage from "./ProductBriefPage";
 import DisplayArrangement from "../components/DisplayArrangement";
 import { GetProductsResponse } from "../type/ResponseType";
 import { Product } from "../type/EntityType";
 import FilterSide from "../components/FilterSide";
 import ResponsiveDiv from "../components/div/ResponsiveDiv";
-import { isUserCustomer } from "../functions/UserFunction";
+import { isUserCustomerOrGuest } from "../functions/UserFunction";
 import { BlackButton, RedButton } from "../components/Button";
+import { useNavigate } from "react-router";
+import ProductStatusConfig from "../config/ProductStatusConfig";
 
 function ProductsPage() {
+    const navigate = useNavigate();
+    const [refresh, setRefresh] = useState(false);
     const [size, setSize]  = useState(5);
     const [page, setPage] = useState(1);
     const [searchTerm, setSearchTerm] = useState("");
@@ -19,17 +23,27 @@ function ProductsPage() {
     const [arrangement, setArrangement] = useState<string>(initialArrangement);
     const [response, setResponse] = useState<GetProductsResponse>({products: [], totalPages: 0, totalCount: 0});
 
-    useEffect(() => GetPaginatedProducts({
+    useEffect(() => getPaginatedProducts({
         page : page, 
         size : size, 
         searchTerm : searchTerm, 
         orderTerm : orderTerm,
         setResponse: setResponse,
-    }), [page, size, searchTerm, orderTerm]);
+    }), [page, size, searchTerm, orderTerm, refresh]);
+
+    const updateProductStatusHandler = async (id: string, status: number) => {
+        await updateProductStatus({id: id, status: status});
+        setRefresh(!refresh);
+    }
+
+    const deleteProductHandler = async (id: string) => {
+        await deleteProducts({id: id});
+        setRefresh(!refresh);
+    }
 
     return (
         (
-            isUserCustomer() && 
+            isUserCustomerOrGuest() && 
             <ResponsiveDiv style="" children={[
                 <ResponsiveDiv style="flex flex-row" children={[
                     <ResponsiveDiv style="w-1/5" key={crypto.randomUUID()} children={[
@@ -67,44 +81,53 @@ function ProductsPage() {
                 />
             ]}/>
         ) || 
-        (
-            !isUserCustomer() && 
-            <ResponsiveDiv style="mt-20 mb-20 m-5 mr-5 w" key={crypto.randomUUID()} children={[ 
-                <ResponsiveDiv style="flex flex-col items-start gap-3" children={[
-                    <BlackButton buttonName="ADD PRODUCT" size="w-40 h-10" clickHandler={() => {}} />,
-                    <ResponsiveDiv style="w-full flex flex-row items-center border-b-1" children={[
-                        <p className="w-3/10" key={0}>Product ID</p>,
-                            <p className="w-3/10 font-bold" key={1}>Name</p>,
-                            <p className="w-1/10 font-bold" key={2}>Price</p>,
-                            <p className="w-1/10 font-bold" key={3}>Stock</p>,
-                    ]} />,
-                    response.products.map((product: Product, index: number) => {
-                        return (
-                            <ResponsiveDiv style="w-full flex flex-row shadow-xl items-center" children={[
-                                <p className="w-3/10" key={index}>{product.id}</p>,
-                                <p className="w-3/10" key={index}>{product.name}</p>,
-                                <p className="w-1/10" key={index}>${product.price}</p>,
-                                <p className="w-1/10" key={index}>{product.stock}</p>,
-                                <ResponsiveDiv style="flex flex-row gap-5 py-3" children={[
-                                    <BlackButton buttonName="OFF-SHELF" size="w-40 h-10" clickHandler={() => {}} />,
-                                    <RedButton buttonName="DELETE" size="w-40 h-10" clickHandler={() => {
-                                        
-                                    }} />
-                                ]} />
-                            ]} />
-                        )
-                    })
+        <ResponsiveDiv style="mt-20 mb-20 m-5 mr-5 w" key={crypto.randomUUID()} children={[ 
+            <ResponsiveDiv style="flex flex-col items-start gap-3" children={[
+                <BlackButton buttonName="ADD PRODUCT" size="w-40 h-10" clickHandler={() => navigate("/products/add")} />, 
+                response.products.length == 0 && <ResponsiveDiv style="w-full flex flex-row mt-20 justify-center" children={[
+                    <p className="text-xl">You have no product</p>
                 ]} />,
-                <Pagination 
-                    size={size}
-                    setSize={setSize}
-                    page={page}
-                    setPage={setPage}
-                    totalPages={response.totalPages}
-                    totalCount={response.totalCount} 
-                />
-            ]} />
-        )
+
+                response.products.length != 0 && <ResponsiveDiv style="w-full flex flex-row items-center border-b-1" children={[
+                    <p className="w-3/12" key={0}>Product ID</p>,
+                    <p className="w-3/12 font-bold" key={1}>Name</p>,
+                    <p className="w-1/12 font-bold" key={2}>Price</p>,
+                    <p className="w-1/12 font-bold" key={3}>Stock</p>,
+                    <p className="w-1/12 font-bold" key={4}>Status</p>
+                ]} />,
+                response.products.length != 0 && response.products.map((product: Product) => {
+                    return (
+                        <ResponsiveDiv style="w-full flex flex-row shadow-xl items-center" children={[
+                            <p className="w-3/12" key={0}>{product.id}</p>,
+                            <p className="w-3/12" key={1}>{product.name}</p>,
+                            <p className="w-1/12" key={2}>${product.price}</p>,
+                            <p className="w-1/12" key={3}>{product.stock}</p>,
+                            <p className="w-1/12" key={4}>{ProductStatusConfig.getStatusName(product.status)}</p>,
+                            <ResponsiveDiv style="flex flex-row gap-5 py-3" children={[
+                                product.status == ProductStatusConfig.OFF_SHELF && <BlackButton buttonName="ON-SHELF" size="w-40 h-10" clickHandler={() => {
+                                    updateProductStatusHandler(product.id, ProductStatusConfig.IN_SALE);
+                                }} />,
+                                product.status != ProductStatusConfig.OFF_SHELF && <BlackButton buttonName="OFF-SHELF" size="w-40 h-10" clickHandler={() => {
+                                    updateProductStatusHandler(product.id, ProductStatusConfig.OFF_SHELF);
+                                }} />,
+                                <RedButton buttonName="DELETE" size="w-40 h-10" clickHandler={() => {
+                                    deleteProductHandler(product.id);
+                                }} />
+                            ]} />
+                        ]} />
+                    )
+                })
+                
+            ]} />,
+            response.products.length != 0 && <Pagination 
+                size={size}
+                setSize={setSize}
+                page={page}
+                setPage={setPage}
+                totalPages={response.totalPages}
+                totalCount={response.totalCount} 
+            />
+        ]} />
     )
 }
 

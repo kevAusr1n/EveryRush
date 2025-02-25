@@ -1,4 +1,4 @@
-import { Dispatch, ReactNode, SetStateAction, useReducer, useRef } from "react"
+import { Dispatch, SetStateAction } from "react"
 import ResponsiveDiv from "./div/ResponsiveDiv";
 import { WhiteButton } from "./Button";
 import SearchBar from "./SearchBar";

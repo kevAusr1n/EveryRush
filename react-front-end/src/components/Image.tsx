@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useRef, useState } from "react";
+import { Dispatch, SetStateAction, useRef } from "react";
 import ResponsiveDiv from "./div/ResponsiveDiv";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 

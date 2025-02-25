@@ -117,7 +117,7 @@ namespace EveryRush.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("Comment");
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("Contact", b =>
@@ -376,7 +376,7 @@ namespace EveryRush.Migrations
                     b.Property<string>("AppUserId")
                         .HasColumnType("varchar(255)");
 
-                    b.Property<DateTime?>("Date")
+                    b.Property<DateTime?>("CreateAt")
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");

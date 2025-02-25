@@ -1,4 +1,4 @@
-import { createElement, JSX, ReactNode, useEffect, useRef, useState } from "react";
+import { createElement, ReactNode, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import DisplayTable from "../components/DisplayTable";
 import CountEditor from "../components/CountEditor";
@@ -28,7 +28,7 @@ function CartPage() {
             return (
                 <ResponsiveDiv style="flex flex-col items-center gap-5" children={[
                     <p key={crypto.randomUUID()} className="text-xl">Your cart is empty</p>,
-                    <BlackButton key={crypto.randomUUID()} buttonName="SHOPPING" size="w-50 h-20" clickHandler={() => navigate("/products")} />
+                    <BlackButton key={crypto.randomUUID()} buttonName="SHOPPING" size="w-40 h-10" clickHandler={() => navigate("/products")} />
                 ]} />
             )
         } else {
@@ -51,8 +51,8 @@ function CartPage() {
                 <>
                     <DisplayTable key={crypto.randomUUID()} tableHead={tableHead} tableContent={tableContent} />
                     <ResponsiveDiv key={crypto.randomUUID()} style="flex flex-row m-20 justify-center gap-10" children={[
-                        <BlackButton key={crypto.randomUUID()} buttonName="CHECKOUT" size="w-50 h-20" clickHandler={() => goCheckout()}/>,
-                        <BlackButton key={crypto.randomUUID()} buttonName="BACK" size="w-50 h-20" clickHandler={() => navigate("/products")}/>
+                        <BlackButton key={crypto.randomUUID()} buttonName="CHECKOUT" size="w-40 h-10" clickHandler={() => goCheckout()}/>,
+                        <BlackButton key={crypto.randomUUID()} buttonName="BACK" size="w-40 h-10" clickHandler={() => navigate("/products")}/>
                     ]} />
                 </>
                 

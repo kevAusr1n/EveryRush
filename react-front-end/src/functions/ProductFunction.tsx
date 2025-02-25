@@ -99,5 +99,12 @@ async function GetProduct(props: {id: string, setProduct: Dispatch<SetStateActio
     .catch((err) => console.log(err));
 }
 
+async function deleteProducts (props: {id: string}) {
+    await APICall().delete(`/api/products/delete/${props.id}`)
+}
 
-export { getPaginatedProducts as GetPaginatedProducts, addOrUpdateProducts, GetProduct };
+async function updateProductStatus (props: {id: string, status: number}) {
+    await APICall().post(`/api/products/status-update/${props.id}?newstatus=${props.status}`)
+}
+
+export { getPaginatedProducts, addOrUpdateProducts, GetProduct, deleteProducts, updateProductStatus };

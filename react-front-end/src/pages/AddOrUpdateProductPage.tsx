@@ -14,9 +14,9 @@ function AddOrUpdateProductPage() {
         <ResponsiveDiv style="flex flex-col items-center" children={[
             <ResponsiveDiv style="mt-20 mb-20 gap-5 p-20 flex flex-col items-center" children={[
                 <SubmitForm
-                    inputNames={["Name", "Description", "Price", "Stock", "Images"]}
-                    inputTypes={["text", "text", "text", "text", "file"]}
-                    inputValues={["", "",  "",  "",  [files, setFiles]]}
+                    inputNames={["Name", "Price", "Stock", "Images", "Descriptioin"]}
+                    inputTypes={["text", "text", "text", "file", "textarea"]}
+                    inputValues={["", "",  "", [files, setFiles], ""]}
                     inputStyles={["w-200", "w-200",  "w-200",  "w-200", "w-200"]}
                     actionName={action as string}
                     actionHandler={async (event: FormEvent<HTMLFormElement>) => {

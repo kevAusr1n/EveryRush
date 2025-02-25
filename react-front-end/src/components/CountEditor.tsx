@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { CartItem } from "../type/EntityType";
 import ResponsiveDiv from "./div/ResponsiveDiv";
-import { isStringEmpty } from "../functions/Utils";
 
 function CountEditor(props: {
     initial_count: number, 

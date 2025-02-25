@@ -75,7 +75,7 @@ function UserInfoEditPage() {
 
     return (
         <ResponsiveDiv style="flex flex-col items-center" children={[
-            <ResponsiveDiv style="mt-20 mb-20 gap-5 p-20 flex flex-col items-start bg-white shadow" children={[
+            <ResponsiveDiv style="mt-20 mb-20 gap-5 p-20 flex flex-col items-start bg-white shadow-xl" children={[
                 <ResponsiveDiv style="flex flex-row items-end gap-5" children={[
                     <label className="font-bold">Email</label>,
                     <p>{localStorage.getItem("email") as string}</p>

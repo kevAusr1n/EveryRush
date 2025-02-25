@@ -1,5 +1,5 @@
 function getDefaultAuthScheme() {
-    return "jwt";
+    return "cookie";
 }
 
 export { getDefaultAuthScheme };

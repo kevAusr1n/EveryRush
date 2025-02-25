@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Security.Cryptography.X509Certificates;
 using EveryRush.Entity;
 using Google.Apis.Drive.v3.Data;
 using Microsoft.AspNetCore.Authorization;
@@ -19,11 +20,26 @@ public class ProductService
         int size,
         string keyword,
         string orderby,
-        string order) 
+        string order,
+        int minimumPrice,
+        int maxmiumPrice,
+        string userId,
+        string role) 
     {       
-        var totalCount = await _appDbContext.Products.CountAsync();
-        var totalPages = (int)Math.Ceiling((double)totalCount / size);
-        IQueryable<Product> productsQuery = _appDbContext.Products.Where(p => 1 == 1);
+        IQueryable<Product> productsQuery = _appDbContext.Products.Where(p => p.Status != ProductStatus.DELETED);
+        if (RoleConfig.BUSINESS_OWNER.Equals(role)) {
+            productsQuery = productsQuery.Where(p => p.AppUserId.Equals(userId));
+        } else {
+            productsQuery = productsQuery.Where(p => p.Status != ProductStatus.OFF_SHELF);
+        }
+        if (minimumPrice != 0) 
+        {
+            productsQuery = productsQuery.Where(p => p.Price >= minimumPrice);
+        }
+        if (maxmiumPrice != 0) 
+        {
+            productsQuery = productsQuery.Where(p => p.Price <= maxmiumPrice);
+        }
         if (!String.IsNullOrEmpty(keyword)) 
         {
             productsQuery = productsQuery.Where(p => p.Name.Contains(keyword));
@@ -39,7 +55,12 @@ public class ProductService
                     productsQuery = productsQuery.OrderByDescending(p => p.Price);
                     break;
             }
-        } 
+        }
+        if (RoleConfig.BUSINESS_OWNER.Equals(role)) {
+            productsQuery = productsQuery.OrderBy(p => p.Status);
+        }
+        var totalCount = await productsQuery.CountAsync();
+        var totalPages = (int)Math.Ceiling((double)totalCount / size); 
         var response = new GetPaginatedProductsResponse {
             TotalCount = totalCount,
             TotalPages = totalPages,
@@ -73,7 +94,8 @@ public class ProductService
             Name = request.Name,
             Description = request.Description,
             Price = request.Price,
-            Stock = request.Stock
+            Stock = request.Stock,
+            Status = request.Stock > 0 ? ProductStatus.IN_SALE : ProductStatus.OUT_OF_STOCK
         };
         List<AppFile> savedFiles = new List<AppFile>();
         if (request.Files != null && request.Files.Count > 0) 
@@ -120,6 +142,23 @@ public class ProductService
         return newProduct;
     }
 
+    public async Task<Boolean> UpdateProductStatus(string id, int newStatus) 
+    {   
+        var product = await _appDbContext.Products.FindAsync(id);
+        if (product == null) 
+        {
+            return true;
+        }
+        if (newStatus == ProductStatus.IN_SALE) {
+            newStatus = product.Stock != 0 ? newStatus : ProductStatus.OUT_OF_STOCK;
+        }
+        product.Status = newStatus;
+        _appDbContext.Products.Update(product);
+        await _appDbContext.SaveChangesAsync();
+
+        return true;
+    }
+    
     public async Task<Boolean> DeleteProduct(string id) 
     {   
         try 
@@ -127,6 +166,14 @@ public class ProductService
             var product = await _appDbContext.Products.FindAsync(id);
             if (product == null) 
             {
+                return true;
+            }
+            if (_appDbContext.PurchaseProductSnapshots.Where(o => o.ProductId == id).Count() > 0 ||
+                _appDbContext.CartItems.Where(o => o.ProductId == id).Count() > 0) 
+            {
+                product.Status = ProductStatus.DELETED;
+                _appDbContext.Products.Update(product);
+                await _appDbContext.SaveChangesAsync();
                 return true;
             }
             _appDbContext.AppFiles.RemoveRange(_appDbContext.AppFiles.Where(f => f.ProductId == id));

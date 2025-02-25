@@ -93,6 +93,14 @@
             "Pomelo.EntityFrameworkCore.MySql": {
               "target": "Package",
               "version": "[9.0.0-preview.2.efcore.9.0.0, )"
+            },
+            "Postmark": {
+              "target": "Package",
+              "version": "[5.2.0, )"
+            },
+            "SendGrid": {
+              "target": "Package",
+              "version": "[9.29.3, )"
             }
           },
           "imports": [
