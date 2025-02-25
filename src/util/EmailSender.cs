@@ -17,9 +17,10 @@ public class EmailSender : IEmailSender
     public async Task SendEmailAsync(string toEmail, string subject, string message)
     {
         Console.WriteLine("Sending email to " + toEmail + "\n subject: " + subject + "\n message: " + message);
-        /*var email = new PostmarkMessage() {
+        Console.WriteLine("Postmark token: " + Config.PostmarkToken);
+        var email = new PostmarkMessage() {
             To = toEmail,
-            From = "everyrush@test.com",
+            From = "22007669@student.curtin.edu.au",
             TrackOpens = true,
             Subject = subject,
             TextBody = message,
@@ -28,6 +29,6 @@ public class EmailSender : IEmailSender
         };
 
         var client = new PostmarkClient(Config.PostmarkToken);
-        await client.SendMessageAsync(email);*/
+        await client.SendMessageAsync(email);
     }
 }

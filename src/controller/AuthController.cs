@@ -54,7 +54,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("edit")]
-    public async Task<ActionResult<Boolean>> EditUser([FromBody] EditUserRequest request) 
+    public async Task<ActionResult<EditUserInfoResponse>> EditUser([FromBody] EditUserRequest request) 
     {
         return await _authService.EditUserAsync(request);
     }

@@ -50,7 +50,7 @@ public class AuthService
         {
             return new GetUserResponse();
         }
-        if (!await _userManager.IsEmailConfirmedAsync(user)) {
+        if (request.ConfirmRequired && !await _userManager.IsEmailConfirmedAsync(user)) {
             return new GetUserResponse {
                 Result = OperationResult.FAILURE
             };
@@ -127,22 +127,30 @@ public class AuthService
         return true;
     } 
 
-    public async Task<Boolean> EditUserAsync(EditUserRequest request) 
+    public async Task<EditUserInfoResponse> EditUserAsync(EditUserRequest request) 
     {
         // TODO: implement
         AppUser user = await _userManager.FindByIdAsync(request.Id);
-        if (user == null) {
-            return false;
+        if (user == null) 
+        {
+            return new EditUserInfoResponse {
+                Result = OperationResult.FAILURE
+            };
         }
         if (!String.IsNullOrEmpty(request.NewPassword) && !String.IsNullOrEmpty(request.OldPassword)) 
         {
-            var result = await _userManager.ChangePasswordAsync(user, request.OldPassword, request.NewPassword);
-            return result.Succeeded;
+            Console.WriteLine($"old pwd: {request.OldPassword}, new pwd: {request.NewPassword}");
+            var changePasswordResult = await _userManager.ChangePasswordAsync(user, request.OldPassword, request.NewPassword);
+            return new EditUserInfoResponse {
+                Result = changePasswordResult.Succeeded ? OperationResult.SUCCESS : OperationResult.FAILURE
+            };
         }
         user.AlternativeName = request.Username;
-        await _userManager.UpdateAsync(user);
+        var changeUsernameResult = await _userManager.UpdateAsync(user);
 
-        return true;
+        return new EditUserInfoResponse {
+            Result = changeUsernameResult.Succeeded ? OperationResult.SUCCESS : OperationResult.FAILURE
+        };
     }
 
     public async Task<SendPasswordResetEmailResponse> SendPasswordResetEmailAsync(string email) {

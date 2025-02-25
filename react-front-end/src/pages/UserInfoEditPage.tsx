@@ -4,6 +4,7 @@ import ResponsiveDiv from "../components/div/ResponsiveDiv";
 import { TextInput } from "../components/InputField";
 import { useNavigate } from "react-router";
 import { EditUser } from "../functions/UserFunction";
+import { isStringEmpty } from "../functions/Utils";
 
 function UserInfoEditPage() {
     const navigate = useNavigate();
@@ -17,8 +18,13 @@ function UserInfoEditPage() {
     const [newPassword, setNewPassword] = useState("");
     const [confirmedNewPassword, setConfirmedNewPassword] = useState("");
     const editUsernameRequest = async () => {
+        if (isStringEmpty(username)) {
+            updateUsernameErrorMsg.current = "Username cannot be empty";
+            setRefresh(!refresh);
+        }
         if (await EditUser({username: username})) {
             setUsernameEdit(false);
+            window.location.reload();
         } else {
             updateUsernameErrorMsg.current = "Username change failed";
             setRefresh(!refresh);
@@ -26,14 +32,14 @@ function UserInfoEditPage() {
     }
 
     const editPasswordRequest = async () => {
-        if (newPassword !== confirmedNewPassword) {
-            updatePasswordErrorMsg.current = "New password and confirmed password do not match";
+        if (isStringEmpty(newPassword) || newPassword !== confirmedNewPassword) {
+            updatePasswordErrorMsg.current = "New password is empty or do not match confirm password";
             setRefresh(!refresh);
             return;
         } 
         if (await EditUser({oldPassword: oldPassword, newPassword: newPassword})) {
             setPasswordEdit(false);
-            setRefresh(!refresh);
+            window.location.reload();
         } else {
             updatePasswordErrorMsg.current = "Password change failed";
         }

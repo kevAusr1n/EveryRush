@@ -123,8 +123,10 @@ async function EditUser(props: {
 
     await APICall().post(`/api/user/edit`, request)
     .then((res) => {
-        if (res.status == 200 || res.status == 201) {
-            localStorage.setItem("username", props.username != undefined ? props.username : localStorage.getItem("username") as string);
+        if (res.status == 200 && res.data.result == "success") {
+            if (props.username != undefined) {
+                localStorage.setItem("username", props.username);
+            }
             isSucceed = true;
         }
     })

@@ -15,4 +15,7 @@ public class SignInRequest
     [NotNull]
     [JsonProperty("password")]
     public string? Password {get;set;}
+
+    [JsonProperty("confirm_required")]
+    public Boolean ConfirmRequired {get;set;} = true;
 }

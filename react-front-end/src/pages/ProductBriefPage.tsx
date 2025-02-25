@@ -35,17 +35,14 @@ function ProductBriefPage(props: {product : Product, display: string})
         case "grid":
             return (
                 <ResponsiveDiv style={productBoxGridStyle} children={[
-                    props.product.imageUrl && <ImageBrief 
-                        src={new URL((props.product.imageUrl as string).split(",")[0], backServerEndpoint).toString()} 
-                        style="w-32 h-32"
-                        eventHandlerMap={{onClick: () => goToDetailPage()}} />,
+                    props.product.imageUrl && <ImageBrief src={new URL((props.product.imageUrl as string).split(",")[0], backServerEndpoint).toString()} style="w-32 h-32" />,
                     <strong>{props.product.name}</strong>,
                     <p>PRICE: ${props.product.price}</p>,
                     <p>STOCK: {props.product.stock}</p>,
-                    <BlackButton buttonName="ADD TO CART" size="h-10" clickHandler={() => addOrUpdateCartItem({
+                    <BlackButton buttonName="ADD TO CART" size="w-40 h-10" clickHandler={() => addOrUpdateCartItem({
                         item: { productId: props.product.id, quantity: 1} as CartItem
                     })} />,
-                    <WhiteButton buttonName="PURCHASE" size="h-10" clickHandler={() => {}} />
+                    <WhiteButton buttonName="DETAIL" size="w-40 h-10" clickHandler={() => goToDetailPage()} />
                 ]} />    
             )
         case "row":
@@ -53,10 +50,7 @@ function ProductBriefPage(props: {product : Product, display: string})
                 <ResponsiveDiv style={productBoxRowStyle} children={[
                     <ResponsiveDiv style="flex flex-row w-4/5" children={[   
                         <ResponsiveDiv style="w-1/6" children={[    
-                            props.product.imageUrl && <ImageBrief 
-                                src={new URL((props.product.imageUrl as string).split(",")[0], backServerEndpoint).toString()} 
-                                style="w-32 h-32"
-                                eventHandlerMap={{onClick: () => goToDetailPage()}} />,
+                            props.product.imageUrl && <ImageBrief src={new URL((props.product.imageUrl as string).split(",")[0], backServerEndpoint).toString()} style="w-32 h-32" />,
                         ]} />, 
                         <ResponsiveDiv style="flex flex-col gap-5 w-5/6" children={[  
                             <strong className="text-xl">{props.product.name}</strong>,
@@ -66,27 +60,24 @@ function ProductBriefPage(props: {product : Product, display: string})
                     <ResponsiveDiv style="flex flex-col gap-1 w-1/5" children={[    
                         <p>PRICE: ${props.product.price}</p>,
                         <p>STOCK: {props.product.stock}</p>,
-                        <BlackButton buttonName="ADD TO CART" size="h-10" clickHandler={() => addOrUpdateCartItem({
+                        <BlackButton buttonName="ADD TO CART" size="w-40 h-10" clickHandler={() => addOrUpdateCartItem({
                             item: { productId: props.product.id, quantity: 1} as CartItem
                         })} />,
-                        <WhiteButton buttonName="PURCHASE" size="h-10" clickHandler={() => {}} />
+                        <WhiteButton buttonName="DETAIL" size="w-40 h-10" clickHandler={() => goToDetailPage()} />
                     ]} />
                 ]} />    
             )
         default:
             return (
                 <ResponsiveDiv style={productBoxGridStyle} children={[
-                    props.product.imageUrl && <ImageBrief 
-                        src={new URL((props.product.imageUrl as string).split(",")[0], backServerEndpoint).toString()} 
-                        style="w-32 h-32"
-                        eventHandlerMap={{onClick: () => goToDetailPage()}} />,
+                    props.product.imageUrl && <ImageBrief src={new URL((props.product.imageUrl as string).split(",")[0], backServerEndpoint).toString()} style="w-32 h-32" />,
                     <strong>{props.product.name}</strong>,
                     <p>PRICE: ${props.product.price}</p>,
                     <p>STOCK: {props.product.stock}</p>,
-                    <BlackButton buttonName="ADD TO CART" size="h-10" clickHandler={() => addOrUpdateCartItem({
+                    <BlackButton buttonName="ADD TO CART" size="w-40 h-10" clickHandler={() => addOrUpdateCartItem({
                         item: { productId: props.product.id, quantity: 1} as CartItem
                     })} />,
-                    <WhiteButton buttonName="PURCHASE" size="h-10" clickHandler={() => {}} />
+                    <WhiteButton buttonName="DETAIL" size="w-40 h-10" clickHandler={() => goToDetailPage()} />
                 ]} />    
             )
 

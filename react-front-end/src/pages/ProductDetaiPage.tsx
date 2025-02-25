@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router";
-import { Product } from "../type/EntityType";
+import { useNavigate, useParams } from "react-router";
+import { CartItem, Product } from "../type/EntityType";
 import { GetProduct } from "../functions/ProductFunction";
 import ResponsiveDiv from "../components/div/ResponsiveDiv";
 import { ImageBrief, ImageExhibition } from "../components/Image";
 import { backServerEndpoint } from "../config/BackendServerConfig";
 import { BlackButton, WhiteButton } from "../components/Button";
+import { addOrUpdateCartItem } from "../functions/CartFunction";
 
 function ProductDetailPage() {
+    const navigate = useNavigate();
     const params = useParams();
     const productId = params.id as string;
     const [product, setProduct] = useState<Product>({id: "", userId: "", name: "", price: 0, description: "", stock: 0, imageUrl: ""} as Product);
@@ -49,8 +51,10 @@ function ProductDetailPage() {
                         <p className="text-gray-500 text-xl">{product.description}</p>
                     ]} />,
                     <ResponsiveDiv style="flex flex-row items-center justify-end gap-5 mt-20" children={[  
-                        <BlackButton buttonName="ADD TO CART" size="w-40 h-10" clickHandler={() => {}} />,
-                        <WhiteButton buttonName="PURCHASE" size="w-40 h-10" clickHandler={() => {}} />,
+                        <BlackButton buttonName="ADD TO CART" size="w-40 h-10" clickHandler={() => {() => addOrUpdateCartItem({
+                            item: { productId: productId, quantity: 1} as CartItem
+                        })}} />,
+                        <WhiteButton buttonName="BACK" size="w-40 h-10" clickHandler={() => {navigate('/products')}} />,
                     ]} />
                 ]} />
             ]} />
