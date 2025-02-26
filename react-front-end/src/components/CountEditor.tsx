@@ -16,7 +16,7 @@ function CountEditor(props: {
         }
 
         props.target.quantity = newCount;
-        props.countChangeHandler({item: props.target})  
+        props.countChangeHandler(props.target);
         document.getElementById(id)?.setAttribute("innterHTML", newCount.toString());
         setCount(newCount);
     }

@@ -1,5 +1,5 @@
 import { createSearchParams, useNavigate } from "react-router";
-import { BlackButton, RedButton } from "../components/Button";
+import { RedButton, WhiteButton } from "../components/Button";
 import ResponsiveDiv from "../components/div/ResponsiveDiv";
 import { deleteContacts } from "../functions/ContactFunction";
 import { Contact } from "../type/EntityType";
@@ -11,6 +11,10 @@ function ContactDetailPage(props: {
     setRefresh: Dispatch<SetStateAction<boolean>> 
 }) {
     const navigate = useNavigate();
+    const deleteContactsHandler = async (id: string) => {
+        await deleteContacts({id : id});
+        props.setRefresh(!props.refresh);
+    }
 
     return (
         <ResponsiveDiv style="w-full p-5 flex flex-row justify-between shadow-xl" children={[
@@ -22,7 +26,7 @@ function ContactDetailPage(props: {
                 <p>{props.contact.city + ", " + props.contact.state + ", " + props.contact.postcode}</p>
             ]} />,
             <ResponsiveDiv style="flex flex-col items-center justify-center gap-5" children={[
-                <BlackButton buttonName="Edit" size="w-40 h-10" clickHandler={() => {
+                <WhiteButton buttonName="Edit" size="w-40 h-10" clickHandler={() => {
                     navigate({
                         pathname: "/contacts/edit/",
                         search: createSearchParams({
@@ -39,8 +43,7 @@ function ContactDetailPage(props: {
                     });
                 }} />,
                 <RedButton buttonName="Delete" size="w-40 h-10" clickHandler={() => {
-                    deleteContacts({id : props.contact.id});
-                    props.setRefresh(!props.refresh);
+                    deleteContactsHandler(props.contact.id);
                 }} />,
             ]}/>
         ]}/>

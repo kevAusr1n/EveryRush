@@ -51,7 +51,7 @@ function RedButton(props: {
     clickHandler: () => void
 }) {
     return (
-        <button type="button" className={`bg-red-500 text-white px-3 py-2 ${props.size} transition hover:scale-110`} onClick={props.clickHandler}>
+        <button type="button" className={`bg-white border-red-500 border-1 text-red-500 px-3 py-2 ${props.size} transition hover:scale-110`} onClick={props.clickHandler}>
             {props.buttonName}
         </button>
     )

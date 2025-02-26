@@ -14,10 +14,10 @@ function AddOrUpdateProductPage() {
         <ResponsiveDiv style="flex flex-col items-center" children={[
             <ResponsiveDiv style="mt-20 mb-20 gap-5 p-20 flex flex-col items-center" children={[
                 <SubmitForm
-                    inputNames={["Name", "Price", "Stock", "Images", "Descriptioin"]}
+                    inputNames={["Name", "Price", "Stock", "Images", "Description"]}
                     inputTypes={["text", "text", "text", "file", "textarea"]}
                     inputValues={["", "",  "", [files, setFiles], ""]}
-                    inputStyles={["w-200", "w-200",  "w-200",  "w-200", "w-200"]}
+                    inputStyles={["w-200", "w-200",  "w-200",  "w-200", "w-200 h-50"]}
                     actionName={action as string}
                     actionHandler={async (event: FormEvent<HTMLFormElement>) => {
                         if (await addOrUpdateProducts({

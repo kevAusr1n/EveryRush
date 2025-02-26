@@ -1,5 +1,5 @@
 import { createElement, ReactNode, useEffect, useRef, useState } from "react"
-import { BlackButton } from "../components/Button";
+import { BlackButton, WhiteButton } from "../components/Button";
 import DropDown from "../components/Dropdown";
 import InputField from "../components/InputField";
 import { GetContactsResponse } from "../type/ResponseType";
@@ -9,36 +9,43 @@ import { ImageBrief } from "../components/Image";
 import ResponsiveDiv from "../components/div/ResponsiveDiv";
 import DisplayTable from "../components/DisplayTable";
 import { backServerEndpoint } from "../config/BackendServerConfig";
+import { getCart } from "../functions/CartFunction";
+import { isUserSignedIn } from "../functions/UserFunction";
+import { useNavigate } from "react-router";
 
 
 function CheckoutPage() {
+    const navigate = useNavigate();
     const [dropdown, setDropdown] = useState(false);
     const [refreshPage, setRefreshPage] = useState(false);
-    const [cartItems, setCarItems] = useState<CartItem[]>([]);
+    const [cart, setCart] = useState<CartItem[]>([]);
     const [contactResponse, setContactResponse] = useState<GetContactsResponse>({contacts: [], totalPages: 0, totalCount: 0});
+    let totalPrice = 0;
 
     useEffect(() => {
-        if (true) {
-            let cartInJson = JSON.parse(sessionStorage.getItem("cart") as string);
-            setCarItems(cartInJson.cartItems);
-        };
-        getPaginatedContacts({
-            page: 1, 
-            size: 10, 
-            userid: localStorage.getItem("userid") as string,
-            setResponse: setContactResponse
-        })
+        if (isUserSignedIn()) {
+            getCart({userId: localStorage.getItem("userid") as string, setCart: setCart});
+            getPaginatedContacts({
+                page: 1, 
+                size: 10, 
+                userid: localStorage.getItem("userid") as string,
+                setResponse: setContactResponse
+            })
+        }
     }, [])
 
     const contactInputFieldNames=["FirstName", "LastName", "Email", "Phone", "Address", "City", "State", "Postcode"]
     const contactInputFieldTypes=new Array(contactInputFieldNames.length).fill("text");
-    const postContactInputFieldValues=useRef(new Array(contactInputFieldNames.length).fill(""));
-    const billContactInputFieldValues=useRef(new Array(contactInputFieldNames.length).fill(""));
+    //const postContactInputFieldValues=useRef(new Array(contactInputFieldNames.length).fill(""));
+    //const billContactInputFieldValues=useRef(new Array(contactInputFieldNames.length).fill(""));
+    const postInformation = [useState(""), useState(""), useState(""), useState(""), useState(""), useState(""), useState(""), useState("")];
+    const billInformation = [useState(""), useState(""), useState(""), useState(""), useState(""), useState(""), useState(""), useState("")];
 
     const tableHead: string[] = ["Product", "Name", "Price", "Quantity"];
     let tableContent: ReactNode[][] = [];
 
-    cartItems.map((cartItem: CartItem, index: number) => {
+    cart.map((cartItem: CartItem, index: number) => {
+        totalPrice = totalPrice + cartItem.quantity * cartItem.price;
         tableContent[index] = []
         tableContent[index].push(<ImageBrief src={new URL((cartItem.imageUrl as string).split(",")[0], backServerEndpoint).toString()} style="w-32 h-32"/>);
         tableContent[index].push(createElement("p", {}, cartItem.name) as ReactNode);
@@ -55,50 +62,60 @@ function CheckoutPage() {
                 document.getElementById(id)?.setAttribute("class", originStyle);
             },
             onClick: () => {
-                postContactInputFieldValues.current = [
-                    contact.firstName,
-                    contact.lastName,
-                    contact.email,
-                    contact.phone,
-                    contact.address,
-                    contact.city,
-                    contact.state,
-                    contact.postcode
-                ];
+                postInformation[0][1](contact.firstName);
+                postInformation[1][1](contact.lastName);
+                postInformation[2][1](contact.email);
+                postInformation[3][1](contact.phone);
+                postInformation[4][1](contact.address);
+                postInformation[5][1](contact.city);
+                postInformation[6][1](contact.state);
+                postInformation[7][1](contact.postcode);
                 setDropdown(!dropdown);
             }
         }
     };
 
-    const copyBillContactFromPostContact = () => {
-        billContactInputFieldValues.current = postContactInputFieldValues.current;
+    const copyBillInfoFromPostInfo = () => {
+        for (let i = 0; i < contactInputFieldNames.length; i++) {
+            billInformation[i][1](postInformation[i][0]);
+        };
         setRefreshPage(!refreshPage);
     }
-
+    
     return (
         <ResponsiveDiv style="flex flex-col items-center" children={[
-            <ResponsiveDiv style="mt-20 mb-20 gap-5 p-20 flex flex-col items-start" children={[
+            <ResponsiveDiv style="mt-20 mb-20 gap-5 flex flex-col items-start" children={[
                 <DisplayTable tableHead={tableHead} tableContent={tableContent} />,
+                <ResponsiveDiv key={crypto.randomUUID()} style=" mt-10 w-full flex flex-row justify-end" children={[
+                    <p className="text-5xl">Total: ${totalPrice}</p>
+                ]} />,
                 <ResponsiveDiv style="flex flex-col mt-10" children={[
                     <ResponsiveDiv style="flex flex-row gap-5" children={[
-                        <strong className="text-2xl">Post Address</strong>,
-                        <BlackButton buttonName="USE CONTACT" size="h-10 w-50" clickHandler={() => setDropdown(!dropdown)}/>,
+                        <strong className="text-2xl">Post Information</strong>,
+                        <WhiteButton buttonName="USE CONTACT" size="w-60 h-10" clickHandler={() => setDropdown(!dropdown)}/>,
+                        contactResponse.contacts.length == 0 && dropdown && <ResponsiveDiv style="absolute bg-white border" children={[
+                            <p className="p-20 text-2xl">No Contact Found</p>
+                        ]} />,
                         <ResponsiveDiv style="" children={[
                             <DropDown dropDown={dropdown} items={contactResponse.contacts} eventHandlerMap={useContactButtonHandler} />
                         ]} />
                     ]} />,
                     contactInputFieldNames.map((name : string , index : number) => {
-                        return <InputField inputName={name} inputType={contactInputFieldTypes[index]} inputValue={postContactInputFieldValues.current[index]} style="w-200" />
+                        return <InputField inputName={name} inputType={contactInputFieldTypes[index]} inputValue={postInformation[index][0]} style="w-200" onTextChangeHandler={postInformation[index][1]} />
                     })
                 ]} />,
                 <ResponsiveDiv style="flex flex-col mt-10" children={[
                     <ResponsiveDiv style="flex flex-row gap-5" children={[
-                        <strong className="text-2xl">Billing Address</strong>,
-                        <BlackButton buttonName="USE POST ADDRESS" size="h-10 w-50" clickHandler={() => copyBillContactFromPostContact()}/>
+                        <strong className="text-2xl">Billing Information</strong>,
+                        <WhiteButton buttonName="USE POST ADDRESS" size="w-60 h-10" clickHandler={() => copyBillInfoFromPostInfo()}/>
                     ]} />,
                     contactInputFieldNames.map((name : string , index : number) => {
-                        return <InputField inputName={name} inputType={contactInputFieldTypes[index]} inputValue={billContactInputFieldValues.current[index]} style="w-200" />
+                        return <InputField inputName={name} inputType={contactInputFieldTypes[index]} inputValue={billInformation[index][0]} style="w-200" onTextChangeHandler={billInformation[index][1]} />
                     })
+                ]} />,
+                <ResponsiveDiv style="flex flex-row gap-5 mt-10" children={[
+                    <BlackButton buttonName="PLACE ORDER" size="w-60 h-10" clickHandler={() => {}} />,
+                    <BlackButton buttonName="BACK" size="w-60 h-10" clickHandler={() => {navigate("/cart")}} />
                 ]} />
             ]} />
         ]} />

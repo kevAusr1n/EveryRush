@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router";
-import { BlackButton, WhiteButton } from "../components/Button";
+import { WhiteButton } from "../components/Button";
 import ResponsiveDiv from "../components/div/ResponsiveDiv";
 import { ImageBrief } from "../components/Image";
 import { backServerEndpoint } from "../config/BackendServerConfig";
@@ -40,7 +40,7 @@ function ProductBriefPage(props: {product : Product, display: string})
                     <strong className="h-1/5">{props.product.name}</strong>,
                     <p className="h-1/5">PRICE: ${props.product.price}</p>,
                     <p className="h-1/5">STOCK: {props.product.stock}</p>,
-                    <BlackButton buttonName="ADD TO CART" size="w-40 h-10" clickHandler={() => {
+                    <WhiteButton buttonName="ADD TO CART" size="w-40 h-10" clickHandler={() => {
                         if (!isUserSignedIn()) {
                             navigate("/signin");
                         } else {
@@ -65,7 +65,7 @@ function ProductBriefPage(props: {product : Product, display: string})
                     <ResponsiveDiv style="flex flex-col gap-1 w-1/5" children={[    
                         <p>PRICE: ${props.product.price}</p>,
                         <p>STOCK: {props.product.stock}</p>,
-                        <BlackButton buttonName="ADD TO CART" size="w-40 h-10" clickHandler={() => {
+                        <WhiteButton buttonName="ADD TO CART" size="w-40 h-10" clickHandler={() => {
                             if (!isUserSignedIn()) {
                                 navigate("/signin");
                             } else {
@@ -83,7 +83,7 @@ function ProductBriefPage(props: {product : Product, display: string})
                     <strong>{props.product.name}</strong>,
                     <p>PRICE: ${props.product.price}</p>,
                     <p>STOCK: {props.product.stock}</p>,
-                    <BlackButton buttonName="ADD TO CART" size="w-40 h-10" clickHandler={() => {
+                    <WhiteButton buttonName="ADD TO CART" size="w-40 h-10" clickHandler={() => {
                         if (!isUserSignedIn()) {
                             navigate("/signin");
                         } else {

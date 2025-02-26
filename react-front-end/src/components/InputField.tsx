@@ -15,7 +15,7 @@ function TextInput(props: {
     inputType: string,
     style: string,
     readonly?: boolean,
-    setState?: Dispatch<SetStateAction<string>>
+    onTextChangeHandler?: Dispatch<SetStateAction<string>>
 }) {
     const [_, setState] = useState(props.inputValue);
 
@@ -25,8 +25,8 @@ function TextInput(props: {
             <input className={props.readonly == true ? props.style + " " + readOnlyTestFieldStyle : props.style + " " + basicTextFieldStyle} 
                 defaultValue={props.inputValue} id={props.inputName.toLocaleLowerCase()} name={props.inputName.toLocaleLowerCase()}
                 type={props.inputType} onChange={(e) => {
-                    if (props.setState != undefined && props.setState != null) {
-                        props.setState(e.target.value)
+                    if (props.onTextChangeHandler != undefined && props.onTextChangeHandler != null) {
+                        props.onTextChangeHandler(e.target.value)
                     } else {
                         setState(e.target.value)
                     }
@@ -41,7 +41,7 @@ function TextAreaInput(props: {
     inputValue: string, 
     style: string,
     readonly?: boolean,
-    setState?: Dispatch<SetStateAction<string>>
+    onTextChangeHandler?: Dispatch<SetStateAction<string>>
 }) {
     const [_, setState] = useState(props.inputValue);
 
@@ -51,8 +51,8 @@ function TextAreaInput(props: {
             <textarea className={props.style + " h-50 " + basicTextFieldStyle} 
                 defaultValue={props.inputValue} id={props.inputName.toLocaleLowerCase()} name={props.inputName.toLocaleLowerCase()}
                 onChange={(e) => {
-                    if (props.setState != undefined && props.setState != null) {
-                        props.setState(e.target.value)
+                    if (props.onTextChangeHandler != undefined && props.onTextChangeHandler != null) {
+                        props.onTextChangeHandler(e.target.value)
                     } else {
                         setState(e.target.value)
                     }
@@ -225,14 +225,14 @@ function InputField(props: {
     inputType: string, 
     inputValue: string | [FileList | null, React.Dispatch<React.SetStateAction<FileList | null>>],
     style: string,
-    setState?: Dispatch<SetStateAction<string>>
+    onTextChangeHandler?: Dispatch<SetStateAction<string>>
 }) {
     switch (props.inputType) {
         case "text":
         case "password":
-            return <TextInput inputName={props.inputName} inputType={props.inputType} inputValue={props.inputValue as string} style={props.style} setState={props.setState}/>
+            return <TextInput inputName={props.inputName} inputType={props.inputType} inputValue={props.inputValue as string} style={props.style} onTextChangeHandler={props.onTextChangeHandler}/>
         case "textarea":
-            return <TextAreaInput inputName={props.inputName} inputValue={props.inputValue as string} style={props.style} setState={props.setState} />
+            return <TextAreaInput inputName={props.inputName} inputValue={props.inputValue as string} style={props.style} onTextChangeHandler={props.onTextChangeHandler} />
         case "option":
             return <OptionInput inputName={props.inputName} inputValue={props.inputValue as string} style={props.style} />
         case "file":

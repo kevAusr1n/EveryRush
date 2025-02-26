@@ -18,7 +18,7 @@ function SubmitForm(props:{
                     if (props.stateSetters != undefined && props.stateSetters[index] != undefined && props.stateSetters[index] != null) {
                         return (
                             <ResponsiveDiv style="mb-5" children={[
-                                <InputField key={index} inputName={inputName} inputType={props.inputTypes[index]} inputValue={props.inputValues[index]} style={props.inputStyles[index]} setState={props.stateSetters[index]}/>
+                                <InputField key={index} inputName={inputName} inputType={props.inputTypes[index]} inputValue={props.inputValues[index]} style={props.inputStyles[index]} onTextChangeHandler={props.stateSetters[index]}/>
                             ]} />
                         )
                     } else {

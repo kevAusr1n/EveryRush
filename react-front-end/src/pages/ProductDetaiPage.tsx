@@ -61,7 +61,7 @@ function ProductDetailPage() {
                                 }
                             }
                         }} />,
-                        <WhiteButton buttonName="BACK" size="w-40 h-10" clickHandler={() => {navigate('/products')}} />,
+                        <BlackButton buttonName="BACK" size="w-40 h-10" clickHandler={() => {navigate('/products')}} />,
                     ]} />
                 ]} />
             ]} />

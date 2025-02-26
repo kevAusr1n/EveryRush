@@ -3,8 +3,8 @@ import APICall from "../config/ApiConfig";
 import { CartItem } from "../type/EntityType";
 import { isStringEmpty } from "./Utils";
 
-function getCart(props: {userId : string, setCart: Dispatch<SetStateAction<CartItem[]>>}) {
-    APICall()
+async function getCart(props: {userId : string, setCart: Dispatch<SetStateAction<CartItem[]>>}) {
+    await APICall()
     .get(`/api/cart?userid=${props.userId}`)
     .then((res) => {
         props.setCart(res.data.cartItems);
@@ -14,7 +14,7 @@ function getCart(props: {userId : string, setCart: Dispatch<SetStateAction<CartI
     });
 }
 
-function addOrUpdateCartItem(props: {item: CartItem}) {
+async function addOrUpdateCartItem(props: {item: CartItem}) {
     let thisCartItem = {
         id: props.item.id,
         userId: localStorage.getItem("userid") as string,
@@ -24,7 +24,7 @@ function addOrUpdateCartItem(props: {item: CartItem}) {
 
     let action: string = isStringEmpty(props.item.id) ? "add" : "update";
 
-    APICall()
+    await APICall()
     .post(`/api/cart/${action}` , thisCartItem)
     .then((_) => {})
     .catch((error) => {
@@ -32,8 +32,8 @@ function addOrUpdateCartItem(props: {item: CartItem}) {
     });
 }
 
-function removeFromCart (props: {id: string}) {
-    APICall()
+async function removeFromCart (props: {id: string}) {
+    await APICall()
     .delete(`/api/cart/delete/${props.id}`)
     .then((_) => {})
     .catch((error) => {

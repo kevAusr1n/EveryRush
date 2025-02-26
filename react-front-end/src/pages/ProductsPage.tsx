@@ -73,11 +73,13 @@ function ProductsPage() {
         ) || 
         <ResponsiveDiv style="mt-20 mb-20 m-5 mr-5 w" key={crypto.randomUUID()} children={[ 
             <ResponsiveDiv style="flex flex-col items-start gap-3" children={[
-                <BlackButton buttonName="ADD PRODUCT" size="w-40 h-10" clickHandler={() => navigate("/products/add")} />, 
-                response.products.length == 0 && <ResponsiveDiv style="w-full flex flex-row mt-20 justify-center" children={[
-                    <p className="text-xl">You have no product</p>
+                response.products.length == 0 && <ResponsiveDiv style="w-full flex flex-col items-center gap-5" children={[
+                    <p key={crypto.randomUUID()} className="text-xl">Your have no product</p>,
+                    <BlackButton key={crypto.randomUUID()} buttonName="ADD PRODUCT" size="w-40 h-10" clickHandler={() => navigate("/products/add")} />
                 ]} />,
-
+                response.products.length != 0 && <ResponsiveDiv style="mb-5" children={[
+                    <BlackButton key={crypto.randomUUID()} buttonName="ADD PRODUCT" size="w-40 h-10" clickHandler={() => navigate("/products/add")} />
+                ]} />,
                 response.products.length != 0 && <ResponsiveDiv style="px-2 w-full flex flex-row items-center border-b-1" children={[
                     <p className="w-3/13 font-bold" key={0}>Product ID</p>,
                     <p className="w-3/13 font-bold" key={1}>Name</p>,

@@ -37,7 +37,7 @@ function ProductUpdateblePage(props: {product: Product, refresh: boolean, setRef
 
     return (                   
         <ResponsiveDiv style="w-full flex flex-row shadow-xl items-center px-2" children={[
-            <a className="w-3/13 text-blue-500 underline" key={0} href={`/product/${props.product.id}`}>{props.product.id}</a>,
+            <a className="w-3/13 underline" key={0} href={`/product/${props.product.id}`}>{props.product.id}</a>,
             <p className="w-3/13" key={1}>{props.product.name}</p>,
             <p className="w-1/13" key={2}>${props.product.price}</p>,
             <ResponsiveDiv style="w-2/13 flex flex-row gap-2 items-center" children={[
@@ -59,10 +59,10 @@ function ProductUpdateblePage(props: {product: Product, refresh: boolean, setRef
             ]} />,
             <p className="w-1/13" key={4}>{ProductStatusConfig.getStatusName(props.product.status)}</p>,
             <ResponsiveDiv style="flex flex-row gap-2 py-3" children={[
-                props.product.status == ProductStatusConfig.OFF_SHELF && <BlackButton buttonName="ON-SHELF" size="w-40 h-10" clickHandler={() => {
+                props.product.status == ProductStatusConfig.OFF_SHELF && <WhiteButton buttonName="ON-SHELF" size="w-40 h-10" clickHandler={() => {
                     updateProductStatusHandler(props.product.id, ProductStatusConfig.IN_SALE);
                 }} />,
-                props.product.status != ProductStatusConfig.OFF_SHELF && <BlackButton buttonName="OFF-SHELF" size="w-40 h-10" clickHandler={() => {
+                props.product.status != ProductStatusConfig.OFF_SHELF && <WhiteButton buttonName="OFF-SHELF" size="w-40 h-10" clickHandler={() => {
                     updateProductStatusHandler(props.product.id, ProductStatusConfig.OFF_SHELF);
                 }} />,
                 <RedButton buttonName="DELETE" size="w-40 h-10" clickHandler={() => {

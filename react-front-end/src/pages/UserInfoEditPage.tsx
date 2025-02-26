@@ -50,7 +50,7 @@ function UserInfoEditPage() {
     const usernameEditDiv = () : ReactNode => {
         return (
             <ResponsiveDiv style="flex flex-col" children={[
-                <TextInput inputName="New Username" inputType="text" style="w-100" inputValue="" setState={setUsername}/>,
+                <TextInput inputName="New Username" inputType="text" style="w-100" inputValue="" onTextChangeHandler={setUsername}/>,
                 <p className="text-red-500">{updateUsernameErrorMsg.current}</p>,
                 <ResponsiveDiv style="flex flex-row gap-3 mt-5" children={[
                     <WhiteButton buttonName="SAVE" size="h-10" clickHandler={() => editUsernameRequest()} />,
@@ -66,9 +66,9 @@ function UserInfoEditPage() {
     const passwordEditDiv = () : ReactNode => {
         return (
             <ResponsiveDiv style="flex flex-col" children={[
-                <TextInput inputName="Old Password" inputType="password" style="w-100" inputValue="" setState={setOldPassword}/>,
-                <TextInput inputName="New Password" inputType="password" style="w-100" inputValue="" setState={setNewPassword}/>,
-                <TextInput inputName="Confirm New Password" inputType="password" style="w-100" inputValue="" setState={setConfirmedNewPassword} />,
+                <TextInput inputName="Old Password" inputType="password" style="w-100" inputValue="" onTextChangeHandler={setOldPassword}/>,
+                <TextInput inputName="New Password" inputType="password" style="w-100" inputValue="" onTextChangeHandler={setNewPassword}/>,
+                <TextInput inputName="Confirm New Password" inputType="password" style="w-100" inputValue="" onTextChangeHandler={setConfirmedNewPassword} />,
                 <p className="text-red-500">{updatePasswordErrorMsg.current}</p>,
                 <ResponsiveDiv style="flex flex-row gap-3 mt-5" children={[
                     <WhiteButton buttonName="SAVE" size="h-10" clickHandler={() => editPasswordRequest()} />,

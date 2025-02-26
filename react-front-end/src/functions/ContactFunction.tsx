@@ -37,7 +37,6 @@ async function addOrUpdateContacts (props: {
         postcode: formData.get('postcode'),
     }
 
-    alert(JSON.stringify(requestBody));
     await APICall().post(`/api/contacts/${props.action}`, requestBody, {
         headers: {
             Accept: 'application/json'
@@ -49,8 +48,8 @@ async function addOrUpdateContacts (props: {
     return isSucceed;
 }
 
-function deleteContacts (props: {id: string}) {
-    APICall().delete(`/api/contacts?id=${props.id}`, {
+async function deleteContacts (props: {id: string}) {
+    await APICall().delete(`/api/contacts/delete/${props.id}`, {
         headers: {
             Accept: 'application/json'
         }
