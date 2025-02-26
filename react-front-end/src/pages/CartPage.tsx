@@ -70,7 +70,7 @@ function CartPage() {
 
     return (
         <ResponsiveDiv style="flex flex-col items-center" children={[
-            (!isUserSignedIn() && <SignInRequiredPage message="Cart" />) || 
+            (!isUserSignedIn() && <SignInRequiredPage message="please sign in to manage cart" />) || 
             <ResponsiveDiv style="mt-20 mb-20 p-20 flex flex-col items-center" children={[displayCart()]} />
         ]} />
     )

@@ -48,7 +48,7 @@ function ProductDetailPage() {
                 ]} />,
                 <ResponsiveDiv style="flex flex-col px-10 py-10 gap-5 w-3/4" children={[
                     <ResponsiveDiv style="flex flex-col gap-10 h-full" children={[
-                        <p className="text-3xl font-bold">{product.name} <span className="ml-5 px-3 py-2 bg-black text-white text-5xl font-normal">${product.price}</span></p>,
+                        <p className="text-3xl font-bold">{product.name} <span className="ml-5 px-3 py-2 text-black border-3 rounded-lg text-5xl font-normal">${product.price}</span></p>,
                         <p className="text-gray-500 text-xl">{product.description}</p>
                     ]} />,
                     <ResponsiveDiv style="flex flex-row items-center justify-end gap-5 mt-20" children={[  

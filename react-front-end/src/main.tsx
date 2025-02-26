@@ -17,6 +17,7 @@ import UserInfoEditPage from './pages/UserInfoEditPage.tsx'
 import ProductDetailPage from './pages/ProductDetaiPage.tsx'
 import PasswordResetPage from './pages/PasswordResetPage.tsx'
 import SignUpConfirmPage from './pages/SignUpConfirmPage.tsx'
+import SignInRequiredPage from './pages/SignInRequiredPage.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -27,6 +28,7 @@ createRoot(document.getElementById('root')!).render(
             <Route index element={<ProductsPage />} /> 
             <Route path="signin" element={<SignInPage />} /> 
             <Route path="signup" element={<SignUpPage />} /> 
+            <Route path="password-changed-then-signin-required" element={<SignInRequiredPage message="you have changged your password. please sign in again" />} /> 
             <Route path="signup-confirm" element={<SignUpConfirmPage />} />
             <Route path="password-reset" element={<PasswordResetPage />} /> 
             <Route path="products" element={<ProductsPage />} />

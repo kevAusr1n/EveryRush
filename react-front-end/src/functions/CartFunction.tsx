@@ -2,8 +2,6 @@ import { Dispatch, SetStateAction } from "react";
 import APICall from "../config/ApiConfig";
 import { CartItem } from "../type/EntityType";
 import { isStringEmpty } from "./Utils";
-import { redirect, useNavigate } from "react-router";
-import { isUserSignedIn } from "./UserFunction";
 
 function getCart(props: {userId : string, setCart: Dispatch<SetStateAction<CartItem[]>>}) {
     APICall()

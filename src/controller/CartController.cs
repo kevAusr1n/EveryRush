@@ -19,25 +19,28 @@ public class CartController : ControllerBase
     }
 
     [HttpGet]
-    //[Authorize(Roles = "Customer", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(Roles = "Customer")]
     public async Task<ActionResult<GetCartResponse>> GetCart([FromQuery] string userId) 
     {
         return await _cartService.GetCart(userId);
     }
 
     [HttpPost("add")]
+    [Authorize(Roles = "Customer")]
     public async Task<ActionResult<Boolean>> AddCartItem([FromBody] AddCartItemRequest request) 
     {
         return await _cartService.AddCartItem(request);
     }
 
     [HttpPost("update")]
+    [Authorize(Roles = "Customer")]
     public async Task<ActionResult<Boolean>> UpdateCartItem([FromBody] UpdateCartItemRequest request) 
     {
         return await _cartService.UpdateCartItem(request);
     }
 
     [HttpDelete("delete/{id}")]
+    [Authorize(Roles = "Customer")]
     public async Task<ActionResult<Boolean>> DeleteCartItem([FromRoute] string id) 
     {
         return await _cartService.DeleteCartItem(id);

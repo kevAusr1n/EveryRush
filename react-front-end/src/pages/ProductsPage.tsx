@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Pagination from "../components/Pagination";
-import { deleteProducts, getPaginatedProducts, updateProductStatus } from "../functions/ProductFunction";
+import { getPaginatedProducts } from "../functions/ProductFunction";
 import ProductBriefPage from "./ProductBriefPage";
 import DisplayArrangement from "../components/DisplayArrangement";
 import { GetProductsResponse } from "../type/ResponseType";
@@ -8,9 +8,8 @@ import { Product } from "../type/EntityType";
 import FilterSide from "../components/FilterSide";
 import ResponsiveDiv from "../components/div/ResponsiveDiv";
 import { isUserCustomerOrGuest } from "../functions/UserFunction";
-import { BlackButton, RedButton, WhiteButton } from "../components/Button";
+import { BlackButton } from "../components/Button";
 import { useNavigate } from "react-router";
-import ProductStatusConfig from "../config/ProductStatusConfig";
 import ProductUpdateblePage from "./ProductUpdateblePage";
 
 function ProductsPage() {

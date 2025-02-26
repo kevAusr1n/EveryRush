@@ -28,7 +28,7 @@ function ContactsPage() {
     }, [page, size, refresh])
 
     return (   
-        (!isUserSignedIn() && <SignInRequiredPage message="contacts"/>) ||
+        (!isUserSignedIn() && <SignInRequiredPage message="please sign in to manage contacts"/>) ||
         <ResponsiveDiv style="m-20 gap-5 flex flex-col items-center" children={[
 
             response.contacts.length == 0 && <ResponsiveDiv style="flex flex-col items-center gap-5" children={[

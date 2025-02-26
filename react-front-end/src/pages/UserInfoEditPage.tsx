@@ -3,7 +3,7 @@ import { BlackButton, WhiteButton } from "../components/Button";
 import ResponsiveDiv from "../components/div/ResponsiveDiv";
 import { TextInput } from "../components/InputField";
 import { useNavigate } from "react-router";
-import { EditUser } from "../functions/UserFunction";
+import { EditUser, signOut } from "../functions/UserFunction";
 import { isStringEmpty } from "../functions/Utils";
 
 function UserInfoEditPage() {
@@ -39,6 +39,8 @@ function UserInfoEditPage() {
         } 
         if (await EditUser({oldPassword: oldPassword, newPassword: newPassword})) {
             setPasswordEdit(false);
+            await signOut();
+            navigate("/password-changed-then-signin-required");
             window.location.reload();
         } else {
             updatePasswordErrorMsg.current = "Password change failed";

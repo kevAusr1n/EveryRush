@@ -37,9 +37,9 @@ function ProductBriefPage(props: {product : Product, display: string})
             return (
                 <ResponsiveDiv style={productBoxGridStyle} children={[
                     props.product.imageUrl && <ImageBrief src={new URL((props.product.imageUrl as string).split(",")[0], backServerEndpoint).toString()} style="w-32 h-32" />,
-                    <strong>{props.product.name}</strong>,
-                    <p>PRICE: ${props.product.price}</p>,
-                    <p>STOCK: {props.product.stock}</p>,
+                    <strong className="h-1/5">{props.product.name}</strong>,
+                    <p className="h-1/5">PRICE: ${props.product.price}</p>,
+                    <p className="h-1/5">STOCK: {props.product.stock}</p>,
                     <BlackButton buttonName="ADD TO CART" size="w-40 h-10" clickHandler={() => {
                         if (!isUserSignedIn()) {
                             navigate("/signin");

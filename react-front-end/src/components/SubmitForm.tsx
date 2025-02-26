@@ -1,4 +1,4 @@
-import { BlackButton, SubmitButton } from "./Button";
+import { SubmitButton } from "./Button";
 import InputField from "./InputField";
 import ResponsiveDiv from "./div/ResponsiveDiv";
 
