@@ -159,6 +159,30 @@ public class ProductService
         return true;
     }
     
+    public async Task<UpdateProductStockResponse> UpdateProductStock(string id, int newStock) 
+    {   
+        var product = await _appDbContext.Products.FindAsync(id);
+        if (product == null) 
+        {
+            return new UpdateProductStockResponse {
+                Result = OperationResult.FAILURE
+            };
+        }
+        product.Stock = newStock;
+        if (product.Stock == 0 && product.Status == ProductStatus.IN_SALE) {
+            product.Status = ProductStatus.OUT_OF_STOCK;
+        }
+        if (product.Stock > 0 && product.Status == ProductStatus.OUT_OF_STOCK) {
+            product.Status = ProductStatus.IN_SALE;
+        }
+        _appDbContext.Products.Update(product);
+        await _appDbContext.SaveChangesAsync();
+
+        return new UpdateProductStockResponse {
+            Result = OperationResult.SUCCESS
+        };
+    }
+
     public async Task<Boolean> DeleteProduct(string id) 
     {   
         try 

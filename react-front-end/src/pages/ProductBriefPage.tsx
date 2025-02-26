@@ -7,6 +7,7 @@ import { addOrUpdateCartItem } from "../functions/CartFunction";
 import { CartItem, Product } from "../type/EntityType";
 import { ReactNode } from "react";
 import { isStringEmpty } from "../functions/Utils";
+import { isUserSignedIn } from "../functions/UserFunction";
 
 const productBoxGridStyle = "gap-5 m-5 p-5 bg-white flex flex-col items-center shadow-xl transition hover:scale-105";
 const productBoxRowStyle="gap-5 m-5 p-5 bg-white flex flex-row justify-between shadow-xl transition hover:scale-101";
@@ -39,9 +40,13 @@ function ProductBriefPage(props: {product : Product, display: string})
                     <strong>{props.product.name}</strong>,
                     <p>PRICE: ${props.product.price}</p>,
                     <p>STOCK: {props.product.stock}</p>,
-                    <BlackButton buttonName="ADD TO CART" size="w-40 h-10" clickHandler={() => addOrUpdateCartItem({
-                        item: { productId: props.product.id, quantity: 1} as CartItem
-                    })} />,
+                    <BlackButton buttonName="ADD TO CART" size="w-40 h-10" clickHandler={() => {
+                        if (!isUserSignedIn()) {
+                            navigate("/signin");
+                        } else {
+                            addOrUpdateCartItem({item: { productId: props.product.id, quantity: 1} as CartItem})
+                        }
+                    }} />,
                     <WhiteButton buttonName="DETAIL" size="w-40 h-10" clickHandler={() => goToDetailPage()} />
                 ]} />    
             )
@@ -60,9 +65,13 @@ function ProductBriefPage(props: {product : Product, display: string})
                     <ResponsiveDiv style="flex flex-col gap-1 w-1/5" children={[    
                         <p>PRICE: ${props.product.price}</p>,
                         <p>STOCK: {props.product.stock}</p>,
-                        <BlackButton buttonName="ADD TO CART" size="w-40 h-10" clickHandler={() => addOrUpdateCartItem({
-                            item: { productId: props.product.id, quantity: 1} as CartItem
-                        })} />,
+                        <BlackButton buttonName="ADD TO CART" size="w-40 h-10" clickHandler={() => {
+                            if (!isUserSignedIn()) {
+                                navigate("/signin");
+                            } else {
+                                addOrUpdateCartItem({item: { productId: props.product.id, quantity: 1} as CartItem})
+                            }
+                        }} />,
                         <WhiteButton buttonName="DETAIL" size="w-40 h-10" clickHandler={() => goToDetailPage()} />
                     ]} />
                 ]} />    
@@ -74,9 +83,13 @@ function ProductBriefPage(props: {product : Product, display: string})
                     <strong>{props.product.name}</strong>,
                     <p>PRICE: ${props.product.price}</p>,
                     <p>STOCK: {props.product.stock}</p>,
-                    <BlackButton buttonName="ADD TO CART" size="w-40 h-10" clickHandler={() => addOrUpdateCartItem({
-                        item: { productId: props.product.id, quantity: 1} as CartItem
-                    })} />,
+                    <BlackButton buttonName="ADD TO CART" size="w-40 h-10" clickHandler={() => {
+                        if (!isUserSignedIn()) {
+                            navigate("/signin");
+                        } else {
+                            addOrUpdateCartItem({item: { productId: props.product.id, quantity: 1} as CartItem})
+                        }
+                    }} />,
                     <WhiteButton buttonName="DETAIL" size="w-40 h-10" clickHandler={() => goToDetailPage()} />
                 ]} />    
             )

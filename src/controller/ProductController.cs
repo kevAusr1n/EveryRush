@@ -52,6 +52,13 @@ public class ProductController : ControllerBase
         return await _productService.UpdateProductStatus(id, newStatus);
     }
 
+    [HttpPost("stock-update/{id}")]
+    [Authorize(Roles = "BusinessOwner")]
+    public async Task<ActionResult<UpdateProductStockResponse>> UpdateProductStock([FromRoute] string id, [FromQuery] int newStock)
+    {
+        return await _productService.UpdateProductStock(id, newStock);
+    }
+
     [HttpDelete("delete/{id}")]
     [Authorize(Roles = "BusinessOwner")]
     public async Task<ActionResult<Boolean>> DeleteProduct([FromRoute] string id) 

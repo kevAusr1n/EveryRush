@@ -107,4 +107,8 @@ async function updateProductStatus (props: {id: string, status: number}) {
     await APICall().post(`/api/products/status-update/${props.id}?newstatus=${props.status}`)
 }
 
-export { getPaginatedProducts, addOrUpdateProducts, GetProduct, deleteProducts, updateProductStatus };
+async function updateProductStock (props: {id: string, stock: number}) {
+    await APICall().post(`/api/products/stock-update/${props.id}?newstock=${props.stock}`)
+}
+
+export { getPaginatedProducts, addOrUpdateProducts, GetProduct, deleteProducts, updateProductStatus, updateProductStock };

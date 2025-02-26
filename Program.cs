@@ -41,8 +41,8 @@ builder.Services
     }*/
 )
 .AddRoles<AppRole>()
-.AddEntityFrameworkStores<AppDbContext>()
-.AddTokenProvider<NumericPasswordResetTokenProvider<AppUser>>("NumericTokenProvider");
+.AddEntityFrameworkStores<AppDbContext>();
+//.AddTokenProvider<NumericPasswordResetTokenProvider<AppUser>>("NumericTokenProvider");
 
 builder.Services.Configure<IdentityOptions>
 (

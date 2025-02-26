@@ -8,9 +8,10 @@ import { Product } from "../type/EntityType";
 import FilterSide from "../components/FilterSide";
 import ResponsiveDiv from "../components/div/ResponsiveDiv";
 import { isUserCustomerOrGuest } from "../functions/UserFunction";
-import { BlackButton, RedButton } from "../components/Button";
+import { BlackButton, RedButton, WhiteButton } from "../components/Button";
 import { useNavigate } from "react-router";
 import ProductStatusConfig from "../config/ProductStatusConfig";
+import ProductUpdateblePage from "./ProductUpdateblePage";
 
 function ProductsPage() {
     const navigate = useNavigate();
@@ -30,16 +31,6 @@ function ProductsPage() {
         orderTerm : orderTerm,
         setResponse: setResponse,
     }), [page, size, searchTerm, orderTerm, refresh]);
-
-    const updateProductStatusHandler = async (id: string, status: number) => {
-        await updateProductStatus({id: id, status: status});
-        setRefresh(!refresh);
-    }
-
-    const deleteProductHandler = async (id: string) => {
-        await deleteProducts({id: id});
-        setRefresh(!refresh);
-    }
 
     return (
         (
@@ -88,33 +79,16 @@ function ProductsPage() {
                     <p className="text-xl">You have no product</p>
                 ]} />,
 
-                response.products.length != 0 && <ResponsiveDiv style="w-full flex flex-row items-center border-b-1" children={[
-                    <p className="w-3/12" key={0}>Product ID</p>,
-                    <p className="w-3/12 font-bold" key={1}>Name</p>,
-                    <p className="w-1/12 font-bold" key={2}>Price</p>,
-                    <p className="w-1/12 font-bold" key={3}>Stock</p>,
-                    <p className="w-1/12 font-bold" key={4}>Status</p>
+                response.products.length != 0 && <ResponsiveDiv style="px-2 w-full flex flex-row items-center border-b-1" children={[
+                    <p className="w-3/13 font-bold" key={0}>Product ID</p>,
+                    <p className="w-3/13 font-bold" key={1}>Name</p>,
+                    <p className="w-1/13 font-bold" key={2}>Price</p>,
+                    <p className="w-2/13 font-bold" key={3}>Stock</p>,
+                    <p className="w-1/13 font-bold" key={4}>Status</p>
                 ]} />,
                 response.products.length != 0 && response.products.map((product: Product) => {
-                    return (
-                        <ResponsiveDiv style="w-full flex flex-row shadow-xl items-center" children={[
-                            <p className="w-3/12" key={0}>{product.id}</p>,
-                            <p className="w-3/12" key={1}>{product.name}</p>,
-                            <p className="w-1/12" key={2}>${product.price}</p>,
-                            <p className="w-1/12" key={3}>{product.stock}</p>,
-                            <p className="w-1/12" key={4}>{ProductStatusConfig.getStatusName(product.status)}</p>,
-                            <ResponsiveDiv style="flex flex-row gap-5 py-3" children={[
-                                product.status == ProductStatusConfig.OFF_SHELF && <BlackButton buttonName="ON-SHELF" size="w-40 h-10" clickHandler={() => {
-                                    updateProductStatusHandler(product.id, ProductStatusConfig.IN_SALE);
-                                }} />,
-                                product.status != ProductStatusConfig.OFF_SHELF && <BlackButton buttonName="OFF-SHELF" size="w-40 h-10" clickHandler={() => {
-                                    updateProductStatusHandler(product.id, ProductStatusConfig.OFF_SHELF);
-                                }} />,
-                                <RedButton buttonName="DELETE" size="w-40 h-10" clickHandler={() => {
-                                    deleteProductHandler(product.id);
-                                }} />
-                            ]} />
-                        ]} />
+                    return (                   
+                        <ProductUpdateblePage key={product.id} product={product} refresh={refresh} setRefresh={setRefresh} />         
                     )
                 })
                 

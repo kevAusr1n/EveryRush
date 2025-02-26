@@ -2,7 +2,8 @@ using System.ComponentModel.DataAnnotations;
 using EveryRush.Entity;
 using Newtonsoft.Json;
 
-public class MakeOrderRequest {
+public class MakeOrderRequest 
+{
     [Required]
     public string UserId {get; set;}
     
