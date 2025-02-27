@@ -10,7 +10,8 @@ import ResponsiveDiv from "../components/div/ResponsiveDiv";
 import { isUserCustomerOrGuest } from "../functions/UserFunction";
 import { BlackButton } from "../components/Button";
 import { useNavigate } from "react-router";
-import ProductUpdateblePage from "./ProductUpdateblePage";
+import { MonoStyleText } from "../components/Text";
+import ProductUpdatePage from "./ProductUpdatePage";
 
 function ProductsPage() {
     const navigate = useNavigate();
@@ -74,22 +75,22 @@ function ProductsPage() {
         <ResponsiveDiv style="mt-20 mb-20 m-5 mr-5 w" key={crypto.randomUUID()} children={[ 
             <ResponsiveDiv style="flex flex-col items-start gap-3" children={[
                 response.products.length == 0 && <ResponsiveDiv style="w-full flex flex-col items-center gap-5" children={[
-                    <p key={crypto.randomUUID()} className="text-xl">Your have no product</p>,
+                    <MonoStyleText key={crypto.randomUUID()} style="text-xl" content="Your have no product" />,
                     <BlackButton key={crypto.randomUUID()} buttonName="ADD PRODUCT" size="w-40 h-10" clickHandler={() => navigate("/products/add")} />
                 ]} />,
                 response.products.length != 0 && <ResponsiveDiv style="mb-5" children={[
                     <BlackButton key={crypto.randomUUID()} buttonName="ADD PRODUCT" size="w-40 h-10" clickHandler={() => navigate("/products/add")} />
                 ]} />,
                 response.products.length != 0 && <ResponsiveDiv style="px-2 w-full flex flex-row items-center border-b-1" children={[
-                    <p className="w-3/13 font-bold" key={0}>Product ID</p>,
-                    <p className="w-3/13 font-bold" key={1}>Name</p>,
-                    <p className="w-1/13 font-bold" key={2}>Price</p>,
-                    <p className="w-2/13 font-bold" key={3}>Stock</p>,
-                    <p className="w-1/13 font-bold" key={4}>Status</p>
+                    <MonoStyleText style="w-3/13 font-bold" key={0} content="Product ID" />,
+                    <MonoStyleText style="w-3/13 font-bold" key={1} content="Name" />,
+                    <MonoStyleText style="w-1/13 font-bold" key={2} content="Price" />,
+                    <MonoStyleText style="w-2/13 font-bold" key={3} content="Stock" />,
+                    <MonoStyleText style="w-1/13 font-bold" key={4} content="Status" />
                 ]} />,
                 response.products.length != 0 && response.products.map((product: Product) => {
                     return (                   
-                        <ProductUpdateblePage key={product.id} product={product} refresh={refresh} setRefresh={setRefresh} />         
+                        <ProductUpdatePage key={product.id} product={product} refresh={refresh} setRefresh={setRefresh} />         
                     )
                 })
                 

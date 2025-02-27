@@ -25,21 +25,21 @@ public class OrderController : ControllerBase
 
     [HttpPost("make")]
     [Authorize(Roles = "Customer")]
-    public async Task<ActionResult<Order>> MakeOrder([FromBody] MakeOrderRequest request) 
+    public async Task<ActionResult<Order>> MakeOrder([FromBody] PlaceOrderRequest request) 
     {
         return await _orderService.MakeOrder(request);
     }
 
     [HttpPost("accept")]
     [Authorize(Roles = "BusinessOwner")]
-    public async Task<ActionResult<Order>> AcceptOrder([FromBody] MakeOrderRequest request) 
+    public async Task<ActionResult<Order>> AcceptOrder([FromBody] PlaceOrderRequest request) 
     {
         return await _orderService.MakeOrder(request);
     }
 
     [HttpPost("cancel-initiative")]
     [Authorize(Roles = "Customer")]
-    public async Task<ActionResult<Order>> RequestCancelOrder([FromBody] MakeOrderRequest request) 
+    public async Task<ActionResult<Order>> RequestCancelOrder([FromBody] PlaceOrderRequest request) 
     {
         return await _orderService.MakeOrder(request);
     }

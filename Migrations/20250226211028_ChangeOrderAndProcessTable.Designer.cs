@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EveryRush.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AuthDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250226211028_ChangeOrderAndProcessTable")]
+    partial class ChangeOrderAndProcessTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -395,9 +398,6 @@ namespace EveryRush.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int?>("Status")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("AppUserId");
@@ -405,13 +405,10 @@ namespace EveryRush.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("OrderProcess", b =>
+            modelBuilder.Entity("Process", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("varchar(255)");
-
-                    b.Property<string>("Comment")
-                        .HasColumnType("longtext");
 
                     b.Property<DateTime?>("CreateAt")
                         .HasColumnType("datetime(6)");
@@ -438,7 +435,7 @@ namespace EveryRush.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("OrderProcesses");
+                    b.ToTable("Processes");
                 });
 
             modelBuilder.Entity("PurchaseProductSnapshot", b =>
@@ -479,7 +476,7 @@ namespace EveryRush.Migrations
 
             modelBuilder.Entity("AppFile", b =>
                 {
-                    b.HasOne("OrderProcess", "Process")
+                    b.HasOne("Process", "Process")
                         .WithMany("AppFiles")
                         .HasForeignKey("ProcessId");
 
@@ -590,7 +587,7 @@ namespace EveryRush.Migrations
                     b.Navigation("AppUser");
                 });
 
-            modelBuilder.Entity("OrderProcess", b =>
+            modelBuilder.Entity("Process", b =>
                 {
                     b.HasOne("Order", "Order")
                         .WithMany("Processes")
@@ -635,7 +632,7 @@ namespace EveryRush.Migrations
                     b.Navigation("PurchaseProductSnapshots");
                 });
 
-            modelBuilder.Entity("OrderProcess", b =>
+            modelBuilder.Entity("Process", b =>
                 {
                     b.Navigation("AppFiles");
                 });

@@ -1,7 +1,7 @@
-function Messages() {
+function MessagesPage() {
     return (
         <p>there is message</p>
     )
 }
 
-export default Messages;
+export default MessagesPage;

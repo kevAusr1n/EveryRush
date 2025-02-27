@@ -90,7 +90,6 @@ builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<ProductService>();
 builder.Services.AddScoped<ContactService>();
 builder.Services.AddScoped<CartService>();
-builder.Services.AddSingleton<OrderStatusCheck>();
 
 //builder.Services.AddScoped<IAuthorizationHandler, CustomerAuthorizationHandler>();
 //builder.Services.AddScoped<IAuthorizationHandler, BusinessOwnerAuthorizationHandler>();
@@ -110,6 +109,6 @@ app.UseCors("AllowSelfFrontEnd");
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
-app.MapStaticAssets();
+app.UseStaticFiles();
 
 app.Run();

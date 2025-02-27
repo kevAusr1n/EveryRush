@@ -4,6 +4,7 @@ import ResponsiveDiv from "../components/div/ResponsiveDiv";
 import InputField from "../components/InputField";
 import { resetPassword, sendPasswordResetEmail } from "../functions/UserFunction";
 import { useNavigate } from "react-router";
+import { MonoStyleText } from "../components/Text";
 
 function PasswordResetPage() {
     const navigate = useNavigate();
@@ -46,7 +47,7 @@ function PasswordResetPage() {
                 <BlackButton buttonName="SEND" size="w-40 h-10" clickHandler={() => {
                     sendPasswordResetEmailHandler();
                 }} />,
-                <p className="text-red-500">{sendEmailResultMsg.current}</p>
+                <MonoStyleText style="text-red-500" content={sendEmailResultMsg.current} />
             ]} />,
             dropDown && <ResponsiveDiv style="flex flex-col mt-5 gap-5" children={[
                 <InputField inputName="Reset Code" inputType="text" inputValue="" style="w-200" onTextChangeHandler={setCode}/>,
@@ -60,7 +61,7 @@ function PasswordResetPage() {
                         setDropDown(false)}
                     }/>
                 ]} />,
-                <p className="text-red-500">{resetPasswordResultMsg.current}</p>,
+                <MonoStyleText style="text-red-500" content={resetPasswordResultMsg.current} />
             ]} />
         ]} />
     )

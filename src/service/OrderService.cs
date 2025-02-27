@@ -23,7 +23,7 @@ public class OrderService
         return null;
     }
 
-    public async Task<Order> MakeOrder(MakeOrderRequest request) 
+    public async Task<Order> MakeOrder(PlaceOrderRequest request) 
     {   
         AppUser user = await _userManager.FindByIdAsync(request.UserId);
         if (user == null) 
@@ -56,8 +56,8 @@ public class OrderService
             Id = Guid.NewGuid().ToString(),
             AppUserId = request.UserId,
             PurchaseProductSnapshots = request.PurchaseProductSnapshots,
-            Processes = new List<Process> {
-                new Process {
+            Processes = new List<OrderProcess> {
+                new OrderProcess {
                     Id = Guid.NewGuid().ToString()
                 }
             }
@@ -65,7 +65,7 @@ public class OrderService
         };
 
         _appDbContext.Orders.Add(order);
-        _appDbContext.Processes.AddRange(order.Processes);
+        _appDbContext.OrderProcesses.AddRange(order.Processes);
         _appDbContext.Products.UpdateRange(products);
         await _appDbContext.SaveChangesAsync();
         return order;

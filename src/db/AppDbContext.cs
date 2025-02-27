@@ -6,6 +6,8 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, string>
 {
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) {}
 
+    public DbSet<AppUser> AppUsers {get;set;}
+
     public DbSet<Contact> Contacts {get;set;}
 
     public DbSet<Product> Products {get;set;}
@@ -14,7 +16,7 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, string>
 
     public DbSet<CartItem> CartItems {get;set;}
 
-    public DbSet<Process> Processes {get;set;}
+    public DbSet<OrderProcess> OrderProcesses {get;set;}
 
     public DbSet<PurchaseProductSnapshot> PurchaseProductSnapshots {get;set;}
 

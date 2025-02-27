@@ -1,9 +1,9 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { GoogleOAuthProvider } from '@react-oauth/google'
-import Orders from './pages/Orders.tsx'
+import OrdersPage from './pages/OrdersPage.tsx'
 import ContactsPage from './pages/ContactsPage.tsx'
-import Messages from './pages/Messages.tsx'
+import MessagesPage from './pages/MessagesPage.tsx'
 import SignInPage from './pages/SignInPage.tsx'
 import SignUpPage from './pages/SignUpPage.tsx'
 import IndexPage from './pages/IndexPage.tsx'
@@ -33,13 +33,13 @@ createRoot(document.getElementById('root')!).render(
             <Route path="password-reset" element={<PasswordResetPage />} /> 
             <Route path="products" element={<ProductsPage />} />
             <Route path="cart" element={<CartPage />} />
-            <Route path="orders" element={<Orders />} />
+            <Route path="orders" element={<OrdersPage />} />
             <Route path="user/edit" element={<UserInfoEditPage />} />
             <Route path="product/:id" element={<ProductDetailPage />} />
             <Route path="contacts/:action" element={<AddOrUpdateContactPage />} />
             <Route path="products/:action" element={<AddOrUpdateProductPage />} />
             <Route path="contacts" element={<ContactsPage />} />
-            <Route path="messages" element={<Messages />} />
+            <Route path="messages" element={<MessagesPage />} />
             <Route path="checkout" element={<CheckoutPage />} />
           </Route>
       </Routes>

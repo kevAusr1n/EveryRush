@@ -6,7 +6,9 @@ public class GetCartResponse
 public class CartItemResponse 
 {
     public string? Id {get; set;}
-    public string? UserId {get; set;}  
+    public string? UserId {get; set;} 
+    public string? SellerId {get; set;} 
+    public string? SellerName {get; set;} 
     public string? Name {get; set;}
     public string? Description {get; set;}
     public decimal? Price {get; set;} 

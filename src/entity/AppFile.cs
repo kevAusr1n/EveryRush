@@ -13,5 +13,5 @@ public class AppFile {
  
     public Product Product {get; set;}
 
-    public Process Process {get; set;}
+    public OrderProcess Process {get; set;}
 }

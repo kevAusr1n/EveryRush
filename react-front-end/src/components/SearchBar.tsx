@@ -9,9 +9,9 @@ function SearchBar(props: {
     const tempSearchTerm = useRef("");
 
     return (   
-        <ResponsiveDiv style="flex flex-row bg-white border" children={[
-            <input className="outline-none" type="text" onChange={(e) => tempSearchTerm.current = e.target.value} />,
-            <Search onClick={() => props.setSearchTerm(tempSearchTerm.current)} />  
+        <ResponsiveDiv style="w-full flex flex-row bg-white border" children={[
+            <input className="w-4/5 font-mono outline-none" type="text" onChange={(e) => tempSearchTerm.current = e.target.value} />,
+            <button className="px-2" onClick={() => props.setSearchTerm(tempSearchTerm.current)}><Search /></button>
         ]}/>
     )
 }

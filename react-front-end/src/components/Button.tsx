@@ -4,7 +4,7 @@ function BorderlessButton (props: {
     clickHandler: () => void
 }) {
     return (
-        <button className={`${props.style} px-3 py-2`} onClick={props.clickHandler}>
+        <button className={`font-mono ${props.style} px-3 py-2`} onClick={props.clickHandler}>
             {props.buttonName}
         </button>
     )
@@ -15,43 +15,46 @@ function SubmitButton(props: {
     buttonName: string
 }) {
     return (
-        <button type="submit" className={`bg-black text-white px-3 py-2 ${props.size} transition hover:scale-110`}>
+        <button type="submit" className={`font-mono bg-black text-white px-3 py-2 ${props.size} transition hover:scale-110`}>
             {props.buttonName}
         </button>
     )
 }
 
 function BlackButton(props: {
+    id?: string,
     buttonName: string,
     size: string,
     clickHandler: () => void
 }) {
     return (
-        <button type="button" className={`bg-black text-white px-3 py-2 ${props.size} transition hover:scale-110`} onClick={props.clickHandler}>
+        <button id={props.id != undefined ? props.id: crypto.randomUUID()} type="button" className={`font-mono bg-black text-white px-3 py-2 ${props.size} transition hover:scale-110`} onClick={props.clickHandler}>
             {props.buttonName}
         </button>
     )
 }
 
 function WhiteButton(props: {
+    id?: string,
     buttonName: string,
     size: string,
     clickHandler: () => void
 }) {
     return (
-        <button type="button" className={`bg-white text-black px-3 py-2 border-1 ${props.size} transition hover:scale-110`} onClick={props.clickHandler}>
+        <button id={props.id != undefined ? props.id: crypto.randomUUID()} type="button" className={`font-mono bg-white text-black px-3 py-2 border-1 ${props.size} transition hover:scale-110`} onClick={props.clickHandler}>
             {props.buttonName}
         </button>
     )
 }
 
 function RedButton(props: {
+    id?: string,
     buttonName: string,
     size: string,
     clickHandler: () => void
 }) {
     return (
-        <button type="button" className={`bg-white border-red-500 border-1 text-red-500 px-3 py-2 ${props.size} transition hover:scale-110`} onClick={props.clickHandler}>
+        <button id={props.id != undefined ? props.id: crypto.randomUUID()} type="button" className={`font-mono bg-white border-red-500 border-1 text-red-500 px-3 py-2 ${props.size} transition hover:scale-110`} onClick={props.clickHandler}>
             {props.buttonName}
         </button>
     )

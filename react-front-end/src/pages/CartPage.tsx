@@ -10,6 +10,7 @@ import ResponsiveDiv from "../components/div/ResponsiveDiv";
 import { CartItem } from "../type/EntityType";
 import { isUserSignedIn } from "../functions/UserFunction";
 import SignInRequiredPage from "./SignInRequiredPage";
+import { MonoStyleText } from "../components/Text";
 
 function CartPage() {
     const navigate = useNavigate();
@@ -43,7 +44,7 @@ function CartPage() {
             )
         } else {
             totalPrice.current = 0;
-            let tableHead: string[] = ["Product", "Name", "Price", "Quantity", ""];
+            let tableHead: string[] = ["", "Product", "Seller", "Price", "Quantity", ""];
             let tableContent: ReactNode[][] = [];
 
             cart.map((cartItem: CartItem, index: number) => {
@@ -51,6 +52,7 @@ function CartPage() {
                 tableContent[index] = []
                 tableContent[index].push(<ImageBrief key={crypto.randomUUID()} src={new URL((cartItem.imageUrl as string).split(",")[0], backServerEndpoint).toString()} style="w-32 h-32"/>);
                 tableContent[index].push(createElement("p", {key: crypto.randomUUID()}, cartItem.name) as ReactNode);
+                tableContent[index].push(createElement("p", {key: crypto.randomUUID()}, cartItem.sellerName) as ReactNode);
                 tableContent[index].push(createElement("p", {key: crypto.randomUUID()}, "$" + cartItem.price) as ReactNode);
                 tableContent[index].push(<CountEditor key={crypto.randomUUID()} initial_count={cartItem.quantity} target={cartItem} countChangeHandler={addOrUpdateCartItemHandler} /> as ReactNode);
                 tableContent[index].push(<RedButton key={crypto.randomUUID()} buttonName="DELETE" size="w-40 h-10" clickHandler={() => {
@@ -62,7 +64,7 @@ function CartPage() {
                 <>
                     <DisplayTable key={crypto.randomUUID()} tableHead={tableHead} tableContent={tableContent} />
                     <ResponsiveDiv key={crypto.randomUUID()} style="ml-20 mr-20 mt-10 w-full flex flex-row justify-end" children={[
-                        <p className="text-5xl">Total: ${totalPrice.current}</p>
+                        <MonoStyleText style="text-5xl" content={"Total: $" + totalPrice.current} />,
                     ]} />,
                     <ResponsiveDiv key={crypto.randomUUID()} style="flex flex-row m-20 justify-center gap-10" children={[
                         <BlackButton key={crypto.randomUUID()} buttonName="CHECKOUT" size="w-40 h-10" clickHandler={() => goCheckout()}/>,

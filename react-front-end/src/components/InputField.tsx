@@ -1,13 +1,14 @@
-import { Dispatch, ReactNode, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import ResponsiveDiv from './div/ResponsiveDiv';
 import { X } from 'lucide-react';
 import { ImageBrief } from './Image';
 import DropDown from './Dropdown';
-import { BlackButton } from './Button';
+import { MonoStyleText } from './Text';
+import { isStringEmpty } from '../functions/Utils';
 
-const basicTextFieldStyle = "shadow appearance-none border py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline";
-const readOnlyTestFieldStyle = "shadow appearance-none border py-2 px-3 bg-gray-200 text-black leading-tight focus:outline-none focus:shadow-outline";
-const basicLabelStyle = "block text-gray-700 text-sm font-bold mb-2";
+const basicTextFieldStyle = "font-mono shadow appearance-none border py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline";
+const readOnlyTestFieldStyle = "font-mono shadow appearance-none border py-2 px-3 bg-gray-200 text-black leading-tight focus:outline-none focus:shadow-outline";
+const basicLabelStyle = "font-mono block text-gray-700 text-sm font-bold mb-2";
 
 function TextInput(props: {
     inputName: string, 
@@ -70,18 +71,14 @@ function OptionInput(props: {
 }) {
     const optionValues: string[] = props.inputValue.split(",");
     const [dropDown, setDropDown] = useState(false);
-    const [position, inputWidth] = props.style == "" ? ["left", "w-80"] : props.style.split(",");
+    const [inputValueState, setInputValueState] = useState(optionValues[0]);
+    const optionWidth = props.style;
+    const id = crypto.randomUUID();
 
-    const selectRoleHadnler = ( id: string , originStyle: string, value: string) => {
+    const defaultHandler = (value: string) => {
         return {     
-            onMouseOver: () => {
-                document.getElementById(id)?.setAttribute("class", originStyle + " hover:bg-black hover:text-white");
-            },
-            onMouseOut: () => {
-                document.getElementById(id)?.setAttribute("class", originStyle);
-            },
             onClick: () => {
-                document.getElementById(props.inputName.toLocaleLowerCase())?.setAttribute("value", value);
+                setInputValueState(value);
                 setDropDown(!dropDown);
                 if (props.inputChangeHandler != undefined) {
                     props.inputChangeHandler(value);
@@ -90,30 +87,16 @@ function OptionInput(props: {
         }
     };
 
-    const optionLayout = () : ReactNode[] => {
-        const nodes: ReactNode[] = [
-            <BlackButton buttonName={props.inputName} size="h-10" clickHandler={
-                () => {
-                    setDropDown(!dropDown);
-                }}
-            />,
-            <input id={props.inputName.toLocaleLowerCase()} name={props.inputName.toLocaleLowerCase()} className={inputWidth + " text-center border-b-1 border-black focus:outline-none"} readOnly />
-        ];
-
-        if (position == "left") {
-            return [nodes[0], nodes[1]] 
-        } else {
-            return [nodes[1], nodes[0]] 
-        }
-    }
-    
-    return (
-        <ResponsiveDiv style="flex flex-col" children={[
-            <ResponsiveDiv style="flex flex-row justify-between gap-5" children={[
-                optionLayout()
-            ]} />, 
-            <DropDown dropDown={dropDown} items={optionValues} eventHandlerMap={selectRoleHadnler} />
-        ]} />
+    return (        
+        <ResponsiveDiv style={"flex flex-col gap-5 "} children={[
+            !isStringEmpty(props.inputName) && <label className={basicLabelStyle}>{props.inputName.toLocaleLowerCase()}</label>,
+            <input id={id} name={props.inputName} type="text" value={inputValueState} className={optionWidth + " h-10 text-center font-mono border-b-1 hover:bg-black hover:text-white focus:outline-none"} onClick={() => {
+                setDropDown(!dropDown);
+            }} readOnly />,
+            <ResponsiveDiv style="" children={[
+                <DropDown dropDown={dropDown} items={optionValues} style={optionWidth} eventHandlerMap={defaultHandler} />
+            ]} />
+        ]} />     
     )
 }
 
@@ -200,7 +183,7 @@ function ImageInput(props: {
             </label>,
             <input id={props.inputName.toLocaleLowerCase()} name={props.inputName.toLocaleLowerCase()} 
                 type="file" multiple hidden onChange={(e) => addImage(e.target.files as FileList)}/>,
-            <ResponsiveDiv style="mt-2 mb-2" children={[<p className="text-red-500">{errorMsg}</p>]} />,
+            <ResponsiveDiv style="mt-2 mb-2" children={[<MonoStyleText style="text-red-500" content={errorMsg} />]} />,
             <ResponsiveDiv style="flex flex-row mt-3 mb-3 gap-2" children={[
                 files && Array.from(files).map((file) => {
                     const id = crypto.randomUUID();

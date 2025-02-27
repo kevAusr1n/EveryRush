@@ -24,8 +24,37 @@ type Contact = {
 }
 
 type CartItem = {
+    sellerId: string;
+    sellerName: string;
     productId: string;
     quantity: number;
 } & Product;
 
-export type { Product, Contact, CartItem }
+type OrderProcess = {
+    id: string;
+    orderId: string;
+    fromStatus: number;
+    toStatus: number;
+    createAt: Date,
+    fromUserId: string;
+    fromUserName: string;
+    toUserName: string;
+    event: string;
+    comment: string;
+}
+
+type Order = {
+    id: string;
+    userId: string;
+    sellerName: string;
+    status: number;
+    cartItems: CartItem[];
+    orderProcesses: OrderProcess[];
+    fullName: string;
+    email: string;
+    phone: string;
+    address: string;
+    totalPrice: number;
+}
+
+export type { Product, Contact, CartItem, Order, OrderProcess }

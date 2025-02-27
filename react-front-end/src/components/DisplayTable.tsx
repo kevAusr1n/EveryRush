@@ -7,9 +7,9 @@ function DisplayTable(props: {
     return (
         <table className="table-fixed w-300 text-center">
             <thead>
-                <tr className="border-b border-gray-400 text-2xl">
+                <tr className="border-b border-gray-400 text-2xl font-mono">
                     {props.tableHead.map((value: string, index: number) => {
-                        return <th key={index} className="p-5">{value}</th>
+                        return <th key={index} className="p-5 font-mono">{value}</th>
                     })}
                 </tr>
             </thead>
@@ -18,7 +18,7 @@ function DisplayTable(props: {
                     return (
                         <tr key={rowIndex} className="border-b border-gray-400">
                             {tableRow.map((value: ReactNode, colIndex : number) => {
-                                return (<td key={(rowIndex + 1) * (colIndex + 1)} className="h-50">
+                                return (<td key={(rowIndex + 1) * (colIndex + 1)} className="h-50 font-mono">
                                     {value}
                                 </td>)
                             })}

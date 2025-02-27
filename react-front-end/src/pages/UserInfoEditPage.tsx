@@ -5,6 +5,7 @@ import { TextInput } from "../components/InputField";
 import { useNavigate } from "react-router";
 import { EditUser, signOut } from "../functions/UserFunction";
 import { isStringEmpty } from "../functions/Utils";
+import { MonoStyleText } from "../components/Text";
 
 function UserInfoEditPage() {
     const navigate = useNavigate();
@@ -69,7 +70,7 @@ function UserInfoEditPage() {
                 <TextInput inputName="Old Password" inputType="password" style="w-100" inputValue="" onTextChangeHandler={setOldPassword}/>,
                 <TextInput inputName="New Password" inputType="password" style="w-100" inputValue="" onTextChangeHandler={setNewPassword}/>,
                 <TextInput inputName="Confirm New Password" inputType="password" style="w-100" inputValue="" onTextChangeHandler={setConfirmedNewPassword} />,
-                <p className="text-red-500">{updatePasswordErrorMsg.current}</p>,
+                <MonoStyleText style="text-red-500" content={updatePasswordErrorMsg.current} />,
                 <ResponsiveDiv style="flex flex-row gap-3 mt-5" children={[
                     <WhiteButton buttonName="SAVE" size="h-10" clickHandler={() => editPasswordRequest()} />,
                     <WhiteButton buttonName="CANCEL" size="h-10" clickHandler={() => {
@@ -85,21 +86,21 @@ function UserInfoEditPage() {
         <ResponsiveDiv style="flex flex-col items-center" children={[
             <ResponsiveDiv style="mt-20 mb-20 gap-5 p-20 flex flex-col items-start bg-white shadow-xl" children={[
                 <ResponsiveDiv style="flex flex-row items-end gap-5" children={[
-                    <label className="font-bold">Email</label>,
-                    <p>{localStorage.getItem("email") as string}</p>
+                    <label className="font-bold font-mono">Email</label>,
+                    <MonoStyleText style="" content={localStorage.getItem("email") as string} />
                 ]} />,
                 <ResponsiveDiv style="w-150 flex flex-row items-center justify-between" children={[
                     <ResponsiveDiv style="flex flew-row gap-5" children={[
-                        <label className="font-bold">Username</label>,
-                        <p>{localStorage.getItem("username") as string}</p>,
+                        <label className="font-bold font-mono">Username</label>,
+                        <MonoStyleText style="" content={localStorage.getItem("username") as string} />
                     ]} />,
                     <WhiteButton buttonName="CHANGE" size="h-10" clickHandler={() => setUsernameEdit(true)}/>,
                 ]} />,
                 (usernameEdit && usernameEditDiv()),
                 <ResponsiveDiv style="w-150 flex flex-row items-center justify-between" children={[
                     <ResponsiveDiv style="flex flew-row gap-5" children={[
-                        <label className="font-bold">Password</label>,
-                        <p>********</p>,
+                        <label className="font-bold font-mono">Password</label>,
+                        <MonoStyleText style="" content="********" />
                     ]} />,
                     <WhiteButton buttonName="CHANGE" size="h-10" clickHandler={() => setPasswordEdit(true)} />
                 ]} />,

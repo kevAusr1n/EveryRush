@@ -4,6 +4,7 @@ import ResponsiveDiv from "../components/div/ResponsiveDiv";
 import { deleteContacts } from "../functions/ContactFunction";
 import { Contact } from "../type/EntityType";
 import { Dispatch, SetStateAction } from "react";
+import { MonoStyleText } from "../components/Text";
 
 function ContactDetailPage(props: { 
     contact: Contact, 
@@ -17,16 +18,16 @@ function ContactDetailPage(props: {
     }
 
     return (
-        <ResponsiveDiv style="w-full p-5 flex flex-row justify-between shadow-xl" children={[
-            <ResponsiveDiv style="h-30" children={[
-                <strong>{props.contact.firstName + " " + props.contact.lastName}</strong>,
-                <p>{props.contact.email}</p>,
-                <p>{props.contact.phone}</p>,
-                <p>{props.contact.address}</p>,
-                <p>{props.contact.city + ", " + props.contact.state + ", " + props.contact.postcode}</p>
+        <ResponsiveDiv style="w-full p-5 flex flex-row justify-between shadow-xl mb-5" children={[
+            <ResponsiveDiv style="" children={[
+                <MonoStyleText style="text-2xl font-bold mb-5" content={props.contact.firstName + " " + props.contact.lastName} />,
+                <MonoStyleText style="" content={props.contact.email} />,
+                <MonoStyleText style="" content={props.contact.phone} />,
+                <MonoStyleText style="" content={props.contact.address} />,
+                <MonoStyleText style="" content={props.contact.city + ", " + props.contact.state + ", " + props.contact.postcode} />
             ]} />,
-            <ResponsiveDiv style="flex flex-col items-center justify-center gap-5" children={[
-                <WhiteButton buttonName="Edit" size="w-40 h-10" clickHandler={() => {
+            <ResponsiveDiv style="w-1/6 flex flex-col items-center justify-center gap-5" children={[
+                <WhiteButton buttonName="Edit" size="w-full h-10" clickHandler={() => {
                     navigate({
                         pathname: "/contacts/edit/",
                         search: createSearchParams({
@@ -42,7 +43,7 @@ function ContactDetailPage(props: {
                         }).toString()
                     });
                 }} />,
-                <RedButton buttonName="Delete" size="w-40 h-10" clickHandler={() => {
+                <RedButton buttonName="Delete" size="w-full h-10" clickHandler={() => {
                     deleteContactsHandler(props.contact.id);
                 }} />,
             ]}/>

@@ -2,9 +2,10 @@ import { Dispatch, SetStateAction } from "react"
 import ResponsiveDiv from "./div/ResponsiveDiv";
 import { WhiteButton } from "./Button";
 import SearchBar from "./SearchBar";
+import { MonoStyleText } from "./Text";
 
 //const selectedStyle = "bg-indigo-500 text-white scale-110";
-const orderTermStyle = "bg-white text-black transition hover:scale-110";
+const orderTermStyle = "bg-white text-black transition hover:scale-110 font-mono";
 const filterLableStype = "bg-black text-white font-bold w-full text-center";
 
 function FilterSide(props: {
@@ -18,9 +19,9 @@ function FilterSide(props: {
     const rowArrangement = "grid grid-cols-1";
 
     return (
-        <ResponsiveDiv style="grid grid-cols-1" children={[
-            <ResponsiveDiv style="flex flex-row justify-between mb-1" children={[
-                <ResponsiveDiv style="mb-5" children={[
+        <ResponsiveDiv style="w-full grid grid-cols-1" children={[
+            <ResponsiveDiv style="w-full flex flex-row justify-between mb-1" children={[
+                <ResponsiveDiv style="w-3/4 mb-5" children={[
                     <SearchBar
                         searchTerm={props.searchTerm}
                         setSearchTerm={props.setSearchTerm}
@@ -36,7 +37,7 @@ function FilterSide(props: {
                 ]} />
             ]} />,
             <ResponsiveDiv style="flex flex-col items-start mt-2 gap-2 mb-1" children={[
-                <p className={filterLableStype}>ORDER</p>, 
+                <MonoStyleText style={filterLableStype} content="ORDER" />,
                 props.orderTerms.map((orderTerm : string, index : number) => {
                     return (
                         <button id={props.orderTerms[index]} key={index} className={orderTermStyle} onClick={() => {           
@@ -47,15 +48,15 @@ function FilterSide(props: {
                     )
                 })
             ]} />,
-            <ResponsiveDiv style="flex flex-col items-start mt-2" children={[
-                <p className={filterLableStype}>FILTER</p>,
-                <ResponsiveDiv style="flex flex-row mt-5 gap-2" children={[
-                    <label>PRICE:</label>,
+            <ResponsiveDiv style="w-full flex flex-col items-start mt-2" children={[
+                <MonoStyleText style={filterLableStype} content="FILTER" />,
+                <ResponsiveDiv style="w-full flex flex-row mt-5 gap-2" children={[
+                    <label className="font-mono">PRICE:</label>,
                     <p>$</p>,
-                    <input className="border-1 w-15 focus:outline-none" type="text"></input>,
+                    <input className="border-1 w-1/4 font-mono focus:outline-none" type="text"></input>,
                     <p> - </p>,
                     <p>$</p>,
-                    <input className="border-1 w-15 focus:outline-none" type="text"></input>,
+                    <input className="border-1 w-1/4 font-mono focus:outline-none" type="text"></input>,
                 ]} />,
                 <ResponsiveDiv style="flex flex-row mt-5" children={[
                     <WhiteButton buttonName="APPLY" size="h-10" clickHandler={() => {}}/>

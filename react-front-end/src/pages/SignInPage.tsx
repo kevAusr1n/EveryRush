@@ -4,6 +4,7 @@ import { signIn } from '../functions/UserFunction';
 import SubmitForm from '../components/SubmitForm';
 import GoogleAuthButton from '../components/GoogleAuthButton';
 import ResponsiveDiv from '../components/div/ResponsiveDiv';
+import { MonoStyleText } from '../components/Text';
 
 function SignInPage() {
     const navigate = useNavigate()
@@ -29,8 +30,8 @@ function SignInPage() {
                     }}
                 />,
                 <GoogleAuthButton />,
-                <a href='/password-reset' className="text-blue-500 underline">Forget your password ?</a>,
-                <p className='text-red-500'>{signInResultMsg}</p>
+                <a href='/password-reset' className="font-mono text-blue-500 underline">Forget your password?</a>,
+                <MonoStyleText style='text-red-500' content={signInResultMsg} />
             ]} />
         ]} />
     )

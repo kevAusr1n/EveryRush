@@ -43,13 +43,13 @@ function GoogleAuthButton() {
 
     return (
         <button className="w-60 h-10 bg-white border" onClick={() => googleSignIn()}>
-            <span>SIGN IN WITH </span>
-            <span className="text-blue-500">G</span>
-            <span className="text-red-500">O</span>
-            <span className="text-yellow-500">O</span>
-            <span className="text-blue-500">G</span>
-            <span className="text-green-500">L</span>
-            <span className="text-red-500">E</span>
+            <span className="font-mono">SIGN IN WITH </span>
+            <span className="font-mono text-blue-500">G</span>
+            <span className="font-mono text-red-500">O</span>
+            <span className="font-mono text-yellow-500">O</span>
+            <span className="font-mono text-blue-500">G</span>
+            <span className="font-mono text-green-500">L</span>
+            <span className="font-mono text-red-500">E</span>
         </button>
     )
 }

@@ -32,8 +32,13 @@ public class CartService
         IList<CartItemResponse> cartItemResponses = new List<CartItemResponse>();
         foreach (CartItem cartItem in cartItems) 
         {
+            var sellerId = products.Where(p => p.Id == cartItem.ProductId).FirstOrDefault()?.AppUserId;
+            var selllerName = _appDbContext.AppUsers.Where(u => u.Id == sellerId).FirstOrDefault()?.AlternativeName;
+
             var cartItemResponse = new CartItemResponse {
                 Id = cartItem.Id,
+                SellerId = sellerId,
+                SellerName = selllerName,
                 ProductId = cartItem.ProductId,
                 Quantity = cartItem.Quantity,
                 Name = products.Where(p => p.Id == cartItem.ProductId).FirstOrDefault()?.Name,
@@ -45,6 +50,8 @@ public class CartService
             cartItemResponses.Add(cartItemResponse);
         }
         
+        cartItemResponses = cartItemResponses.OrderBy(c => c.SellerId).ToList();
+
         return new GetCartResponse {
             CartItems = cartItemResponses
         };

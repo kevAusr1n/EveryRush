@@ -15,7 +15,7 @@ function SignUpPage() {
                     inputNames={["email", "username", "password", "password confirm", "role"]}
                     inputTypes={["text", "text", "password", "password", "option"]}
                     inputValues={["", "", "", "", "Customer,BusinessOwner"]}
-                    inputStyles={["w-100", "w-100", "w-100", "w-100", "left,w-80"]}
+                    inputStyles={["w-100", "w-100", "w-100", "w-100", "w-100"]}
                     stateSetters={[setEmail, null, null, null, null]}
                     actionName="REGISTER"
                     actionHandler={async (event: FormEvent<HTMLFormElement>) => {

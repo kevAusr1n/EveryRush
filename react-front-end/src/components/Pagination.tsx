@@ -2,6 +2,7 @@ import { Dispatch, ReactNode, SetStateAction, useRef } from "react";
 import { BorderlessButton, WhiteButton } from "./Button";
 import ResponsiveDiv from "./div/ResponsiveDiv";
 import { OptionInput } from "./InputField";
+import { MonoStyleText } from "./Text";
 
 export function Pagination(props: {
     size : number,
@@ -47,11 +48,12 @@ export function Pagination(props: {
     }
 
     return (
-        <ResponsiveDiv style="p-3 flex flex-row items-center justify-center bg-white gap-3" children={[
+        <ResponsiveDiv style="p-3 mb-100 flex flex-row items-start justify-center bg-white gap-3" children={[
             <WhiteButton buttonName="Previous" size="w-25 h-10" clickHandler={() => jumpToPage(props.page - 1)} />,
             renderPageButton(props.page),
             <WhiteButton buttonName="Next" size="w-25 h-10" clickHandler={() => jumpToPage(props.page + 1)} />,   
-            <OptionInput inputName="/ Page" inputValue={"5,10,20,50"} style="right,w-20" inputChangeHandler={(value) => props.setSize(parseInt(value))} />
+            <OptionInput inputName="" inputValue={"5,10,20,50"} style="w-15" inputChangeHandler={(value) => props.setSize(parseInt(value))} />,
+            <BorderlessButton buttonName="/ PAGE" style="w-25 h-10" clickHandler={() => {}} />
         ]} />
     )
 }

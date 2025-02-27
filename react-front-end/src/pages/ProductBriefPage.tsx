@@ -8,6 +8,7 @@ import { CartItem, Product } from "../type/EntityType";
 import { ReactNode } from "react";
 import { isStringEmpty } from "../functions/Utils";
 import { isUserSignedIn } from "../functions/UserFunction";
+import { MonoStyleText } from "../components/Text";
 
 const productBoxGridStyle = "gap-5 m-5 p-5 bg-white flex flex-col items-center shadow-xl transition hover:scale-105";
 const productBoxRowStyle="gap-5 m-5 p-5 bg-white flex flex-row justify-between shadow-xl transition hover:scale-101";
@@ -26,28 +27,30 @@ function ProductBriefPage(props: {product : Product, display: string})
         
         const words: string[] = description.split(" ");
         if (words.length > 40) {
-            return <p className="text-gray-500">{words.slice(0, 40).join(" ") + " ... "}<a className="text-blue-500 underline" href={`/product/${productId}`}>detail</a></p>
+            return <><MonoStyleText style="text-gray-500 font-mono" content={words.slice(0, 40).join(" ") + " ... "} /><a className="text-blue-500 underline font-mono" href={`/product/${productId}`}>detail</a></>
         }
 
-        return <p>{description}</p>;
+        return <MonoStyleText style="" content={description} />;
     }
 
     switch(props.display) {
         case "grid":
             return (
                 <ResponsiveDiv style={productBoxGridStyle} children={[
-                    props.product.imageUrl && <ImageBrief src={new URL((props.product.imageUrl as string).split(",")[0], backServerEndpoint).toString()} style="w-32 h-32" />,
-                    <strong className="h-1/5">{props.product.name}</strong>,
-                    <p className="h-1/5">PRICE: ${props.product.price}</p>,
-                    <p className="h-1/5">STOCK: {props.product.stock}</p>,
-                    <WhiteButton buttonName="ADD TO CART" size="w-40 h-10" clickHandler={() => {
+                    <ResponsiveDiv style="h-1/2" children={[
+                        props.product.imageUrl && <ImageBrief src={new URL((props.product.imageUrl as string).split(",")[0], backServerEndpoint).toString()} style="w-32 h-32" />,
+                    ]} />,
+                    <MonoStyleText style="h-1/4 text-center" content={props.product.name} />,
+                    <MonoStyleText style="h-1/8" content={"PRICE: $" + props.product.price} />,
+                    <MonoStyleText style="h-1/8" content={"STOCK: " + props.product.stock} />,
+                    <WhiteButton buttonName="ADD TO CART" size="w-full h-10" clickHandler={() => {
                         if (!isUserSignedIn()) {
                             navigate("/signin");
                         } else {
                             addOrUpdateCartItem({item: { productId: props.product.id, quantity: 1} as CartItem})
                         }
                     }} />,
-                    <WhiteButton buttonName="DETAIL" size="w-40 h-10" clickHandler={() => goToDetailPage()} />
+                    <WhiteButton buttonName="DETAIL" size="w-full h-10" clickHandler={() => goToDetailPage()} />
                 ]} />    
             )
         case "row":
@@ -58,21 +61,21 @@ function ProductBriefPage(props: {product : Product, display: string})
                             props.product.imageUrl && <ImageBrief src={new URL((props.product.imageUrl as string).split(",")[0], backServerEndpoint).toString()} style="w-32 h-32" />,
                         ]} />, 
                         <ResponsiveDiv style="flex flex-col gap-5 w-5/6" children={[  
-                            <strong className="text-xl">{props.product.name}</strong>,
+                            <MonoStyleText style="text-xl" content={props.product.name} />,
                             descriptionTrim(props.product.description, props.product.id)
                         ]} />
                     ]} />,
                     <ResponsiveDiv style="flex flex-col gap-1 w-1/5" children={[    
                         <p>PRICE: ${props.product.price}</p>,
                         <p>STOCK: {props.product.stock}</p>,
-                        <WhiteButton buttonName="ADD TO CART" size="w-40 h-10" clickHandler={() => {
+                        <WhiteButton buttonName="ADD TO CART" size="w-full h-10" clickHandler={() => {
                             if (!isUserSignedIn()) {
                                 navigate("/signin");
                             } else {
                                 addOrUpdateCartItem({item: { productId: props.product.id, quantity: 1} as CartItem})
                             }
                         }} />,
-                        <WhiteButton buttonName="DETAIL" size="w-40 h-10" clickHandler={() => goToDetailPage()} />
+                        <WhiteButton buttonName="DETAIL" size="w-full h-10" clickHandler={() => goToDetailPage()} />
                     ]} />
                 ]} />    
             )
@@ -80,17 +83,17 @@ function ProductBriefPage(props: {product : Product, display: string})
             return (
                 <ResponsiveDiv style={productBoxGridStyle} children={[
                     props.product.imageUrl && <ImageBrief src={new URL((props.product.imageUrl as string).split(",")[0], backServerEndpoint).toString()} style="w-32 h-32" />,
-                    <strong>{props.product.name}</strong>,
-                    <p>PRICE: ${props.product.price}</p>,
-                    <p>STOCK: {props.product.stock}</p>,
-                    <WhiteButton buttonName="ADD TO CART" size="w-40 h-10" clickHandler={() => {
+                    <MonoStyleText style="h-1/4 text-center" content={props.product.name} />,
+                    <MonoStyleText style="h-1/6" content={"PRICE: $" + props.product.price} />,
+                    <MonoStyleText style="h-1/6" content={"STOCK: " + props.product.stock} />,
+                    <WhiteButton buttonName="ADD TO CART" size="w-full h-10" clickHandler={() => {
                         if (!isUserSignedIn()) {
                             navigate("/signin");
                         } else {
                             addOrUpdateCartItem({item: { productId: props.product.id, quantity: 1} as CartItem})
                         }
                     }} />,
-                    <WhiteButton buttonName="DETAIL" size="w-40 h-10" clickHandler={() => goToDetailPage()} />
+                    <WhiteButton buttonName="DETAIL" size="w-full h-10" clickHandler={() => goToDetailPage()} />
                 ]} />    
             )
 
