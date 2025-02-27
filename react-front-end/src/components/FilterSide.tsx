@@ -23,6 +23,7 @@ function FilterSide(props: {
             <ResponsiveDiv style="w-full flex flex-row justify-between mb-1" children={[
                 <ResponsiveDiv style="w-3/4 mb-5" children={[
                     <SearchBar
+                        placeHolder="product etc ..."
                         searchTerm={props.searchTerm}
                         setSearchTerm={props.setSearchTerm}
                     />

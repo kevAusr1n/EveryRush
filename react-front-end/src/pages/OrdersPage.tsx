@@ -9,10 +9,12 @@ import ResponsiveDiv from "../components/div/ResponsiveDiv";
 import { CartItem, Order, OrderProcess } from "../type/EntityType";
 import OrderBoxPage from "./OrderBoxPage";
 import { OptionInput } from "../components/InputField";
+import SearchBar from "../components/SearchBar";
 
 function OrdersPage() {
     const [term, SearchTerm] = useState("");
     const [searchButtonName, setSearchButtonName] = useState("ID");
+    const [searchTerm, setSearchTerm] = useState("");
 
     var orders: Order[] = [];
     orders.push({
@@ -70,11 +72,15 @@ function OrdersPage() {
     const unfocusButtonStyle = "w-40 h-10 border-b-1 bg-white text-black transition hover:bg-black hover:text-white focus:bg-black focus:text-white";
     
     return <ResponsiveDiv style="flex flex-col mt-20" children={[
-        <ResponsiveDiv style="flex flex-row mx-20 mb-5 gap-5 justify-center" children={[
-            filterButtonNames.map((buttonName, index) => {
-                return <BorderlessButton style={index == focusFilterButtonIndex ? focusButtonStyle : unfocusButtonStyle} buttonName={buttonName} clickHandler={() => {setFocusFilterButtonIndex(index)}} />
-            }),
-            <OptionInput inputName="Search" inputValue="ID,KEYWORD" style="left,w-200,w-59" />
+        <ResponsiveDiv style="flex flex-row mx-20 mb-5 gap-5 justify-between" children={[
+            <ResponsiveDiv style="" children={[
+                filterButtonNames.map((buttonName, index) => {
+                    return <BorderlessButton style={index == focusFilterButtonIndex ? focusButtonStyle : unfocusButtonStyle} buttonName={buttonName} clickHandler={() => {setFocusFilterButtonIndex(index)}} />
+                }),
+            ]} />,
+            <ResponsiveDiv style="w-1/4 flex flex-row h-10 items-start" children={[
+                <SearchBar placeHolder="order id, item etc ..." searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+            ]} />
         ]} />,            
         <ResponsiveDiv style="flex flex-col ml-20 mr-20 mb-5 shadow-xl" children={[
             <OrderBoxPage order={orders[0]} />
