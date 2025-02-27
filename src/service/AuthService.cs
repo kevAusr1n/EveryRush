@@ -52,7 +52,7 @@ public class AuthService
         }
         if (request.ConfirmRequired && !await _userManager.IsEmailConfirmedAsync(user)) {
             return new GetUserResponse {
-                Result = OperationResult.FAILURE
+                Result = RequestResult.FAILURE
             };
         }
         var result = await _signInManager.PasswordSignInAsync(request.Email, request.Password, true, false);
@@ -85,7 +85,7 @@ public class AuthService
             var roleStoreResult = await _roleManager.CreateAsync(role);
             if (!roleStoreResult.Succeeded) {
                 return new SignUpResponse {
-                    Result = OperationResult.FAILURE
+                    Result = RequestResult.FAILURE
                 };
             }
         }
@@ -104,7 +104,7 @@ public class AuthService
         }
 
         return new SignUpResponse {
-            Result = OperationResult.SUCCESS
+            Result = RequestResult.SUCCESS
         };
     }
 
@@ -113,12 +113,12 @@ public class AuthService
         if (user == null)
         {
             return new SignUpConfirmResponse {
-                Result = OperationResult.FAILURE
+                Result = RequestResult.FAILURE
             };
         }
         var result = await _userManager.ConfirmEmailAsync(user, request.Code);
         return new SignUpConfirmResponse {
-            Result = result.Succeeded ? OperationResult.SUCCESS : OperationResult.FAILURE
+            Result = result.Succeeded ? RequestResult.SUCCESS : RequestResult.FAILURE
         };
     }
 
@@ -134,7 +134,7 @@ public class AuthService
         if (user == null) 
         {
             return new EditUserInfoResponse {
-                Result = OperationResult.FAILURE
+                Result = RequestResult.FAILURE
             };
         }
         if (!String.IsNullOrEmpty(request.NewPassword) && !String.IsNullOrEmpty(request.OldPassword)) 
@@ -142,14 +142,14 @@ public class AuthService
             Console.WriteLine($"old pwd: {request.OldPassword}, new pwd: {request.NewPassword}");
             var changePasswordResult = await _userManager.ChangePasswordAsync(user, request.OldPassword, request.NewPassword);
             return new EditUserInfoResponse {
-                Result = changePasswordResult.Succeeded ? OperationResult.SUCCESS : OperationResult.FAILURE
+                Result = changePasswordResult.Succeeded ? RequestResult.SUCCESS : RequestResult.FAILURE
             };
         }
         user.AlternativeName = request.Username;
         var changeUsernameResult = await _userManager.UpdateAsync(user);
 
         return new EditUserInfoResponse {
-            Result = changeUsernameResult.Succeeded ? OperationResult.SUCCESS : OperationResult.FAILURE
+            Result = changeUsernameResult.Succeeded ? RequestResult.SUCCESS : RequestResult.FAILURE
         };
     }
 
@@ -158,14 +158,14 @@ public class AuthService
         if (user == null)
         {
             return new SendPasswordResetEmailResponse {
-                Result = OperationResult.FAILURE
+                Result = RequestResult.FAILURE
             };
         }
         var code = await _userManager.GeneratePasswordResetTokenAsync(user);
         await _emailSender.SendEmailAsync(email, "Please reset your password with reset code", $"Your reset code is {code}");
         
         return new SendPasswordResetEmailResponse {
-            Result = OperationResult.SUCCESS
+            Result = RequestResult.SUCCESS
         };
     } 
 
@@ -174,12 +174,12 @@ public class AuthService
         if (user == null) 
         {
             return new ResetPasswordResponse() {
-                Result = OperationResult.FAILURE
+                Result = RequestResult.FAILURE
             };
         }     
         var result = await _userManager.ResetPasswordAsync(user, request.Code, request.NewPassword);
         return new ResetPasswordResponse() {
-            Result = result.Succeeded ? OperationResult.SUCCESS : OperationResult.FAILURE
+            Result = result.Succeeded ? RequestResult.SUCCESS : RequestResult.FAILURE
         };
     } 
 }

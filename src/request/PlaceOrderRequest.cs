@@ -1,15 +1,21 @@
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using EveryRush.Entity;
 using Newtonsoft.Json;
 
 public class PlaceOrderRequest 
 {
+    [JsonProperty("orders")]
+    public IList<OrderRquest >OrderRquests {get; set;}
+}
+
+public class OrderRquest {
     [Required]
+    [NotNull]
     public string UserId {get; set;}
     
     [Required]
-    [JsonProperty("ordered_products")]
-    public IList<PurchaseProductSnapshot> PurchaseProductSnapshots {get; set;}
+    public IList<CartItem> CartItems {get; set;}
 
     [Required]
     public  string FullName {get; set;}

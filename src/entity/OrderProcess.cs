@@ -5,9 +5,9 @@ public class OrderProcess {
     public string? Comment {get;set;}
     public int? FromOrderStatus {get;set;}
     public int? ToOrderStatus {get;set;}
-    public int? FromUserId {get;set;}
+    public string? FromUserId {get;set;}
 
-    public int? ToUserId {get;set;}
+    public string? ToUserId {get;set;}
 
     public DateTime? CreateAt {get;set;}
     public Order? Order {get;set;}

@@ -1,1 +1,1 @@
-public class EditUserInfoResponse : GeneralOperationResponse {}
+public class EditUserInfoResponse : BasicRequestResponse {}

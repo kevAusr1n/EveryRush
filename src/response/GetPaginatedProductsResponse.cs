@@ -1,4 +1,5 @@
 using EveryRush.Entity;
+using Newtonsoft.Json;
 
 public class GetPaginatedProductsResponse
 {

@@ -165,7 +165,7 @@ public class ProductService
         if (product == null) 
         {
             return new UpdateProductStockResponse {
-                Result = OperationResult.FAILURE
+                Result = RequestResult.FAILURE
             };
         }
         product.Stock = newStock;
@@ -179,7 +179,7 @@ public class ProductService
         await _appDbContext.SaveChangesAsync();
 
         return new UpdateProductStockResponse {
-            Result = OperationResult.SUCCESS
+            Result = RequestResult.SUCCESS
         };
     }
 

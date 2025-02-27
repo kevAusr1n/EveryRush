@@ -1,1 +1,1 @@
-public class SendPasswordResetEmailResponse : GeneralOperationResponse {}
+public class SendPasswordResetEmailResponse : BasicRequestResponse {}

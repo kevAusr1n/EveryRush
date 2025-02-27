@@ -16,21 +16,26 @@ public class CartService
 
     public async Task<GetCartResponse> GetCart(string userId) 
     {       
-        IList<CartItem> cartItems = await _appDbContext.CartItems
-            .Where(c => c.AppUserId == userId)
-            .ToListAsync();
-        if (cartItems.Count == 0) 
+        var cartItems = 
+            from cartItem in _appDbContext.CartItems
+            where cartItem.AppUserId == userId
+            select cartItem;
+
+        if (cartItems.Count() == 0)
         {
             return new GetCartResponse {
                 CartItems = new List<CartItemResponse>()
             };
         }
-        IList<Product> products = _appDbContext.Products  
-            .AsEnumerable()
-            .Where(p => cartItems.Select(c => c.ProductId).ToList().Contains(p.Id))
-            .ToList();
+
+        var products = 
+            from product in _appDbContext.Products  
+            where cartItems.Select(c => c.ProductId).Contains(product.Id)
+            select product;
+        
         IList<CartItemResponse> cartItemResponses = new List<CartItemResponse>();
-        foreach (CartItem cartItem in cartItems) 
+    
+        foreach (CartItem cartItem in cartItems.ToList()) 
         {
             var sellerId = products.Where(p => p.Id == cartItem.ProductId).FirstOrDefault()?.AppUserId;
             var selllerName = _appDbContext.AppUsers.Where(u => u.Id == sellerId).FirstOrDefault()?.AlternativeName;

@@ -1,4 +1,4 @@
-public class GetUserResponse : GeneralOperationResponse {
+public class GetUserResponse : BasicRequestResponse {
     public string? Id {get; set;}
     public string? Email {get; set;} = UserConfig.USER_NOT_EXIST;
     public string? UserName {get; set;}

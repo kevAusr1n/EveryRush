@@ -1,1 +1,1 @@
-public class SignUpConfirmResponse : GeneralOperationResponse {}
+public class SignUpConfirmResponse : BasicRequestResponse {}
