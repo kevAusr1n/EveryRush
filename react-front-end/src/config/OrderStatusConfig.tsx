@@ -1,7 +1,7 @@
 
 
 class OrderStatusConfig {
-    static readonly CREATED = 0;
+    static readonly PENDING = 0;
     static readonly ACCEPTED = 1;
     static readonly REJECTED = 2;
     static readonly IN_DELIVERY = 3;
@@ -13,8 +13,8 @@ class OrderStatusConfig {
 
     static getStatusName(status: number) {
         switch (status) {
-            case OrderStatusConfig.CREATED:
-                return 'Created';
+            case OrderStatusConfig.PENDING:
+                return 'Pending';
             case OrderStatusConfig.ACCEPTED:
                 return 'Accepted';
             case OrderStatusConfig.REJECTED:

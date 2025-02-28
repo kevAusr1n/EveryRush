@@ -192,7 +192,7 @@ public class ProductService
             {
                 return true;
             }
-            if (_appDbContext.PurchaseProductSnapshots.Where(o => o.ProductId == id).Count() > 0 ||
+            if (_appDbContext.PurchaseProducts.Where(o => o.ProductId == id).Count() > 0 ||
                 _appDbContext.CartItems.Where(o => o.ProductId == id).Count() > 0) 
             {
                 product.Status = ProductStatus.DELETED;

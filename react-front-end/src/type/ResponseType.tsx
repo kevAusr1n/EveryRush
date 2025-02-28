@@ -1,4 +1,4 @@
-import { Contact, Product } from "./EntityType";
+import { Contact, Order, Product } from "./EntityType";
 
 type GetProductsResponse = {
     products: Product[];
@@ -12,4 +12,11 @@ type GetContactsResponse = {
     totalCount: number;
 }
 
-export type { GetProductsResponse, GetContactsResponse };
+type GetOrdersResponse = {
+    orders: Order[];
+    totalPages: number;
+    totalCount: number;
+}
+
+
+export type { GetProductsResponse, GetContactsResponse, GetOrdersResponse };

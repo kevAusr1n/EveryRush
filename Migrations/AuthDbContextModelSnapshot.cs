@@ -232,6 +232,7 @@ namespace EveryRush.Migrations
                         .HasColumnType("varchar(255)");
 
                     b.Property<string>("AppUserId")
+                        .IsRequired()
                         .HasColumnType("varchar(255)");
 
                     b.Property<DateTime>("CreatedAt")
@@ -244,9 +245,10 @@ namespace EveryRush.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<decimal?>("Price")
+                    b.Property<decimal>("Price")
                         .HasColumnType("decimal(65,30)");
 
                     b.Property<int>("Status")
@@ -391,8 +393,14 @@ namespace EveryRush.Migrations
                     b.Property<string>("Phone")
                         .HasColumnType("longtext");
 
+                    b.Property<string>("SellerId")
+                        .HasColumnType("longtext");
+
                     b.Property<int?>("Status")
                         .HasColumnType("int");
+
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("decimal(65,30)");
 
                     b.HasKey("Id");
 
@@ -418,17 +426,11 @@ namespace EveryRush.Migrations
                     b.Property<int?>("FromOrderStatus")
                         .HasColumnType("int");
 
-                    b.Property<string>("FromUserId")
-                        .HasColumnType("longtext");
-
                     b.Property<string>("OrderId")
                         .HasColumnType("varchar(255)");
 
                     b.Property<int?>("ToOrderStatus")
                         .HasColumnType("int");
-
-                    b.Property<string>("ToUserId")
-                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
@@ -437,7 +439,7 @@ namespace EveryRush.Migrations
                     b.ToTable("OrderProcesses");
                 });
 
-            modelBuilder.Entity("PurchaseProductSnapshot", b =>
+            modelBuilder.Entity("PurchaseProduct", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("varchar(255)");
@@ -448,22 +450,22 @@ namespace EveryRush.Migrations
                     b.Property<DateTime?>("CreateAt")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("longtext");
+
                     b.Property<string>("OrderId")
                         .HasColumnType("varchar(255)");
 
                     b.Property<decimal?>("Price")
                         .HasColumnType("decimal(65,30)");
 
-                    b.Property<string>("ProductDescription")
-                        .HasColumnType("longtext");
-
                     b.Property<string>("ProductId")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("ProductImageUrl")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("ProductName")
                         .HasColumnType("longtext");
 
                     b.Property<int?>("Quantity")
@@ -473,7 +475,7 @@ namespace EveryRush.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("PurchaseProductSnapshots");
+                    b.ToTable("PurchaseProducts");
                 });
 
             modelBuilder.Entity("AppFile", b =>
@@ -524,7 +526,9 @@ namespace EveryRush.Migrations
                 {
                     b.HasOne("EveryRush.Entity.AppUser", "User")
                         .WithMany("Products")
-                        .HasForeignKey("AppUserId");
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -598,7 +602,7 @@ namespace EveryRush.Migrations
                     b.Navigation("Order");
                 });
 
-            modelBuilder.Entity("PurchaseProductSnapshot", b =>
+            modelBuilder.Entity("PurchaseProduct", b =>
                 {
                     b.HasOne("Order", "Order")
                         .WithMany("PurchaseProductSnapshots")

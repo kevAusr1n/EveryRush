@@ -41,15 +41,17 @@ function CheckoutPage() {
 
     for (let i = 0; i < differentSellers.length; i++) {
         differentSellerProducts[i] = cart.filter(item => item.sellerName == differentSellers[i]);
-        differentOrders.current.push({
-            id: "",
-            userId: localStorage.getItem("userid"),
-            cartItems: differentSellerProducts[i],
-            fullName: "",
-            email: "",
-            phone: "",
-            address: ""
-        } as Order);
+        if (differentOrders.current.length < differentSellers.length) {
+            differentOrders.current.push({
+                id: "",
+                buyerId: localStorage.getItem("userid"),
+                purchaseProducts: differentSellerProducts[i],
+                fullName: "",
+                email: "",
+                phone: "",
+                address: ""
+            } as Order);
+        }
     }
 
     return (

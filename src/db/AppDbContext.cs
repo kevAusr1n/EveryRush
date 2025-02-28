@@ -18,7 +18,7 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, string>
 
     public DbSet<OrderProcess> OrderProcesses {get;set;}
 
-    public DbSet<PurchaseProductSnapshot> PurchaseProductSnapshots {get;set;}
+    public DbSet<PurchaseProduct> PurchaseProducts {get;set;}
 
     public DbSet<AppFile> AppFiles {get;set;}
 

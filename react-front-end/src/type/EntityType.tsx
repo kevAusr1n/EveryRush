@@ -33,22 +33,21 @@ type CartItem = {
 type OrderProcess = {
     id: string;
     orderId: string;
-    fromStatus: number;
-    toStatus: number;
+    fromOrderStatus: number;
+    toOrderStatus: number;
     createAt: Date,
-    fromUserId: string;
-    fromUserName: string;
-    toUserName: string;
     event: string;
     comment: string;
 }
 
 type Order = {
     id: string;
-    userId: string;
+    buyerId: string;
+    buyerName: string;
+    sellerId: string;
     sellerName: string;
     status: number;
-    cartItems: CartItem[];
+    purchaseProducts: CartItem[];
     orderProcesses: OrderProcess[];
     fullName: string;
     email: string;

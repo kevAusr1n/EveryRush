@@ -29,7 +29,7 @@ function ProductsPage() {
         size : size, 
         searchTerm : searchTerm, 
         orderTerm : orderTerm,
-        setResponse: setResponse,
+        setResponse: setResponse
     }), [page, size, searchTerm, orderTerm, refresh]);
 
     return (
