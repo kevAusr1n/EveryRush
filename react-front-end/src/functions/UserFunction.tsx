@@ -3,7 +3,8 @@ import { FormEvent } from "react";
 import APICall from "../config/ApiConfig";
 import { getDefaultAuthScheme } from "../config/AuthConfig";
 
-function setLoginSuccessUserInfo(res : any) {
+
+function setLoginSuccessUserInfoFromResponse(res : any) {
     localStorage.setItem("userid", res.data.id);
     localStorage.setItem("email", res.data.email);
     localStorage.setItem("username", res.data.userName);
@@ -23,7 +24,7 @@ async function signInWithCredential(props: { email: string, password: string }) 
     await APICall().post(`/api/user/signin`, requestJson)
     .then((res) => {
         if (res.status == 200 && res.data.email != "none") {
-            setLoginSuccessUserInfo(res);
+            setLoginSuccessUserInfoFromResponse(res);
             result = "success";
         } else if (res.data.result == "failure") {
             result = "email not confirmed";
@@ -62,7 +63,40 @@ async function signIn(props: { formSubmitEvent: FormEvent<HTMLFormElement> }) : 
     return await signInWithCredential({email: formData.get("email") as string, password: formData.get("password") as string});
 }
 
-async function signUp (props: { formSubmitEvent: FormEvent<HTMLFormElement> }) : Promise<boolean> {
+async function signUp (props: { 
+    email: string,
+    username: string,
+    password: string,
+    role: string,
+    provider: string
+ }) : Promise<boolean> {
+    let isSucceed : boolean = false;
+    let signInRequired : boolean = true;
+    const requestBody = {
+        "email": props.email,
+        "username": props.username,
+        "password": props.password,
+        "role": props.role,
+        "provider": props.provider,
+        "signin_required": signInRequired
+    }
+
+    await APICall().post(`/api/user/signup`, requestBody)
+    .then((res) => {
+        if (res.status == 200) {
+            if (signInRequired) {
+                setLoginSuccessUserInfoFromResponse(res);
+            }
+            isSucceed = true;
+        }
+    })
+    .catch((err) => {console.log(err)});
+
+    return isSucceed;
+}
+
+
+async function signUpFromForm (props: { formSubmitEvent: FormEvent<HTMLFormElement> }) : Promise<boolean> {
     props.formSubmitEvent.preventDefault();
 
     let isSucceed : boolean = false;
@@ -169,4 +203,24 @@ async function resetPassword(props: { email: string, code: string, newPassword: 
     return isSucceed;
 }
 
-export { isUserSignedIn , signOut , signIn, signUp, EditUser, isUserCustomerOrGuest, sendPasswordResetEmail, resetPassword, signUpConfirm };
+async function isThirdPartyUserRegistered(props: {
+    email: string,
+    token: string,
+    provider: string
+}) : Promise<boolean> {
+    let isSucceed : boolean = false;
+    
+    await APICall().get(`/api/user/third-party-signin-check?email=${props.email}&token=${props.token}&provider=${props.provider}`)
+    .then((res) => {
+        if (res.data.result == "success") {
+            setLoginSuccessUserInfoFromResponse(res);
+            isSucceed = true;
+        }
+    })
+    .catch((err) => {console.log(err)});
+
+    return isSucceed;
+}
+
+export { isUserSignedIn , signOut , signIn, signUp, signUpFromForm, EditUser, isUserCustomerOrGuest };
+export { sendPasswordResetEmail, resetPassword, signUpConfirm, isThirdPartyUserRegistered };

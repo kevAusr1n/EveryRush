@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router';
-import { signUp } from '../functions/UserFunction';
+import { signUpFromForm } from '../functions/UserFunction';
 import { FormEvent, useState } from 'react';
 import SubmitForm from '../components/SubmitForm';
 import ResponsiveDiv from '../components/div/ResponsiveDiv';
@@ -19,7 +19,7 @@ function SignUpPage() {
                     stateSetters={[setEmail, null, null, null, null]}
                     actionName="REGISTER"
                     actionHandler={async (event: FormEvent<HTMLFormElement>) => {
-                        if (await signUp({formSubmitEvent: event})) {
+                        if (await signUpFromForm({formSubmitEvent: event})) {
                             navigate(`/signup-confirm?email=${email}`);
                         }
                     }}

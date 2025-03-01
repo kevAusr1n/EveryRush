@@ -104,7 +104,7 @@ public class OrderController : ControllerBase
                     ToOrderStatus = o.ToOrderStatus,
                     Comment = o.Comment,
                     Event = o.Event,
-                    CreateAt = o.CreateAt
+                    CreatedAt = o.CreatedAt
                 }).ToList()
             };
 
@@ -212,7 +212,7 @@ public class OrderController : ControllerBase
                 ImageUrl = products.Where(p => p.Id == purchaseProduct.Id).First().ImageUrl,
                 Price = products.Where(p => p.Id == purchaseProduct.Id).First().Price,
                 Quantity = purchaseProduct.Quantity,
-                CreateAt = DateTime.Now
+                CreatedAt = DateTime.Now
             }).ToList();
 
             OrderProcess orderProcessForThisOrder = new OrderProcess() {
@@ -221,7 +221,7 @@ public class OrderController : ControllerBase
                 FromOrderStatus = OrderStatus.PENDING,
                 ToOrderStatus = OrderStatus.PENDING,
                 Event = "Order Placed",
-                CreateAt = DateTime.Now
+                CreatedAt = DateTime.Now
             };
 
             orders.Add(order);

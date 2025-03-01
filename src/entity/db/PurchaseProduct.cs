@@ -10,6 +10,6 @@ public class PurchaseProduct {
     public string? ImageUrl { get; set; }    
     public int? Quantity { get; set; }
     public decimal? Price { get; set; }
-    public DateTime? CreateAt { get; set; }
+    public DateTime? CreatedAt { get; set; }
     public Order? Order {get; set;}
 }

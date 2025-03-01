@@ -23,4 +23,8 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, string>
     public DbSet<AppFile> AppFiles {get;set;}
 
     public DbSet<Comment> Comments {get;set;}
+
+    public DbSet<UserChatConnection> UserChatConnections {get;set;}
+
+    public DbSet<ChatMessage> ChatMessages {get;set;}
 }

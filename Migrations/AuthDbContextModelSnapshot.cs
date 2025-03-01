@@ -94,6 +94,31 @@ namespace EveryRush.Migrations
                     b.ToTable("CartItems");
                 });
 
+            modelBuilder.Entity("ChatMessage", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("FromUserId")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("ToUserId")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ChatMessages");
+                });
+
             modelBuilder.Entity("Comment", b =>
                 {
                     b.Property<string>("Id")
@@ -107,6 +132,9 @@ namespace EveryRush.Migrations
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<string>("OrderId")
+                        .HasColumnType("longtext");
 
                     b.Property<string>("ProductId")
                         .HasColumnType("varchar(255)");
@@ -417,7 +445,7 @@ namespace EveryRush.Migrations
                     b.Property<string>("Comment")
                         .HasColumnType("longtext");
 
-                    b.Property<DateTime?>("CreateAt")
+                    b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Event")
@@ -447,7 +475,7 @@ namespace EveryRush.Migrations
                     b.Property<string>("AppUserId")
                         .HasColumnType("longtext");
 
-                    b.Property<DateTime?>("CreateAt")
+                    b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Description")
@@ -476,6 +504,24 @@ namespace EveryRush.Migrations
                     b.HasIndex("OrderId");
 
                     b.ToTable("PurchaseProducts");
+                });
+
+            modelBuilder.Entity("UserChatConnection", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("AppUserId")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("ConnectionId")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserChatConnections");
                 });
 
             modelBuilder.Entity("AppFile", b =>

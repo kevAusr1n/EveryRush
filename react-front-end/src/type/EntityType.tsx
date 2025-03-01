@@ -7,7 +7,7 @@ type Product = {
     stock: number;
     status: number;
     imageUrl: string;
-    createAt: Date
+    createdAt: Date
 }
 
 type Contact = {
@@ -56,4 +56,12 @@ type Order = {
     totalPrice: number;
 }
 
-export type { Product, Contact, CartItem, Order, OrderProcess }
+type ChatMessage = {
+    id: string;
+    fromUserId: string;
+    toUserId: string;
+    content: string;
+    createdAt: Date;
+}
+
+export type { Product, Contact, CartItem, Order, OrderProcess, ChatMessage }

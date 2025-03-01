@@ -16,8 +16,6 @@ public class SignUpRequest
 
     public string? Mobile {get;set;}
 
-    [Required]
-    [NotNull]
     public string? Password {get;set;}
     
     [Required]
@@ -28,4 +26,6 @@ public class SignUpRequest
     [NotNull]
     [JsonProperty("signin_required")]
     public bool doSignInAfterSignUp {get;set;} = false;
+
+    public string Provider {get;set;}
 }

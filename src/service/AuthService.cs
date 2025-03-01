@@ -50,6 +50,18 @@ public class AuthService
         {
             return new GetUserResponse();
         }
+
+        if (ThirdPartySignInProviderConfig.FromThirdParty(request.Provider)) 
+        {
+            var role = await _userManager.GetRolesAsync(user);
+            await _signInManager.SignInAsync(user, true);
+            return new GetUserResponse {
+                Id = user.Id,
+                Email = user.Email,
+                UserName = user.AlternativeName,
+                Role = role[0]
+            };
+        }
         if (request.ConfirmRequired && !await _userManager.IsEmailConfirmedAsync(user)) {
             return new GetUserResponse {
                 Result = RequestResult.FAILURE
@@ -80,6 +92,7 @@ public class AuthService
         var role = new AppRole {
             Name = request.Role
         };
+        Console.WriteLine("***************" + request.Role);
         if (_roleManager.GetRoleNameAsync(role).Result != request.Role) 
         {
             var roleStoreResult = await _roleManager.CreateAsync(role);
@@ -88,19 +101,39 @@ public class AuthService
                     Result = RequestResult.FAILURE
                 };
             }
+        }Console.WriteLine("----------------" + request.Role);
+        var userStoreResult = IdentityResult.Success;
+        if (ThirdPartySignInProviderConfig.FromThirdParty(request.Provider)) {
+            userStoreResult = 
+                String.IsNullOrEmpty(request.Password) ? 
+                await _userManager.CreateAsync(user) : 
+                await _userManager.CreateAsync(user, request.Password);
+        } else 
+        {
+            userStoreResult = await _userManager.CreateAsync(user, request.Password);
         }
-        var userStoreResult = await _userManager.CreateAsync(user, request.Password);
         var userRoleRelationStoreResult = await _userManager.AddToRoleAsync(user, role.Name);
         if (userStoreResult.Succeeded && userRoleRelationStoreResult.Succeeded)
         {    
-            /*if (request.doSignInAfterSignUp) {
-                return await SignInAsync(new SignInRequest() {
+            if (request.doSignInAfterSignUp && ThirdPartySignInProviderConfig.FromThirdParty(request.Provider)) {
+                GetUserResponse getUserResponse = await SignInAsync(new SignInRequest() {
                     Email = request.Email,
-                    Password = request.Password
+                    Password = request.Password,
+                    Provider = request.Provider
                 });
-            }*/
-            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            _emailSender.SendEmailAsync(request.Email, "Please confirm your email", $"Your confirm code is {code}");
+                return new SignUpResponse {
+                    Result = RequestResult.SUCCESS,
+                    Id = getUserResponse.Id,
+                    Email = request.Email,
+                    UserName = getUserResponse.UserName,
+                    Role = getUserResponse.Role,
+                    Jwt = getUserResponse.Jwt,
+                    Provider = request.Provider
+                };
+            } else {
+                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                _emailSender.SendEmailAsync(request.Email, "Please confirm your email", $"Your confirm code is {code}");
+            }
         }
 
         return new SignUpResponse {

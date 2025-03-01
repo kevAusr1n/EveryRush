@@ -18,4 +18,6 @@ public class SignInRequest
 
     [JsonProperty("confirm_required")]
     public Boolean ConfirmRequired {get;set;} = true;
+
+    public String? Provider {get;set;}
 }

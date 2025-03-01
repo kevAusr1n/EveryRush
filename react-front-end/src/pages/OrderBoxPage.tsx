@@ -9,8 +9,10 @@ import OrderStatusConfig from "../config/OrderStatusConfig";
 import DisplayTable from "../components/DisplayTable";
 import { isStringEmpty } from "../functions/Utils";
 import { isUserCustomerOrGuest } from "../functions/UserFunction";
+import { useNavigate } from "react-router";
 
 function OrderBoxPage(props: {order: Order}) {
+    const navigate = useNavigate();
     const [dropdown, setDropDown] = useState(false);
     const tableHead: string[] = ["", "Product", "Seller", "Price", "Quantity"];
 
@@ -26,6 +28,10 @@ function OrderBoxPage(props: {order: Order}) {
 
     const updateOrderStatusHandler = (status: number) => {
         
+    }
+
+    const chatHandler = (toUserId : string, toUserName: string) => {
+        navigate(`/chat?touserid=${toUserId}&tousername=${toUserName}`);
     }
 
     const setButtonBaseOnOrderStatus = (status: number) : ReactNode[] => {
@@ -91,7 +97,13 @@ function OrderBoxPage(props: {order: Order}) {
             !dropdown && <WhiteButton buttonName="SHOW DETAIL" size="w-60 h-10" clickHandler={() => setDropDown(true)} />,
             dropdown && <BlackButton buttonName="HIDE DETAIL" size="w-60 h-10" clickHandler={() => setDropDown(false)} />,
             isUserCustomerOrGuest() && <WhiteButton buttonName="WRITE REVIEW" size="w-60 h-10" clickHandler={() => {}}/>,
-            isUserCustomerOrGuest() && <WhiteButton buttonName="MESSAGE SELLER" size="w-60 h-10" clickHandler={() => {}}/>,
+            isUserCustomerOrGuest() && <WhiteButton buttonName="MESSAGE SELLER" size="w-60 h-10" clickHandler={() => {
+                chatHandler(props.order.sellerId, props.order.sellerName);
+            }}/>,
+            !isUserCustomerOrGuest() && <WhiteButton buttonName="REPLY REVIEW" size="w-60 h-10" clickHandler={() => {}}/>,
+            !isUserCustomerOrGuest() && <WhiteButton buttonName="MESSAGE BUYER" size="w-60 h-10" clickHandler={() => {
+                chatHandler(props.order.buyerId, props.order.buyerName);
+            }}/>,
             setButtonBaseOnOrderStatus(props.order.status)
         ]} />,
         dropdown && <ResponsiveDiv style="w-full flex flex-col items-start" children={[
