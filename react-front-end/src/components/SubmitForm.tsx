@@ -17,22 +17,22 @@ function SubmitForm(props:{
                 props.inputNames.map((inputName, index) => {
                     if (props.stateSetters != undefined && props.stateSetters[index] != undefined && props.stateSetters[index] != null) {
                         return (
-                            <ResponsiveDiv style="mb-5" children={[
-                                <InputField key={index} inputName={inputName} inputType={props.inputTypes[index]} inputValue={props.inputValues[index]} style={props.inputStyles[index]} onTextChangeHandler={props.stateSetters[index]}/>
-                            ]} />
+                            <ResponsiveDiv style="mb-5" key={index} children={<>
+                                <InputField inputName={inputName} inputType={props.inputTypes[index]} inputValue={props.inputValues[index]} style={props.inputStyles[index]} onTextChangeHandler={props.stateSetters[index]}/>
+                            </>} />
                         )
                     } else {
                         return (
-                            <ResponsiveDiv style="mb-5" children={[
-                                <InputField key={index} inputName={inputName} inputType={props.inputTypes[index]} inputValue={props.inputValues[index]} style={props.inputStyles[index]} />
-                            ]} />
+                            <ResponsiveDiv style="mb-5" key={index} children={<>
+                                <InputField inputName={inputName} inputType={props.inputTypes[index]} inputValue={props.inputValues[index]} style={props.inputStyles[index]} />
+                            </>} />
                         )
                     }
                 })
             }         
-            <ResponsiveDiv style="mt-5 flex flex-col items-center" children={[
+            <ResponsiveDiv style="mt-5 flex flex-col items-center" children={<>
                 <SubmitButton buttonName={props.actionName.toLocaleUpperCase()} size="w-60 h-10" />              
-            ]} />
+            </>} />
         </form>
     )
 }

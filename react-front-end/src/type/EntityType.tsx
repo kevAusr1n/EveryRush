@@ -1,6 +1,7 @@
 type Product = {
     id: string;
     userId: string;
+    userName: string;
     name: string;
     description: string;
     price: number;
@@ -35,7 +36,7 @@ type OrderProcess = {
     orderId: string;
     fromOrderStatus: number;
     toOrderStatus: number;
-    createAt: Date,
+    createdAt: Date,
     event: string;
     comment: string;
 }

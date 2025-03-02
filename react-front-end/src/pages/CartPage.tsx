@@ -37,10 +37,10 @@ function CartPage() {
     const displayCart = () : ReactNode => {
         if (cart.length == 0) {
             return (
-                <ResponsiveDiv style="flex flex-col items-center gap-5" children={[
-                    <p key={crypto.randomUUID()} className="text-xl">Your cart is empty</p>,
+                <ResponsiveDiv style="flex flex-col items-center gap-5" children={<>
+                    <p key={crypto.randomUUID()} className="text-xl">Your cart is empty</p>
                     <BlackButton key={crypto.randomUUID()} buttonName="SHOPPING" size="w-40 h-10" clickHandler={() => navigate("/products")} />
-                ]} />
+                </>} />
             )
         } else {
             totalPrice.current = 0;
@@ -63,13 +63,13 @@ function CartPage() {
             return (            
                 <>
                     <DisplayTable key={crypto.randomUUID()} tableHead={tableHead} tableContent={tableContent} />
-                    <ResponsiveDiv key={crypto.randomUUID()} style="ml-20 mr-20 mt-10 w-full flex flex-row justify-end" children={[
-                        <MonoStyleText style="text-5xl" content={"Total: $" + totalPrice.current} />,
-                    ]} />,
-                    <ResponsiveDiv key={crypto.randomUUID()} style="flex flex-row m-20 justify-center gap-10" children={[
-                        <BlackButton key={crypto.randomUUID()} buttonName="CHECKOUT" size="w-40 h-10" clickHandler={() => goCheckout()}/>,
+                    <ResponsiveDiv key={crypto.randomUUID()} style="ml-20 mr-20 mt-10 w-full flex flex-row justify-end" children={<>
+                        <MonoStyleText style="text-5xl" content={"Total: $" + totalPrice.current} />
+                    </>} />
+                    <ResponsiveDiv key={crypto.randomUUID()} style="flex flex-row m-20 justify-center gap-10" children={<>
+                        <BlackButton key={crypto.randomUUID()} buttonName="CHECKOUT" size="w-40 h-10" clickHandler={() => goCheckout()}/>
                         <BlackButton key={crypto.randomUUID()} buttonName="BACK" size="w-40 h-10" clickHandler={() => navigate("/products")}/>
-                    ]} />
+                    </>} />
                 </>
                 
             )
@@ -81,10 +81,10 @@ function CartPage() {
     }
 
     return (
-        <ResponsiveDiv style="flex flex-col items-center" children={[
-            (!isUserSignedIn() && <SignInRequiredPage message="please sign in to manage cart" />) || 
-            <ResponsiveDiv style="mt-20 mb-20 p-20 flex flex-col items-center" children={[displayCart()]} />
-        ]} />
+        <ResponsiveDiv style="flex flex-col items-center" children={<>
+            {(!isUserSignedIn() && <SignInRequiredPage message="please sign in to manage cart" />) || 
+            <ResponsiveDiv style="mt-20 mb-20 p-20 flex flex-col items-center" children={displayCart()} />}
+        </>} />
     )
 }
 

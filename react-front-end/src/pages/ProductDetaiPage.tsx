@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { CartItem, Product } from "../type/EntityType";
-import { GetProduct } from "../functions/ProductFunction";
 import ResponsiveDiv from "../components/div/ResponsiveDiv";
 import { ImageBrief, ImageExhibition } from "../components/Image";
 import { backServerEndpoint } from "../config/BackendServerConfig";
@@ -9,21 +8,26 @@ import { BlackButton, WhiteButton } from "../components/Button";
 import { addOrUpdateCartItem } from "../functions/CartFunction";
 import { isUserCustomerOrGuest, isUserSignedIn } from "../functions/UserFunction";
 import { MonoStyleText } from "../components/Text";
+import { GetReviewsResponse } from "../type/ResponseType";
+import { getPaginatedReviews } from "../functions/ProductReviewFunction";
+import { getProductDetail } from "../functions/ProductFunction";
+import Pagination from "../components/Pagination";
+import { Star } from "lucide-react";
+import { isStringEmpty } from "../functions/Utils";
 
 function ProductDetailPage() {
     const navigate = useNavigate();
     const params = useParams();
+    const [size, setSize]  = useState(5);
+    const [page, setPage] = useState(1);
     const productId = params.id as string;
-    const [product, setProduct] = useState<Product>({id: "", userId: "", name: "", price: 0, description: "", stock: 0, imageUrl: ""} as Product);
-
-    let images: string[] = (product.imageUrl as string).split(",").map((image: string) => 
-        new URL(image, backServerEndpoint).toString()
-    );
-
+    const [product, setProduct] = useState<Product>({id: "", userId: "", userName: "", name: "", price: 0, description: "", stock: 0, imageUrl: ""} as Product);
+    const [reviewResponse, setReviewResponse] = useState<GetReviewsResponse>({reviews: [], totalCount: 0, totalPages: 0});
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
     const getProduct = async () => {
-        await GetProduct({id: productId, setProduct: setProduct});
+        setProduct(await getProductDetail({id: productId}));
+        setReviewResponse(await getPaginatedReviews({productId: productId, page: page, size: size}));
     }
 
     const clickImageHandler = (index: number) => {
@@ -35,28 +39,28 @@ function ProductDetailPage() {
     useEffect(() => {getProduct()}, []);
 
     return (
-        <ResponsiveDiv style="mt-20 mb-20 gap-5 p-20" children={[
-            <ResponsiveDiv style="flex flex-row gap-20" children={[  
-                <ResponsiveDiv style="flex flex-col gap-16 w-3/8 items-center" children={[
-                    <ImageBrief src={new URL(images[currentImageIndex], backServerEndpoint).toString()} style="w-108 h-108 p-5"/>,
-                    <ImageExhibition 
-                        srcList={images} 
+        <ResponsiveDiv style="mt-20 mb-20 gap-5 p-20" children={<>
+            <ResponsiveDiv style="flex flex-row gap-20" children={<>
+                <ResponsiveDiv style="flex flex-col gap-16 w-3/8 items-center" children={<>
+                    {!isStringEmpty(product.imageUrl) && <ImageBrief src={(product.imageUrl as string).split(",").map((image: string) => new URL(image, backServerEndpoint).toString())[currentImageIndex]} style="w-108 h-108 p-5"/>}
+                    {!isStringEmpty(product.imageUrl) && <ImageExhibition 
+                        srcList={(product.imageUrl as string).split(",").map((image: string) => new URL(image, backServerEndpoint).toString())} 
                         style="w-16 h-16 p-2 shadow" 
                         currentImageIndex={currentImageIndex} 
                         setCurrentImageIndex={setCurrentImageIndex}
                         eventHandlerMap={clickImageHandler} 
-                    />,
-                ]} />,
-                <ResponsiveDiv style="flex flex-col px-10 py-10 gap-5 w-3/4" children={[
-                    <ResponsiveDiv style="flex flex-col gap-10 h-full" children={[
-                        <ResponsiveDiv style="flex flex-row gap-10 items-center" children={[
-                            <MonoStyleText style="text-3xl font-bold" content={product.name} />,
+                    />}
+                </>} />
+                <ResponsiveDiv style="flex flex-col px-10 py-10 gap-5 w-3/4" children={<>
+                    <ResponsiveDiv style="flex flex-col gap-10 h-full" children={<>
+                        <ResponsiveDiv style="flex flex-row gap-10 items-center" children={<>
+                            <MonoStyleText style="text-3xl font-bold" content={product.name} />
                             <span className="ml-5 px-3 py-2 text-black border-3 rounded-lg text-5xl font-normal">${product.price}</span>
-                        ]} />,
+                        </>} />
                         <MonoStyleText style="text-gray-500 text-xl" content={product.description} />
-                    ]} />,
-                    <ResponsiveDiv style="flex flex-row items-center justify-end gap-5 mt-20" children={[  
-                        isUserCustomerOrGuest() && <BlackButton buttonName="ADD TO CART" size="w-40 h-10" clickHandler={() => {() => 
+                    </>} />
+                    <ResponsiveDiv style="flex flex-row items-center justify-end gap-5 mt-20" children={<> 
+                        {isUserCustomerOrGuest() && <BlackButton key={crypto.randomUUID()} buttonName="ADD TO CART" size="w-40 h-10" clickHandler={() => 
                             {
                                 if (!isUserSignedIn()) {
                                     navigate("/signin");
@@ -64,17 +68,52 @@ function ProductDetailPage() {
                                     addOrUpdateCartItem({item: { productId: productId, quantity: 1} as CartItem})
                                 }
                             }
-                        }} />,
-                        <BlackButton buttonName="BACK" size="w-40 h-10" clickHandler={() => {navigate('/products')}} />,
-                    ]} />,
-                ]} />
-            ]} />,
-            <ResponsiveDiv style="flex flex-col gap-5" children={[
-                <ResponsiveDiv style="mt-20" children={[
-                    <MonoStyleText style="text-6xl font-bold bg-black text-white p-2" content="REVIEWS" />,
-                 ]} />
-            ]} />
-        ]} />
+                        } />}
+                        {isUserCustomerOrGuest() && <BlackButton buttonName={"CHAT WITH SELLER: " + product.userName} size="h-10" clickHandler={() => 
+                            {
+                                if (!isUserSignedIn()) {
+                                    navigate("/signin");
+                                } else {
+                                    navigate(`/chat?touserid=${product.userId}&tousername=${product.userName}`);
+                                }
+                            }
+                        } />}
+                        <BlackButton buttonName="BACK" size="w-40 h-10" clickHandler={() => {navigate('/products')}} />
+                    </>} />
+                </>} />
+            </>} />
+            <ResponsiveDiv style="flex flex-col gap-5" children={<>
+                <ResponsiveDiv style="mt-20" children={<>
+                    <MonoStyleText style="text-6xl font-bold bg-black text-white p-2" content="REVIEWS" />
+                 </>} />
+            </>} />
+            {reviewResponse.reviews.length == 0 && <ResponsiveDiv style="flex flex-row justify-center items-center mt-20" children={<>
+                <MonoStyleText style="text-xl" content="This product has no review." />
+            </>} />}
+            {reviewResponse.reviews.length != 0 && reviewResponse.reviews.map((review, index) => {
+                return  <ResponsiveDiv key={index} style="flex flex-col w-full items-start justify-between p-5 my-5 border-1" children={<>
+                            <ResponsiveDiv style="flex flex-row w-full gap-5" children={<>
+                                <MonoStyleText style="w-1/5 text-xl font-bold" content={review.reviewerName} />
+                                <ResponsiveDiv style="flex flex-row w-full gap-2" children={<>
+                                    {Array.from({ length: review.rating }, (_, i) => i + 1).map((index) => {
+                                        return <Star key={index} fill="yellow" />
+                                    })}
+                                </>} />
+                                <MonoStyleText style="w-1/3 text-xl" content={review.createdAt.toLocaleUpperCase()} />
+                            </>} />
+                            <MonoStyleText style="py-5" content={review.content} />
+                            {localStorage.getItem("userid") == product.userId && <WhiteButton buttonName="REPLY" size="h-10" clickHandler={() => {}} />}
+                        </>} />
+            })}
+            {reviewResponse.reviews.length != 0 && <Pagination 
+                size={size}
+                setSize={setSize}
+                page={page}
+                setPage={setPage}
+                totalPages={reviewResponse.totalPages}
+                totalCount={reviewResponse.totalCount} 
+            />}
+        </>} />
     )
 }
 

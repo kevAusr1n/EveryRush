@@ -9,8 +9,8 @@ function SignUpPage() {
     const [email, setEmail] = useState("");
 
     return (
-        <ResponsiveDiv style="flex flex-col items-center" children={[
-            <ResponsiveDiv style="mt-20 mb-50 gap-5 p-20 flex flex-col items-center bg-white shadow-xl" children={[
+        <ResponsiveDiv style="flex flex-col items-center" children={<>
+            <ResponsiveDiv style="mt-20 mb-50 gap-5 p-20 flex flex-col items-center bg-white shadow-xl" children={<>
                 <SubmitForm
                     inputNames={["email", "username", "password", "password confirm", "role"]}
                     inputTypes={["text", "text", "password", "password", "option"]}
@@ -24,8 +24,8 @@ function SignUpPage() {
                         }
                     }}
                 />
-            ]} />
-        ]} />
+            </>} />
+        </>} />
     )
 }
 

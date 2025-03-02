@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 
 function ResponsiveDiv(props: {
     id?: string
-    children: ReactNode[], 
+    children: ReactNode, 
     style: string, 
     eventHandlerMap?: { [key: string] : () => void }
 }) {

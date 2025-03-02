@@ -9,13 +9,13 @@ function ContactBoxPage (props: {
     eventHandlerMap: { [key: string] : () => void } 
 }) {
     return (
-        <ResponsiveDiv id={props.id} style={props.style} eventHandlerMap={props.eventHandlerMap} children={[
-            <MonoStyleText style="text-2xl font-bold mb-5" content={props.contact.firstName + " " + props.contact.lastName} />,
-            <MonoStyleText style="" content={props.contact.email} />,
-            <MonoStyleText style="" content={props.contact.phone} />,
-            <MonoStyleText style="" content={props.contact.address} />,
+        <ResponsiveDiv id={props.id} style={props.style} eventHandlerMap={props.eventHandlerMap} children={<>
+            <MonoStyleText style="text-2xl font-bold mb-5" content={props.contact.firstName + " " + props.contact.lastName} />
+            <MonoStyleText style="" content={props.contact.email} />
+            <MonoStyleText style="" content={props.contact.phone} />
+            <MonoStyleText style="" content={props.contact.address} />
             <MonoStyleText style="" content={props.contact.city + ", " + props.contact.state + ", " + props.contact.postcode} />
-        ]}/>
+        </>}/>
     )
 }
 

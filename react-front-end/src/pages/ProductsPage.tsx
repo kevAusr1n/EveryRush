@@ -35,11 +35,11 @@ function ProductsPage() {
     return (
         (
             isUserCustomerOrGuest() && 
-            <ResponsiveDiv style="" children={[
-                <ResponsiveDiv style="flex flex-row" children={[
-                    <ResponsiveDiv style="w-1/5" key={crypto.randomUUID()} children={[
-                        <ResponsiveDiv style="mt-20 mb-20 ml-5 py-10 flex flex-col items-center bg-white shadow-xl" children={[
-                            <ResponsiveDiv style="ml-5 mr-5" children={[
+            <ResponsiveDiv style="" children={<>
+                <ResponsiveDiv style="flex flex-row" children={<>
+                    <ResponsiveDiv style="w-1/5" key={crypto.randomUUID()} children={<>
+                        <ResponsiveDiv style="mt-20 mb-20 ml-5 py-10 flex flex-col items-center bg-white shadow-xl" children={<>
+                            <ResponsiveDiv style="ml-5 mr-5" children={<>
                                 <FilterSide 
                                     orderTerms={["Popularity", "Price Ascending", "Price Descending", "Newest Product", "Oldest Product"]}
                                     setOrderTerm={setOrderTerm}
@@ -47,10 +47,10 @@ function ProductsPage() {
                                     searchTerm={searchTerm}
                                     setSearchTerm={setSearchTerm}
                                 />
-                            ]} />
-                        ]} />
-                    ]} />,
-                    <ResponsiveDiv style="mt-20 mb-20 m-5 mr-5 w-4/5" key={crypto.randomUUID()} children={[   
+                            </>} />
+                        </>} />
+                    </>} />
+                    <ResponsiveDiv style="mt-20 mb-20 m-5 mr-5 w-4/5" key={crypto.randomUUID()} children={<> 
                         <DisplayArrangement 
                             arrangement={arrangement}
                             exhibitedChildren={
@@ -60,8 +60,8 @@ function ProductsPage() {
                                 })
                             }
                         />
-                    ]} />
-                ]}/>,
+                    </>} />
+                </>}/>
                 <Pagination 
                     size={size}
                     setSize={setSize}
@@ -70,40 +70,40 @@ function ProductsPage() {
                     totalPages={response.totalPages}
                     totalCount={response.totalCount} 
                 />
-            ]}/>
+            </>} />
         ) || 
-        <ResponsiveDiv style="mt-20 mb-20 m-5 mr-5 w" key={crypto.randomUUID()} children={[ 
-            <ResponsiveDiv style="flex flex-col items-start gap-3" children={[
-                response.products.length == 0 && <ResponsiveDiv style="w-full flex flex-col items-center gap-5" children={[
-                    <MonoStyleText key={crypto.randomUUID()} style="text-xl" content="Your have no product" />,
+        <ResponsiveDiv style="mt-20 mb-20 m-5 mr-5 w" key={crypto.randomUUID()} children={<>
+            <ResponsiveDiv style="flex flex-col items-start gap-3" children={<>
+                {response.products.length == 0 && <ResponsiveDiv style="w-full flex flex-col items-center gap-5" children={<>
+                    <MonoStyleText key={crypto.randomUUID()} style="text-xl" content="Your have no product" />
                     <BlackButton key={crypto.randomUUID()} buttonName="ADD PRODUCT" size="w-40 h-10" clickHandler={() => navigate("/products/add")} />
-                ]} />,
-                response.products.length != 0 && <ResponsiveDiv style="mb-5" children={[
+                </>} />}
+                {response.products.length != 0 && <ResponsiveDiv style="mb-5" children={<>
                     <BlackButton key={crypto.randomUUID()} buttonName="ADD PRODUCT" size="w-40 h-10" clickHandler={() => navigate("/products/add")} />
-                ]} />,
-                response.products.length != 0 && <ResponsiveDiv style="px-2 w-full flex flex-row items-center border-b-1" children={[
-                    <MonoStyleText style="w-3/13 font-bold" key={0} content="Product ID" />,
-                    <MonoStyleText style="w-3/13 font-bold" key={1} content="Name" />,
-                    <MonoStyleText style="w-1/13 font-bold" key={2} content="Price" />,
-                    <MonoStyleText style="w-2/13 font-bold" key={3} content="Stock" />,
+                </>} />}
+                {response.products.length != 0 && <ResponsiveDiv style="px-2 w-full flex flex-row items-center border-b-1" children={<>
+                    <MonoStyleText style="w-3/13 font-bold" key={0} content="Product ID" />
+                    <MonoStyleText style="w-3/13 font-bold" key={1} content="Name" />
+                    <MonoStyleText style="w-1/13 font-bold" key={2} content="Price" />
+                    <MonoStyleText style="w-2/13 font-bold" key={3} content="Stock" />
                     <MonoStyleText style="w-1/13 font-bold" key={4} content="Status" />
-                ]} />,
-                response.products.length != 0 && response.products.map((product: Product) => {
+                </>} />}
+                {response.products.length != 0 && response.products.map((product: Product) => {
                     return (                   
                         <ProductUpdatePage key={product.id} product={product} refresh={refresh} setRefresh={setRefresh} />         
                     )
-                })
+                })}
                 
-            ]} />,
-            response.products.length != 0 && <Pagination 
+            </>} />
+            {response.products.length != 0 && <Pagination 
                 size={size}
                 setSize={setSize}
                 page={page}
                 setPage={setPage}
                 totalPages={response.totalPages}
                 totalCount={response.totalCount} 
-            />
-        ]} />
+            />}
+        </>} />
     )
 }
 

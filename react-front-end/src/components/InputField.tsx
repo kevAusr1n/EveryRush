@@ -18,22 +18,22 @@ function TextInput(props: {
     readonly?: boolean,
     onTextChangeHandler?: Dispatch<SetStateAction<string>>
 }) {
-    const [_, setState] = useState(props.inputValue);
-
+    const [value, setValue] = useState(props.inputValue);
+    
     return (
-        <ResponsiveDiv style="" children={[
-            <label className={basicLabelStyle}>{props.inputName.toLocaleLowerCase()}</label>,
+        <ResponsiveDiv style="" children={<>
+            <label className={basicLabelStyle}>{props.inputName.toLocaleLowerCase()}</label>
             <input className={props.readonly == true ? props.style + " " + readOnlyTestFieldStyle : props.style + " " + basicTextFieldStyle} 
                 defaultValue={props.inputValue} id={props.inputName.toLocaleLowerCase()} name={props.inputName.toLocaleLowerCase()}
                 type={props.inputType} onChange={(e) => {
                     if (props.onTextChangeHandler != undefined && props.onTextChangeHandler != null) {
-                        props.onTextChangeHandler(e.target.value)
+                        props.onTextChangeHandler(e.target.value);
                     } else {
-                        setState(e.target.value)
+                        setValue(e.target.value);
                     }
                 }} readOnly={props.readonly == true ? true : false}
             />
-        ]}/>
+        </>}/>
     )
 }
 
@@ -47,19 +47,19 @@ function TextAreaInput(props: {
     const [_, setState] = useState(props.inputValue);
 
     return (
-        <ResponsiveDiv style="" children={[
-            <label className={basicLabelStyle}>{props.inputName.toLocaleLowerCase()}</label>,
+        <ResponsiveDiv style="" children={<>
+            <label className={basicLabelStyle}>{props.inputName.toLocaleLowerCase()}</label>
             <textarea className={props.style + " h-50 " + basicTextFieldStyle} 
                 defaultValue={props.inputValue} id={props.inputName.toLocaleLowerCase()} name={props.inputName.toLocaleLowerCase()}
                 onChange={(e) => {
                     if (props.onTextChangeHandler != undefined && props.onTextChangeHandler != null) {
-                        props.onTextChangeHandler(e.target.value)
+                        props.onTextChangeHandler(e.target.value);
                     } else {
-                        setState(e.target.value)
+                        setState(e.target.value);
                     }
                 }}
             />
-        ]}/>
+        </>}/>
     )
 }
 
@@ -88,15 +88,15 @@ function OptionInput(props: {
     };
 
     return (        
-        <ResponsiveDiv style={"flex flex-col gap-5 "} children={[
-            !isStringEmpty(props.inputName) && <label className={basicLabelStyle}>{props.inputName.toLocaleLowerCase()}</label>,
+        <ResponsiveDiv style={"flex flex-col gap-5 "} children={<>
+            {!isStringEmpty(props.inputName) && <label className={basicLabelStyle}>{props.inputName.toLocaleLowerCase()}</label>}
             <input id={id} name={props.inputName} type="text" value={inputValueState} className={optionWidth + " h-10 text-center font-mono border-b-1 hover:bg-black hover:text-white focus:outline-none"} onClick={() => {
                 setDropDown(!dropDown);
-            }} readOnly />,
-            <ResponsiveDiv style="" children={[
+            }} readOnly />
+            <ResponsiveDiv style="" children={<>
                 <DropDown dropDown={dropDown} items={optionValues} style={optionWidth} eventHandlerMap={defaultHandler} />
-            ]} />
-        ]} />     
+            </>} />
+        </>} />     
     )
 }
 
@@ -176,30 +176,30 @@ function ImageInput(props: {
     };
 
     return (
-        <ResponsiveDiv style="" children={[
-            <label className={basicLabelStyle}>{props.inputName}</label>,
+        <ResponsiveDiv style="" children={<>
+            <label className={basicLabelStyle}>{props.inputName}</label>
             <label className={props.style + " " + basicTextFieldStyle} htmlFor={props.inputName.toLocaleLowerCase()}>
                 Upload Product Pictures
-            </label>,
+            </label>
             <input id={props.inputName.toLocaleLowerCase()} name={props.inputName.toLocaleLowerCase()} 
-                type="file" multiple hidden onChange={(e) => addImage(e.target.files as FileList)}/>,
-            <ResponsiveDiv style="mt-2 mb-2" children={[<MonoStyleText style="text-red-500" content={errorMsg} />]} />,
-            <ResponsiveDiv style="flex flex-row mt-3 mb-3 gap-2" children={[
-                files && Array.from(files).map((file) => {
+                type="file" multiple hidden onChange={(e) => addImage(e.target.files as FileList)}/>
+            <ResponsiveDiv style="mt-2 mb-2" children={<MonoStyleText style="text-red-500" content={errorMsg} />} />
+            <ResponsiveDiv style="flex flex-row mt-3 mb-3 gap-2" children={<>
+                {files && Array.from(files).map((file, index) => {
                     const id = crypto.randomUUID();
                     const imageId = crypto.randomUUID();
                     const deleteButtonId = crypto.randomUUID();
                     return (
-                        <ResponsiveDiv id={id} style="relative h-32 w-32" eventHandlerMap={eventHandlerMap(imageId, deleteButtonId)} children={[
-                            <ImageBrief id={imageId} src={URL.createObjectURL(file)} style={visibleImageStyle} />,
+                        <ResponsiveDiv id={id} key={index} style="relative h-32 w-32" eventHandlerMap={eventHandlerMap(imageId, deleteButtonId)} children={<>
+                            <ImageBrief id={imageId} src={URL.createObjectURL(file)} style={visibleImageStyle} />
                             <button id={deleteButtonId} className={invisibleDeleteButtonStyle} onClick={() => deleteFromFiles(file)}>
                                 <X />
                             </button>
-                        ]}/>
+                        </>}/>
                     )
-                })
-            ]}/>
-        ]} />
+                })}
+            </>}/>
+        </>} />
     )
 }
 

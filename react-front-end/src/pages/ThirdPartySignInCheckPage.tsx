@@ -58,43 +58,43 @@ function ThirdPartySignInCheckPage() {
 
     const passwordSetUpDiv = () : ReactNode => {
         return (
-            <ResponsiveDiv style="flex flex-col" children={[
-                <TextInput inputName="New Password" inputType="password" style="w-100" inputValue="" onTextChangeHandler={setPassword}/>,
-                <TextInput inputName="Confirm New Password" inputType="password" style="w-100" inputValue="" onTextChangeHandler={setConfirmedPassword} />,
-                <MonoStyleText style="text-red-500" content={updatePasswordErrorMsg.current} />,
-            ]} /> 
+            <ResponsiveDiv style="flex flex-col" children={<>
+                <TextInput inputName="New Password" inputType="password" style="w-100" inputValue="" onTextChangeHandler={setPassword}/>
+                <TextInput inputName="Confirm New Password" inputType="password" style="w-100" inputValue="" onTextChangeHandler={setConfirmedPassword} />
+                <MonoStyleText style="text-red-500" content={updatePasswordErrorMsg.current} />
+            </>} /> 
         )
     }
 
     return (
-        <ResponsiveDiv style="flex flex-col items-center" children={[
-            <ResponsiveDiv style="mt-20 mb-20 gap-5 p-20 flex flex-col items-start bg-white shadow-xl" children={[
-                <ResponsiveDiv style="flex flex-row h-10 items-end gap-5" children={[
-                    <label className="font-bold font-mono">Email</label>,
+        <ResponsiveDiv style="flex flex-col items-center" children={<>
+            <ResponsiveDiv style="mt-20 mb-20 gap-5 p-20 flex flex-col items-start bg-white shadow-xl" children={<>
+                <ResponsiveDiv style="flex flex-row h-10 items-end gap-5" children={<>
+                    <label className="font-bold font-mono">Email</label>
                     <MonoStyleText style="" content={email} />
-                ]} />,
-                <ResponsiveDiv style="flex flex-row h-10 items-end gap-5" children={[
-                    <label className="font-bold font-mono">Username</label>,
+                </>} />
+                <ResponsiveDiv style="flex flex-row h-10 items-end gap-5" children={<>
+                    <label className="font-bold font-mono">Username</label>
                     <MonoStyleText style="" content={username} />
-                ]} />,
-                <ResponsiveDiv style="flex flex-row h-15 items-center gap-5" children={[
-                    <label className="font-bold font-mono">Role</label>,
+                </>} />
+                <ResponsiveDiv style="flex flex-row h-15 items-center gap-5" children={<>
+                    <label className="font-bold font-mono">Role</label>
                     <OptionInput inputName="" inputValue="Customer,BusinessOwner" style="h-10" inputChangeHandler={(value) => setRole(value)} />
-                ]} />,
-                <ResponsiveDiv style="flex flex-row items-center gap-5" children={[
-                    <label className="font-bold font-mono">Password</label>,
-                    <MonoStyleText style="" content={"set OR go with Google"} />,
-                    !passwordSetUp && <WhiteButton buttonName="SET PASSWORD" size="w-40 h-10" clickHandler={() => {setPasswordSetUp(true)}}/>,
-                    passwordSetUp && <BlackButton buttonName="CANCEL" size="w-40 h-10" clickHandler={() => {setPasswordSetUp(false)}}/>
-                ]} />,
-                passwordSetUp && passwordSetUpDiv(),
-                <ResponsiveDiv style="mt-5" children={[
+                </>} />
+                <ResponsiveDiv style="flex flex-row items-center gap-5" children={<>
+                    <label className="font-bold font-mono">Password</label>
+                    <MonoStyleText style="" content={"set OR go with Google"} />
+                    {!passwordSetUp && <WhiteButton buttonName="SET PASSWORD" size="w-40 h-10" clickHandler={() => {setPasswordSetUp(true)}}/>}
+                    {passwordSetUp && <BlackButton buttonName="CANCEL" size="w-40 h-10" clickHandler={() => {setPasswordSetUp(false)}}/>}
+                </>} />
+                {passwordSetUp && passwordSetUpDiv()}
+                <ResponsiveDiv style="mt-5" children={<>
                     <BlackButton buttonName="REGISTER" size="h-10" clickHandler={() => {
                         thirdPartyUserRegisterHandler()
                     }}/>
-                ]} />,
-            ]} />
-        ]} />
+                </>} />
+            </>} />
+        </>} />
     );
 }
 

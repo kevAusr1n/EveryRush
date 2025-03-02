@@ -22,7 +22,7 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, string>
 
     public DbSet<AppFile> AppFiles {get;set;}
 
-    public DbSet<Comment> Comments {get;set;}
+    public DbSet<ProductReview> ProductReviews {get;set;}
 
     public DbSet<UserChatConnection> UserChatConnections {get;set;}
 

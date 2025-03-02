@@ -6,9 +6,9 @@ function DisplayArrangement(props: {
     exhibitedChildren: ReactNode
 })  {
     return (
-        <ResponsiveDiv style={"w-full " + props.arrangement} children={[
-            props.exhibitedChildren
-        ]} />
+        <ResponsiveDiv style={"w-full " + props.arrangement} children={<>
+            {props.exhibitedChildren}
+        </>} />
     )
 }
 

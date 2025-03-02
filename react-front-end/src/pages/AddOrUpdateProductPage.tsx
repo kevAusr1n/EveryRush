@@ -11,8 +11,8 @@ function AddOrUpdateProductPage() {
     const [files, setFiles] = useState<FileList | null>(null);
   
     return (
-        <ResponsiveDiv style="flex flex-col items-center" children={[
-            <ResponsiveDiv style="mt-20 mb-20 gap-5 p-20 flex flex-col items-center" children={[
+        <ResponsiveDiv style="flex flex-col items-center" children={<>
+            <ResponsiveDiv style="mt-20 mb-20 gap-5 p-20 flex flex-col items-center" children={<>
                 <SubmitForm
                     inputNames={["Name", "Price", "Stock", "Images", "Description"]}
                     inputTypes={["text", "text", "text", "file", "textarea"]}
@@ -30,8 +30,8 @@ function AddOrUpdateProductPage() {
                         }
                     }}
                 />
-            ]} />
-        ]} /> 
+            </>} />
+        </>} /> 
     )
 }
 

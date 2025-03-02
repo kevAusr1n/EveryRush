@@ -9,13 +9,13 @@ function ContactBoxDropDown(props: {
     eventHandlerMap: (...params : any) => { [key : string] : () => void}
 }) {
     return (
-        props.dropDown && <ResponsiveDiv style="absolute bg-white border" children={[
-            props.items.map((contact: Contact) => {
+        props.dropDown && <ResponsiveDiv style="absolute bg-white border" children={<>
+            {props.items.map((contact: Contact) => {
                 const id = crypto.randomUUID();
                 const originStyle = "flex flex-col w-100 bg-white border p-5";
                 return <ContactBoxPage id={id} style={originStyle} contact={contact} eventHandlerMap={props.eventHandlerMap(id, originStyle, contact)} />
-            })
-        ]}/>      
+            })}
+        </>}/>      
     )
 }
 
@@ -26,14 +26,14 @@ function StringBoxDropDown(props: {
     eventHandlerMap: (...params : any) => { [key : string] : () => void}
 }) {
     return (
-        props.dropDown && <ResponsiveDiv style="absolute" children={[
-            props.items.map((item: string, index: number) => {
+        props.dropDown && <ResponsiveDiv style="absolute" children={<>
+            {props.items.map((item: string, index: number) => {
                 const originStyle = "flex flex-col bg-white border p-2 " + props.style;
-                return <ResponsiveDiv key={index} style={originStyle} eventHandlerMap={props.eventHandlerMap(item)} children={[
+                return <ResponsiveDiv key={index} style={originStyle} eventHandlerMap={props.eventHandlerMap(item)} children={<>
                     <MonoStyleText style="" content={item} />
-                ]} />
-            })
-        ]} />
+                </>} />
+            })}
+        </>} />
     )
 }
 

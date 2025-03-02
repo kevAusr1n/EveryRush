@@ -88,38 +88,38 @@ function SingleOrderCheckoutPage(props: {
     }
     
     return (
-        <ResponsiveDiv style="flex flex-col items-center" children={[
-            <ResponsiveDiv style="mt-20 mb-20 gap-5 flex flex-col items-start" children={[
-                <DisplayTable tableHead={tableHead} tableContent={tableContent} />,
-                <ResponsiveDiv key={crypto.randomUUID()} style="mt-10 w-full flex flex-row justify-end" children={[
+        <ResponsiveDiv style="flex flex-col items-center" children={<>
+            <ResponsiveDiv style="mt-20 mb-20 gap-5 flex flex-col items-start" children={<>
+                <DisplayTable tableHead={tableHead} tableContent={tableContent} />
+                <ResponsiveDiv key={crypto.randomUUID()} style="mt-10 w-full flex flex-row justify-end" children={<>
                     <MonoStyleText style="text-5xl" content={"Total: $" + totalPrice} />
-                ]} />,
-                props.separate && <ResponsiveDiv style="flex flex-col mt-10" children={[
-                    <ResponsiveDiv style="flex flex-row gap-5" children={[
-                        <MonoStyleText style="text-2xl" content="Post Information" />,
-                        <WhiteButton buttonName="USE CONTACT" size="w-60 h-10" clickHandler={() => setDropdown(!dropdown)}/>,
-                        contactResponse.contacts.length == 0 && dropdown && <ResponsiveDiv style="absolute bg-white border" children={[
-                            <MonoStyleText style="p-20 text-2xl" content="No Contact Found" />,
-                        ]} />,
-                        <ResponsiveDiv style="" children={[
+                </>} />
+                {props.separate && <ResponsiveDiv style="flex flex-col mt-10" children={<>
+                    <ResponsiveDiv style="flex flex-row gap-5" children={<>
+                        <MonoStyleText style="text-2xl" content="Post Information" />
+                        <WhiteButton buttonName="USE CONTACT" size="w-60 h-10" clickHandler={() => setDropdown(!dropdown)}/>
+                        contactResponse.contacts.length == 0 && dropdown && <ResponsiveDiv style="absolute bg-white border" children={<>
+                            <MonoStyleText style="p-20 text-2xl" content="No Contact Found" />
+                        </>} />
+                        <ResponsiveDiv style="" children={<>
                             <DropDown dropDown={dropdown} items={contactResponse.contacts} eventHandlerMap={useContactButtonHandler} />
-                        ]} />
-                    ]} />,
-                    contactInputFieldNames.map((name : string , index : number) => {
-                        return <InputField inputName={name} inputType={contactInputFieldTypes[index]} inputValue={postInformation[index][0]} style="w-200" onTextChangeHandler={postInformation[index][1]} />
-                    })
-                ]} />,
-                props.separate && <ResponsiveDiv style="flex flex-col mt-10" children={[
-                    <ResponsiveDiv style="flex flex-row gap-5" children={[
-                        <MonoStyleText style="text-2xl" content="Billing Information" />,
+                        </>} />
+                    </>} />
+                    {contactInputFieldNames.map((name : string , index : number) => {
+                        return <InputField key={index} inputName={name} inputType={contactInputFieldTypes[index]} inputValue={postInformation[index][0]} style="w-200" onTextChangeHandler={postInformation[index][1]} />
+                    })}
+                </>} />}
+                {props.separate && <ResponsiveDiv style="flex flex-col mt-10" children={<>
+                    <ResponsiveDiv style="flex flex-row gap-5" children={<>
+                        <MonoStyleText style="text-2xl" content="Billing Information" />
                         <WhiteButton buttonName="USE POST ADDRESS" size="w-60 h-10" clickHandler={() => copyBillInfoFromPostInfo()}/>
-                    ]} />,
-                    contactInputFieldNames.map((name : string , index : number) => {
-                        return <InputField inputName={name} inputType={contactInputFieldTypes[index]} inputValue={billInformation[index][0]} style="w-200" onTextChangeHandler={billInformation[index][1]} />
-                    })
-                ]} />
-            ]} />
-        ]} />
+                    </>} />
+                    {contactInputFieldNames.map((name : string , index : number) => {
+                        return <InputField key={index} inputName={name} inputType={contactInputFieldTypes[index]} inputValue={billInformation[index][0]} style="w-200" onTextChangeHandler={billInformation[index][1]} />
+                    })}
+                </>} />}
+            </>} />
+        </>} />
     )
 }
 

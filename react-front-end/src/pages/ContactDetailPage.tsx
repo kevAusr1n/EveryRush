@@ -18,15 +18,15 @@ function ContactDetailPage(props: {
     }
 
     return (
-        <ResponsiveDiv style="w-full p-5 flex flex-row justify-between shadow-xl mb-5" children={[
-            <ResponsiveDiv style="" children={[
-                <MonoStyleText style="text-2xl font-bold mb-5" content={props.contact.firstName + " " + props.contact.lastName} />,
-                <MonoStyleText style="" content={props.contact.email} />,
-                <MonoStyleText style="" content={props.contact.phone} />,
-                <MonoStyleText style="" content={props.contact.address} />,
+        <ResponsiveDiv style="w-full p-5 flex flex-row justify-between shadow-xl mb-5" children={<>
+            <ResponsiveDiv style="" children={<>
+                <MonoStyleText style="text-2xl font-bold mb-5" content={props.contact.firstName + " " + props.contact.lastName} />
+                <MonoStyleText style="" content={props.contact.email} />
+                <MonoStyleText style="" content={props.contact.phone} />
+                <MonoStyleText style="" content={props.contact.address} />
                 <MonoStyleText style="" content={props.contact.city + ", " + props.contact.state + ", " + props.contact.postcode} />
-            ]} />,
-            <ResponsiveDiv style="w-1/6 flex flex-col items-center justify-center gap-5" children={[
+            </>} />
+            <ResponsiveDiv style="w-1/6 flex flex-col items-center justify-center gap-5" children={<>
                 <WhiteButton buttonName="Edit" size="w-full h-10" clickHandler={() => {
                     navigate({
                         pathname: "/contacts/edit/",
@@ -42,12 +42,12 @@ function ContactDetailPage(props: {
                             postcode: props.contact.postcode
                         }).toString()
                     });
-                }} />,
+                }} />
                 <RedButton buttonName="Delete" size="w-full h-10" clickHandler={() => {
                     deleteContactsHandler(props.contact.id);
-                }} />,
-            ]}/>
-        ]}/>
+                }} />
+            </>}/>
+        </>}/>
     )
 }
 

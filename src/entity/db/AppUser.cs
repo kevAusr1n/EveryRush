@@ -11,5 +11,5 @@ public class AppUser : IdentityUser {
 
     public ICollection<Product>? Products { get; set;}
 
-    public ICollection<Comment>? Comments { get; set;} 
+    public ICollection<ProductReview>? Comments { get; set;} 
 }

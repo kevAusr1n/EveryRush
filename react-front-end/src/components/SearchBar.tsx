@@ -10,10 +10,10 @@ function SearchBar(props: {
     const tempSearchTerm = useRef("");
 
     return (   
-        <ResponsiveDiv style="w-full h-full flex flex-row bg-white border" children={[
-            <input className="pl-5 w-4/5 font-mono outline-none" type="text" placeholder={props.placeHolder} onChange={(e) => tempSearchTerm.current = e.target.value} />,
+        <ResponsiveDiv style="w-full h-full flex flex-row bg-white border" children={<>
+            <input className="pl-5 w-4/5 font-mono outline-none" type="text" placeholder={props.placeHolder} onChange={(e) => tempSearchTerm.current = e.target.value} />
             <button className="px-2" onClick={() => props.setSearchTerm(tempSearchTerm.current)}><Search /></button>
-        ]}/>
+        </>}/>
     )
 }
 

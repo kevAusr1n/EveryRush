@@ -34,22 +34,22 @@ function ImageExhibition (props: {
     }
 
     return (
-        <ResponsiveDiv style="flex flex-row gap-5 items-center" children={[
+        <ResponsiveDiv style="flex flex-row gap-5 items-center" children={<>
             <button id={crypto.randomUUID()} key={crypto.randomUUID()} onClick={() => displayWindow(props.currentImageIndex - 1)}>
                 <ArrowLeft />
-            </button>,
-            props.srcList.map((src: string, index: number) => {
+            </button>
+            {props.srcList.map((src: string, index: number) => {
                 if (index >= startImageIndex.current && index <= startImageIndex.current + imageWindowSize - 1) {
                     let style = props.currentImageIndex == index ? props.style + " border-2 border-black" : props.style;
                     return <ImageBrief key={index} src={src} style={style} eventHandlerMap={props.eventHandlerMap(index)} />
                 } else {
                     return <></>;
                 }
-            }),
+            })}
             <button id={crypto.randomUUID()} key={crypto.randomUUID()} onClick={() => displayWindow(props.currentImageIndex + 1)}>
                 <ArrowRight />
             </button>
-        ]} />
+        </>} />
     )
 }
 

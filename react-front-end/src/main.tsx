@@ -1,6 +1,5 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { GoogleOAuthProvider } from '@react-oauth/google'
 import OrdersPage from './pages/OrdersPage.tsx'
 import ContactsPage from './pages/ContactsPage.tsx'
 import MessagesPage from './pages/MessagesPage.tsx'

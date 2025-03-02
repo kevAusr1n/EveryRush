@@ -110,6 +110,9 @@ namespace EveryRush.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
                     b.Property<string>("ToUserId")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -117,35 +120,6 @@ namespace EveryRush.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ChatMessages");
-                });
-
-            modelBuilder.Entity("Comment", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<string>("AppUserId")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<string>("Content")
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("OrderId")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("ProductId")
-                        .HasColumnType("varchar(255)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AppUserId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("Contact", b =>
@@ -467,6 +441,44 @@ namespace EveryRush.Migrations
                     b.ToTable("OrderProcesses");
                 });
 
+            modelBuilder.Entity("ProductReview", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Content")
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("OrderId")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("ProductId")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<int?>("Rating")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ReplyToId")
+                        .HasColumnType("longtext");
+
+                    b.Property<int?>("Type")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductReviews");
+                });
+
             modelBuilder.Entity("PurchaseProduct", b =>
                 {
                     b.Property<string>("Id")
@@ -546,17 +558,6 @@ namespace EveryRush.Migrations
                         .HasForeignKey("AppUserId");
 
                     b.Navigation("AppUser");
-                });
-
-            modelBuilder.Entity("Comment", b =>
-                {
-                    b.HasOne("EveryRush.Entity.AppUser", null)
-                        .WithMany("Comments")
-                        .HasForeignKey("AppUserId");
-
-                    b.HasOne("EveryRush.Entity.Product", null)
-                        .WithMany("Comments")
-                        .HasForeignKey("ProductId");
                 });
 
             modelBuilder.Entity("Contact", b =>
@@ -646,6 +647,17 @@ namespace EveryRush.Migrations
                         .HasForeignKey("OrderId");
 
                     b.Navigation("Order");
+                });
+
+            modelBuilder.Entity("ProductReview", b =>
+                {
+                    b.HasOne("EveryRush.Entity.AppUser", null)
+                        .WithMany("Comments")
+                        .HasForeignKey("AppUserId");
+
+                    b.HasOne("EveryRush.Entity.Product", null)
+                        .WithMany("Comments")
+                        .HasForeignKey("ProductId");
                 });
 
             modelBuilder.Entity("PurchaseProduct", b =>

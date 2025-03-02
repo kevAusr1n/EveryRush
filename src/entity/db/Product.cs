@@ -18,5 +18,5 @@ public class Product
 
     public ICollection<AppFile>? AppFiles {get; set;}
 
-    public ICollection<Comment>? Comments {get; set;}
+    public ICollection<ProductReview>? ProductReviews {get; set;}
 }

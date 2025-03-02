@@ -22,11 +22,11 @@ function CountEditor(props: {
     }
 
     return (
-        <ResponsiveDiv key={crypto.randomUUID()} style="flex flex-row items-center justify-center gap-2" children={[ 
-            <button key={crypto.randomUUID()} className="w-5 bg-gray-200 border-1" onClick={() => validateInputIsIntegerThenChage(count - 1)}>-</button>,
-            <input key={crypto.randomUUID()} id = {id} className="w-10 border-1" value={count} readOnly />,
+        <ResponsiveDiv key={crypto.randomUUID()} style="flex flex-row items-center justify-center gap-2" children={<> 
+            <button key={crypto.randomUUID()} className="w-5 bg-gray-200 border-1" onClick={() => validateInputIsIntegerThenChage(count - 1)}>-</button>
+            <input key={crypto.randomUUID()} id = {id} className="w-10 border-1" value={count} readOnly />
             <button key={crypto.randomUUID()} className="w-5 bg-gray-200 border-1" onClick={() => validateInputIsIntegerThenChage(count + 1)}>+</button>
-        ]} />
+        </>} />
     );
 }
 

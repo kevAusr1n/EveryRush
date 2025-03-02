@@ -18,5 +18,37 @@ type GetOrdersResponse = {
     totalCount: number;
 }
 
+type GetUnreadMessagesStatisticsResponse = {
+    totalPages: number;
+    totalCount: number;
+    unreadSenders: UnreadSender[]
+}
 
-export type { GetProductsResponse, GetContactsResponse, GetOrdersResponse };
+type GetReviewsResponse = {
+    totalPages: number;
+    totalCount: number;
+    reviews: Review[]
+}
+
+type UnreadSender = {
+    senderId: string;
+    senderName: string;
+    unreadCount: number;
+}
+
+type Review = {
+    id: string
+    productId: string;
+    orderId: string;
+    reviewerId: string;
+    reviewerName: string;
+    replyToId: string;
+    replierId: string;
+    replierName: string;
+    type: number;
+    rating: number;
+    content: string;
+    createdAt: string;
+}
+
+export type { GetProductsResponse, GetContactsResponse, GetOrdersResponse, GetUnreadMessagesStatisticsResponse, GetReviewsResponse };

@@ -122,9 +122,9 @@ public class ProductController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<Product>> GetProduct([FromRoute] string id) 
+    public async Task<ActionResult<ProductView>> GetProductDetail([FromRoute] string id) 
     {
-        return await _productService.GetProduct(id);
+        return await _productService.GetProductDetail(id);
     }
 
     [HttpPost("add")]

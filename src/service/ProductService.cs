@@ -80,9 +80,21 @@ public class ProductService
         return response;
     }
 
-    public async Task<Product> GetProduct(string id) 
+    public async Task<ProductView> GetProductDetail(string id) 
     {
-        return await _appDbContext.Products.Where(p => p.Id == id).FirstOrDefaultAsync();
+        var product = await _appDbContext.Products.Where(p => p.Id == id).FirstOrDefaultAsync();
+        var appUser = await _appDbContext.AppUsers.Where(u => u.Id == product.AppUserId).FirstOrDefaultAsync();
+        return new ProductView{
+            Id = product.Id,
+            UserId = product.AppUserId,
+            UserName = appUser.AlternativeName,
+            Name = product.Name,
+            Description = product.Description,
+            Price = product.Price,
+            Stock = product.Stock,
+            Status = product.Status,
+            ImageUrl = product.ImageUrl
+        };
     }
     
     public async Task<Product> AddProduct(AddOrUpdateProductRequest request) 

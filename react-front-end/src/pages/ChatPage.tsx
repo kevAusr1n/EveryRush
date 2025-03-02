@@ -6,7 +6,7 @@ import { useNavigate, useSearchParams } from "react-router";
 import * as signalR from "@microsoft/signalr";
 import { isStringEmpty } from "../functions/Utils";
 import { ChatMessage } from "../type/EntityType";
-import { getChatMessages } from "../functions/ChatFunction";
+import { getChatMessagesForConversation } from "../functions/ChatFunction";
 
 
 function ChatPage () {
@@ -23,7 +23,10 @@ function ChatPage () {
     const chatDivId = crypto.randomUUID();
     const chatNum = 20;
 
-    conn.on("ReceiveMessage", (user, message) => {
+    conn.on("ReceiveMessage", (messageId, user, message) => {
+        if (user === localStorage.getItem("userid")) {
+            conn.invoke("MarkMessageAsRead", messageId);
+        }
         if (chatMessageList.length > chatNum) {
             setChatMessageList([...chatMessageList.slice(
                 chatMessageList.length - chatNum + 1, chatMessageList.length), 
@@ -36,7 +39,7 @@ function ChatPage () {
     });
 
     const initiateChat = async () => {
-        setChatMessageList(await getChatMessages({userid: localStorage.getItem("userid") as string, retrieveNum: chatNum}));
+        setChatMessageList(await getChatMessagesForConversation({userid: localStorage.getItem("userid") as string, retrieveNum: chatNum}));
         if (conn.state == signalR.HubConnectionState.Disconnected) {
             await conn.start();
         }
@@ -63,39 +66,39 @@ function ChatPage () {
         setMessage("");
     }
   
-    return <ResponsiveDiv style="flex flex-col mt-20 mx-50" children={[   
-        <MonoStyleText style="text-2xl bg-black p-2 text-center text-white" content={"CHAT WITH: " + `[${toUserName}]`} />,
-        <ResponsiveDiv style="flex flex-col border-1 w-full mb-5" children={[
-            <ResponsiveDiv style="flex flex-row justify-center" children={[
+    return <ResponsiveDiv style="flex flex-col mt-20 mx-50" children={<>
+        <MonoStyleText style="text-2xl bg-black p-2 text-center text-white" content={"CHAT WITH: " + `[${toUserName}]`} />
+        <ResponsiveDiv style="flex flex-col border-1 w-full mb-5" children={<>
+            <ResponsiveDiv style="flex flex-row justify-center" children={<>
                 <BorderlessButton buttonName="load previous messages" style="transition hover:scale-110 hover:underline" clickHandler={() => {}} />
-            ]} />,
-            <ResponsiveDiv id={chatDivId} style="flex flex-col justify-end w-full h-200 gap-5 overflow-auto" children={[
-                chatMessageList.map((msg, index) => {
+            </>} />
+            <ResponsiveDiv id={chatDivId} style="flex flex-col justify-end w-full h-200 gap-5 overflow-auto" children={<>
+                {chatMessageList.map((msg, index) => {
                     if (chatMessageList[index].toUserId === localStorage.getItem("userid")) {
-                        return <ResponsiveDiv style="flex flex-row justify-start m-3" children={[
-                            <MonoStyleText key={index} style="text-xl border-1 px-2 py-1" content={msg.content} />,
-                        ]} />
+                        return <ResponsiveDiv key={index} style="flex flex-row justify-start m-3" children={<>
+                            <MonoStyleText style="text-xl border-1 px-2 py-1" content={msg.content} />
+                        </>} />
                     } else {
-                        return <ResponsiveDiv style="flex flex-row justify-end m-3" children={[
-                            <MonoStyleText key={index} style="text-xl bg-green-300 px-2 py-1" content={msg.content} />,
-                        ]} />
+                        return <ResponsiveDiv key={index} style="flex flex-row justify-end m-3" children={<>
+                            <MonoStyleText style="text-xl bg-green-300 px-2 py-1" content={msg.content} />
+                        </>} />
                     }
-                })
-            ]} />,
-        ]} />,
-        <ResponsiveDiv style="flex flex-row gap-5 mb-20" children={[   
+                })}
+            </>} />
+        </>} />
+        <ResponsiveDiv style="flex flex-row gap-5 mb-20" children={<>
             <input id={crypto.randomUUID()} name="message" value={message} className="w-2/3 h-10 border-1 focus:outline-none" onChange={
                 (e) => setMessage(e.target.value)
-            }/>,
+            }/>
             <WhiteButton buttonName="SEND" size="w-60 h-10" clickHandler={() => {
                 sendMessageHandler(message);
-            }} />,
+            }} />
             <BlackButton buttonName="LEAVE" size="w-60 h-10" clickHandler={() => {
                 endChatConnection();
                 navigate("/orders");
-            }} />,
-        ]} />
-    ]} />
+            }} />
+        </>} />
+    </>} />
 }
 
 export default ChatPage;

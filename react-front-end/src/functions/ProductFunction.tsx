@@ -89,14 +89,16 @@ async function addOrUpdateProducts(props: {
     return isSucceed;
 }
 
-async function GetProduct(props: {id: string, setProduct: Dispatch<SetStateAction<Product>>}) {
+async function getProductDetail(props: {id: string}) : Promise<Product> {
+    var productResponse : Product = {} as Product;
     await APICall().get(`/api/products/${props.id}`)
     .then((res) => {
         if (res.status == 200) {
-            props.setProduct(res.data);
+            productResponse = res.data;
         }
     })
     .catch((err) => console.log(err));
+    return productResponse;
 }
 
 async function deleteProducts (props: {id: string}) {
@@ -111,4 +113,4 @@ async function updateProductStock (props: {id: string, stock: number}) {
     await APICall().post(`/api/products/stock-update/${props.id}?newstock=${props.stock}`)
 }
 
-export { getPaginatedProducts, addOrUpdateProducts, GetProduct, deleteProducts, updateProductStatus, updateProductStock };
+export { getPaginatedProducts, addOrUpdateProducts, getProductDetail, deleteProducts, updateProductStatus, updateProductStock };

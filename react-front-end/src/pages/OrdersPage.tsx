@@ -38,36 +38,36 @@ function OrdersPage() {
     
     return (
         (!isUserSignedIn() && <SignInRequiredPage message="please sign in to manage orders"/>) ||
-        <ResponsiveDiv style="flex flex-col mt-20" children={[   
-            focusFilterButtonIndex == 0 && response.orders.length == 0 && <ResponsiveDiv style="flex flex-col items-center gap-5" children={[
+        <ResponsiveDiv style="flex flex-col mt-20" children={<>   
+            {(focusFilterButtonIndex == 0 && response.orders.length == 0) && <ResponsiveDiv style="flex flex-col items-center gap-5" children={<>
                 <MonoStyleText key={crypto.randomUUID()} style="text-xl" content="You have no order" />
-            ]} />,   
-            (response.orders.length != 0 || focusFilterButtonIndex != 0) && <ResponsiveDiv style="flex flex-row mx-20 mb-5 gap-5 justify-between" children={[
-                <ResponsiveDiv style="" children={[
-                    filterButtonNames.map((buttonName, index) => {
-                        return <BorderlessButton style={index == focusFilterButtonIndex ? focusButtonStyle : unfocusButtonStyle} buttonName={buttonName} clickHandler={() => {setFocusFilterButtonIndex(index)}} />
-                    }),
-                ]} />,
-                <ResponsiveDiv style="w-1/4 flex flex-row h-10 items-start" children={[
+            </>} />}   
+            {(response.orders.length != 0 || focusFilterButtonIndex != 0) && <ResponsiveDiv style="flex flex-row mx-20 mb-5 gap-5 justify-between" children={<>
+                <ResponsiveDiv style="" children={<>
+                    {filterButtonNames.map((buttonName, index) => {
+                        return <BorderlessButton key={index} style={index == focusFilterButtonIndex ? focusButtonStyle : unfocusButtonStyle} buttonName={buttonName} clickHandler={() => {setFocusFilterButtonIndex(index)}} />
+                    })}
+                </>} />
+                <ResponsiveDiv style="w-1/4 flex flex-row h-10 items-start" children={<>
                     <SearchBar placeHolder="order id, item etc ..." searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-                ]} />
-            ]} />,     
-            response.orders.length != 0 && response.orders.map((order, index) => {
+                </>} />
+            </>} />}   
+            {response.orders.length != 0 && response.orders.map((order, index) => {
                 return (
-                    <ResponsiveDiv style="flex flex-col ml-20 mr-20 mb-5 shadow-xl" children={[
-                        <OrderBoxPage key={index} order={order} />
-                    ]} />
+                    <ResponsiveDiv key={index} style="flex flex-col ml-20 mr-20 mb-5 shadow-xl" children={<>
+                        <OrderBoxPage order={order} />
+                    </>} />
                 )
-            }),
-            response.orders.length != 0 && <Pagination 
+            })}
+            {response.orders.length != 0 && <Pagination 
                     size={size}
                     setSize={setSize}
                     page={page}
                     setPage={setPage}
                     totalPages={response.totalPages}
                     totalCount={response.totalCount} 
-                />
-        ]} />
+                />}
+        </>} />
     )
 }
 
