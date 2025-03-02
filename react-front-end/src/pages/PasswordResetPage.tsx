@@ -19,10 +19,10 @@ function PasswordResetPage() {
 
     const sendPasswordResetEmailHandler = async () => {
         if (!await sendPasswordResetEmail({email: email})) {
-            sendEmailResultMsg.current = "Email does not exist."
+            sendEmailResultMsg.current = "Email doesn't exist";
             setRefresh(!refresh);
         } else {
-            sendEmailResultMsg.current = "A email has been sent to your mailbox. Please use reset code inside to reset your password.";
+            sendEmailResultMsg.current = "Please use reset code sent to your email to reset password.";
             setDropDown(true);
         }
     }
