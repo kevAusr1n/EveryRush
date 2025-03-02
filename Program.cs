@@ -35,15 +35,15 @@ builder.Services.AddDbContext<AppDbContext>
 builder.Services
 .AddIdentityApiEndpoints<AppUser>
 (   
-    /*options => 
+    options => 
     { 
         options.Tokens.PasswordResetTokenProvider = "NumericTokenProvider"; 
         options.Tokens.EmailConfirmationTokenProvider = "NumericTokenProvider"; 
-    }*/
+    }
 )
 .AddRoles<AppRole>()
-.AddEntityFrameworkStores<AppDbContext>();
-//.AddTokenProvider<NumericPasswordResetTokenProvider<AppUser>>("NumericTokenProvider");
+.AddEntityFrameworkStores<AppDbContext>()
+.AddTokenProvider<NumericTokenProvider<AppUser>>("NumericTokenProvider");
 
 builder.Services.Configure<IdentityOptions>
 (

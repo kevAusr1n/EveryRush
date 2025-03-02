@@ -1,17 +1,18 @@
-import { Dispatch, SetStateAction } from "react";
 import APICall from "../config/ApiConfig";
 import { CartItem } from "../type/EntityType";
 import { isStringEmpty } from "./Utils";
 
-async function getCart(props: {userId : string, setCart: Dispatch<SetStateAction<CartItem[]>>}) {
+async function getCartItem(props: {userId : string}) : Promise<CartItem[]> {
+    var cartResponse: CartItem[] = [];
     await APICall()
     .get(`/api/cart?userid=${props.userId}`)
     .then((res) => {
-        props.setCart(res.data.cartItems);
+        cartResponse = res.data.cartItems;
     })
     .catch((error) => {
         console.log(error);
     });
+    return cartResponse;
 }
 
 async function addOrUpdateCartItem(props: {item: CartItem}) {
@@ -41,4 +42,4 @@ async function removeFromCart (props: {id: string}) {
     });
 }
 
-export { getCart, addOrUpdateCartItem, removeFromCart }
+export { getCartItem, addOrUpdateCartItem, removeFromCart }

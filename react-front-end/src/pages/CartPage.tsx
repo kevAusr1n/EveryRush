@@ -3,7 +3,7 @@ import { useNavigate } from "react-router";
 import DisplayTable from "../components/DisplayTable";
 import CountEditor from "../components/CountEditor";
 import { BlackButton, RedButton } from "../components/Button";
-import { addOrUpdateCartItem, getCart, removeFromCart } from "../functions/CartFunction";
+import { addOrUpdateCartItem, getCartItem, removeFromCart } from "../functions/CartFunction";
 import { ImageBrief } from "../components/Image";
 import { backServerEndpoint } from "../config/BackendServerConfig";
 import ResponsiveDiv from "../components/div/ResponsiveDiv";
@@ -18,9 +18,15 @@ function CartPage() {
     const [cart, setCart] = useState<CartItem[]>([]);
     let totalPrice = useRef(0);
 
+    const getCart = async() => {
+        if (isUserSignedIn()) {
+            setCart(await getCartItem({userId: localStorage.getItem("userid") as string}));
+        }
+    }
+
     useEffect(() => {
         if (isUserSignedIn()) {
-            getCart({userId: localStorage.getItem("userid") as string, setCart: setCart});
+            getCart();
         }
     }, [refreshPage]);
 

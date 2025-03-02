@@ -27,5 +27,5 @@ public class SignUpRequest
     [JsonProperty("signin_required")]
     public bool doSignInAfterSignUp {get;set;} = false;
 
-    public string Provider {get;set;}
+    public string? Provider {get;set;}
 }

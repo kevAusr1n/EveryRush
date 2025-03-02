@@ -5,10 +5,15 @@ import { ImageBrief } from './Image';
 import DropDown from './Dropdown';
 import { MonoStyleText } from './Text';
 import { isStringEmpty } from '../functions/Utils';
+import { backServerEndpoint } from '../config/BackendServerConfig';
 
 const basicTextFieldStyle = "font-mono shadow appearance-none border py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline";
 const readOnlyTestFieldStyle = "font-mono shadow appearance-none border py-2 px-3 bg-gray-200 text-black leading-tight focus:outline-none focus:shadow-outline";
 const basicLabelStyle = "font-mono block text-gray-700 text-sm font-bold mb-2";
+const visibleImageStyle = "p-2 border-2 w-32 h-32 opacity-100";
+const halfTransparentImageStyle = "p-2 border-2 w-32 h-32 opacity-50";
+const invisibleDeleteButtonStyle = "opacity-0 h-8 w-8 absolute inset-12 flex items-center justify-center bg-red-500 text-white";
+const visibleDeleteButtonStyle = "opacity-100 h-8 w-8 absolute inset-12 flex items-center justify-center bg-red-500 text-white";
 
 function TextInput(props: {
     inputName: string, 
@@ -19,12 +24,13 @@ function TextInput(props: {
     onTextChangeHandler?: Dispatch<SetStateAction<string>>
 }) {
     const [value, setValue] = useState(props.inputValue);
-    
     return (
         <ResponsiveDiv style="" children={<>
             <label className={basicLabelStyle}>{props.inputName.toLocaleLowerCase()}</label>
             <input className={props.readonly == true ? props.style + " " + readOnlyTestFieldStyle : props.style + " " + basicTextFieldStyle} 
-                defaultValue={props.inputValue} id={props.inputName.toLocaleLowerCase()} name={props.inputName.toLocaleLowerCase()}
+                value={props.onTextChangeHandler != undefined && props.onTextChangeHandler != null ? props.inputValue : value} 
+                id={props.inputName.toLocaleLowerCase()} 
+                name={props.inputName.toLocaleLowerCase()}
                 type={props.inputType} onChange={(e) => {
                     if (props.onTextChangeHandler != undefined && props.onTextChangeHandler != null) {
                         props.onTextChangeHandler(e.target.value);
@@ -44,13 +50,15 @@ function TextAreaInput(props: {
     readonly?: boolean,
     onTextChangeHandler?: Dispatch<SetStateAction<string>>
 }) {
-    const [_, setState] = useState(props.inputValue);
+    const [value, setState] = useState(props.inputValue);
 
     return (
         <ResponsiveDiv style="" children={<>
             <label className={basicLabelStyle}>{props.inputName.toLocaleLowerCase()}</label>
             <textarea className={props.style + " h-50 " + basicTextFieldStyle} 
-                defaultValue={props.inputValue} id={props.inputName.toLocaleLowerCase()} name={props.inputName.toLocaleLowerCase()}
+                value={props.onTextChangeHandler != undefined && props.onTextChangeHandler != null ? props.inputValue : value} 
+                id={props.inputName.toLocaleLowerCase()} 
+                name={props.inputName.toLocaleLowerCase()}
                 onChange={(e) => {
                     if (props.onTextChangeHandler != undefined && props.onTextChangeHandler != null) {
                         props.onTextChangeHandler(e.target.value);
@@ -76,10 +84,19 @@ function OptionInput(props: {
     const id = crypto.randomUUID();
 
     const defaultHandler = (value: string) => {
-        return {     
+        return { 
+            onMouseEnter: () => {
+                setDropDown(true);
+            },
+            onMouseMove: () => {
+                setDropDown(true);
+             },
+            onMouseOut: () => {
+                setDropDown(false);
+            },
             onClick: () => {
                 setInputValueState(value);
-                setDropDown(!dropDown);
+                setDropDown(false);
                 if (props.inputChangeHandler != undefined) {
                     props.inputChangeHandler(value);
                 }
@@ -88,7 +105,7 @@ function OptionInput(props: {
     };
 
     return (        
-        <ResponsiveDiv style={"flex flex-col gap-5 "} children={<>
+        <ResponsiveDiv style={"flex flex-col"} eventHandlerMap={{onMouseOut: () => setDropDown(false)}} children={<>
             {!isStringEmpty(props.inputName) && <label className={basicLabelStyle}>{props.inputName.toLocaleLowerCase()}</label>}
             <input id={id} name={props.inputName} type="text" value={inputValueState} className={optionWidth + " h-10 text-center font-mono border-b-1 hover:bg-black hover:text-white focus:outline-none"} onClick={() => {
                 setDropDown(!dropDown);
@@ -98,6 +115,71 @@ function OptionInput(props: {
             </>} />
         </>} />     
     )
+}
+
+function ImageUrlInput(props: {
+    inputName: string, 
+    inputValue: string, 
+    style: string, 
+}) {
+    const [imageUrls, _] = useState<string[]>(props.inputValue.split(","));
+    const [urlStatuses, setUrlStatuses] = useState<boolean[]>(new Array(imageUrls.length).fill(true));
+    
+    const eventHandlerMap = (imageId: string, buttonId: string, statusIndex: number) => {
+        return {
+            onMouseOver: () => {
+                if (urlStatuses[statusIndex]) {
+                    document.getElementById(imageId)?.setAttribute("class", halfTransparentImageStyle);
+                    document.getElementById(buttonId)?.setAttribute("class", visibleDeleteButtonStyle);
+                } else {
+                    document.getElementById(imageId)?.setAttribute("class", visibleImageStyle);
+                    document.getElementById(buttonId)?.setAttribute("class", invisibleDeleteButtonStyle);
+                }
+            },
+            onMouseOut: () => {
+                if (urlStatuses[statusIndex]) {
+                    document.getElementById(imageId)?.setAttribute("class", visibleImageStyle);
+                    document.getElementById(buttonId)?.setAttribute("class", invisibleDeleteButtonStyle);
+                } else {
+                    document.getElementById(imageId)?.setAttribute("class", halfTransparentImageStyle);
+                    document.getElementById(buttonId)?.setAttribute("class", visibleDeleteButtonStyle);
+                }
+            },
+            onClick: () => {
+                if (urlStatuses[statusIndex]) {
+                    document.getElementById(imageId)?.setAttribute("class", halfTransparentImageStyle);
+                    document.getElementById(buttonId)?.setAttribute("class", visibleDeleteButtonStyle);
+                } else {
+                    document.getElementById(imageId)?.setAttribute("class", visibleImageStyle);
+                    document.getElementById(buttonId)?.setAttribute("class", invisibleDeleteButtonStyle);
+                }
+                document.getElementById(props.inputName.toLocaleLowerCase())?.setAttribute(
+                    "value", 
+                    imageUrls.filter((_, i) => (i == statusIndex && !urlStatuses[i]) || (i != statusIndex &&urlStatuses[i])).join(",")
+                );
+                setUrlStatuses((prevArray) => prevArray.map((value, i) => (i === statusIndex ? !value : value)));
+            }
+        }
+    }
+    
+    return <ResponsiveDiv style={"flex flex-col gap-5 "} children={<>
+                <label className={basicLabelStyle}>{props.inputName.toLocaleLowerCase()}</label> 
+                <input id={props.inputName.toLocaleLowerCase()} name={props.inputName.toLocaleLowerCase()} type="text" hidden />   
+                <ResponsiveDiv style="flex flex-row mt-3 mb-3 gap-2" children={<> 
+                    {
+                        imageUrls.map((imageUrl, index) => {   
+                            const imageId = crypto.randomUUID();
+                            const deleteButtonId = crypto.randomUUID();
+                            return <ResponsiveDiv key={index} style="relative h-32 w-32" eventHandlerMap={eventHandlerMap(imageId, deleteButtonId, index)} children={<>
+                                <ImageBrief id={imageId} src={new URL(imageUrl, backServerEndpoint).toString()} style={visibleImageStyle} />
+                                <button id={deleteButtonId} type="button" className={invisibleDeleteButtonStyle} >
+                                    <X lightingColor="green" />
+                                </button>
+                            </>}/>         
+                        })
+                    }
+                </>} />
+            </>} />
 }
 
 function ImageInput(props: {
@@ -157,11 +239,6 @@ function ImageInput(props: {
         setFiles(dataTransfer.files);
     }
 
-    const visibleImageStyle = "p-2 border-2 w-32 h-32 opacity-100";
-    const halfTransparentImageStyle = "p-2 border-2 w-32 h-32 opacity-50";
-    const invisibleDeleteButtonStyle = "opacity-0 h-8 w-8 absolute inset-12 flex items-center justify-center bg-red-500 text-white";
-    const visibleDeleteButtonStyle = "opacity-100 h-8 w-8 absolute inset-12 flex items-center justify-center bg-red-500 text-white";
-
     const eventHandlerMap = (imageId: string, buttonId: string) => {
         return {
             onMouseOver: () => {
@@ -176,9 +253,9 @@ function ImageInput(props: {
     };
 
     return (
-        <ResponsiveDiv style="" children={<>
+        <ResponsiveDiv style="flex flex-col gap-5" children={<>
             <label className={basicLabelStyle}>{props.inputName}</label>
-            <label className={props.style + " " + basicTextFieldStyle} htmlFor={props.inputName.toLocaleLowerCase()}>
+            <label className={props.style + " " + basicTextFieldStyle + " trainsition hover:scale-102 hover:bg-black hover:text-white"} htmlFor={props.inputName.toLocaleLowerCase()}>
                 Upload Product Pictures
             </label>
             <input id={props.inputName.toLocaleLowerCase()} name={props.inputName.toLocaleLowerCase()} 
@@ -192,7 +269,7 @@ function ImageInput(props: {
                     return (
                         <ResponsiveDiv id={id} key={index} style="relative h-32 w-32" eventHandlerMap={eventHandlerMap(imageId, deleteButtonId)} children={<>
                             <ImageBrief id={imageId} src={URL.createObjectURL(file)} style={visibleImageStyle} />
-                            <button id={deleteButtonId} className={invisibleDeleteButtonStyle} onClick={() => deleteFromFiles(file)}>
+                            <button id={deleteButtonId} type="button" className={invisibleDeleteButtonStyle} onClick={() => deleteFromFiles(file)}>
                                 <X />
                             </button>
                         </>}/>
@@ -218,7 +295,9 @@ function InputField(props: {
             return <TextAreaInput inputName={props.inputName} inputValue={props.inputValue as string} style={props.style} onTextChangeHandler={props.onTextChangeHandler} />
         case "option":
             return <OptionInput inputName={props.inputName} inputValue={props.inputValue as string} style={props.style} />
-        case "file":
+        case "imageUrl":
+            return <ImageUrlInput inputName={props.inputName} inputValue={props.inputValue as string} style={props.style} />
+        case "image":
             return <ImageInput inputName={props.inputName} inputValue={props.inputValue as [FileList | null, React.Dispatch<React.SetStateAction<FileList | null>>]} style={props.style} />
         default:
             return <></> 

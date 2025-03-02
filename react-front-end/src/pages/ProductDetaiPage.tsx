@@ -4,7 +4,7 @@ import { CartItem, Product } from "../type/EntityType";
 import ResponsiveDiv from "../components/div/ResponsiveDiv";
 import { ImageBrief, ImageExhibition } from "../components/Image";
 import { backServerEndpoint } from "../config/BackendServerConfig";
-import { BlackButton, WhiteButton } from "../components/Button";
+import { BlackButton, RedButton, WhiteButton } from "../components/Button";
 import { addOrUpdateCartItem } from "../functions/CartFunction";
 import { isUserCustomerOrGuest, isUserSignedIn } from "../functions/UserFunction";
 import { MonoStyleText } from "../components/Text";
@@ -14,6 +14,8 @@ import { getProductDetail } from "../functions/ProductFunction";
 import Pagination from "../components/Pagination";
 import { Star } from "lucide-react";
 import { isStringEmpty } from "../functions/Utils";
+import InputField from "../components/InputField";
+import ReviewBoxPage from "./ReviewBoxPage";
 
 function ProductDetailPage() {
     const navigate = useNavigate();
@@ -91,19 +93,7 @@ function ProductDetailPage() {
                 <MonoStyleText style="text-xl" content="This product has no review." />
             </>} />}
             {reviewResponse.reviews.length != 0 && reviewResponse.reviews.map((review, index) => {
-                return  <ResponsiveDiv key={index} style="flex flex-col w-full items-start justify-between p-5 my-5 border-1" children={<>
-                            <ResponsiveDiv style="flex flex-row w-full gap-5" children={<>
-                                <MonoStyleText style="w-1/5 text-xl font-bold" content={review.reviewerName} />
-                                <ResponsiveDiv style="flex flex-row w-full gap-2" children={<>
-                                    {Array.from({ length: review.rating }, (_, i) => i + 1).map((index) => {
-                                        return <Star key={index} fill="yellow" />
-                                    })}
-                                </>} />
-                                <MonoStyleText style="w-1/3 text-xl" content={review.createdAt.toLocaleUpperCase()} />
-                            </>} />
-                            <MonoStyleText style="py-5" content={review.content} />
-                            {localStorage.getItem("userid") == product.userId && <WhiteButton buttonName="REPLY" size="h-10" clickHandler={() => {}} />}
-                        </>} />
+                return  <ReviewBoxPage key={index} review={review} product={product} />
             })}
             {reviewResponse.reviews.length != 0 && <Pagination 
                 size={size}

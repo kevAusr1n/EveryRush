@@ -84,6 +84,13 @@ public class AuthService
 
     public async Task<SignUpResponse> SignUpAsync(SignUpRequest request) 
     {           
+        if (await _userManager.FindByEmailAsync(request.Email) != null) {
+            return new SignUpResponse {
+                Result = RequestResult.FAILURE,
+                Comment = "Email already exist"
+            };
+        }
+        
         var user = new AppUser {
             Email = request.Email,
             UserName = request.Email,
@@ -92,16 +99,7 @@ public class AuthService
         var role = new AppRole {
             Name = request.Role
         };
-        Console.WriteLine("***************" + request.Role);
-        if (_roleManager.GetRoleNameAsync(role).Result != request.Role) 
-        {
-            var roleStoreResult = await _roleManager.CreateAsync(role);
-            if (!roleStoreResult.Succeeded) {
-                return new SignUpResponse {
-                    Result = RequestResult.FAILURE
-                };
-            }
-        }Console.WriteLine("----------------" + request.Role);
+        
         var userStoreResult = IdentityResult.Success;
         if (ThirdPartySignInProviderConfig.FromThirdParty(request.Provider)) {
             userStoreResult = 

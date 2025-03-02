@@ -17,14 +17,17 @@ function ContactsPage() {
     const [page, setPage] = useState(1);
     const [refresh, setRefresh] = useState(false);
     const [response, setResponse] = useState<GetContactsResponse>({contacts: [], totalPages: 0, totalCount: 0});
-
-    useEffect(() => {
-        getPaginatedContacts({
+    
+    const getContacts = async () => {
+        setResponse(await getPaginatedContacts({
             page: page, 
             size: size, 
             userid: localStorage.getItem("userid") as string,
-            setResponse: setResponse
-        })
+        }));
+    }
+
+    useEffect(() => {
+        getContacts();
     }, [page, size, refresh])
 
     return (   

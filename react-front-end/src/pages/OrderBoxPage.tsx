@@ -146,7 +146,7 @@ function OrderBoxPage(props: {order: Order}) {
                 <WhiteButton buttonName="SUBMIT" size="w-60 h-10" clickHandler={() => {
                     submitReviewHandler()
                 }} />
-                <RedButton buttonName="DISCARD" size="w-60 h-10" clickHandler={() => { setCommentDivDropDown(false) }} />
+                <RedButton buttonName="CANCEL" size="w-60 h-10" clickHandler={() => { setCommentDivDropDown(false) }} />
             </>} />
         </>} />}
         {dropdown && <ResponsiveDiv style="w-full flex flex-col items-start" children={<>

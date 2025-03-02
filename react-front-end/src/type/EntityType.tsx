@@ -65,4 +65,25 @@ type ChatMessage = {
     createdAt: Date;
 }
 
-export type { Product, Contact, CartItem, Order, OrderProcess, ChatMessage }
+type UnreadSender = {
+    senderId: string;
+    senderName: string;
+    unreadCount: number;
+}
+
+type Review = {
+    id: string
+    productId: string;
+    orderId: string;
+    reviewerId: string;
+    reviewerName: string;
+    replyToId: string;
+    replierId: string;
+    replierName: string;
+    type: number;
+    rating: number;
+    content: string;
+    createdAt: string;
+}
+
+export type { Product, Contact, CartItem, Order, OrderProcess, ChatMessage, UnreadSender, Review }

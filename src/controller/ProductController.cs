@@ -134,18 +134,72 @@ public class ProductController : ControllerBase
         return await _productService.AddProduct(request);
     }
 
+    [HttpPost("updatexxxx")]
+    [Authorize(Roles = "BusinessOwner")]
+    public async Task<ActionResult<UpdateProductResponse>> UpdateProduct([FromForm] AddOrUpdateProductRequest request) 
+    {
+        var product = _appDbContext.Products.FirstOrDefault(p => p.Id == request.Id);
+        if (product == null) 
+        {
+            return new UpdateProductResponse {
+                Result = RequestResult.FAILURE
+            };
+        }
+        product.Name = request.Name;
+        product.Description = request.Description;
+        product.Price = request.Price;
+        product.Stock = request.Stock;
+        
+        if (product.Stock == 0 && product.Status == ProductStatus.IN_SALE) {
+            product.Status = ProductStatus.OUT_OF_STOCK;
+        }
+        if (product.Stock > 0 && product.Status == ProductStatus.OUT_OF_STOCK) {
+            product.Status = ProductStatus.IN_SALE;
+        }
+
+        List<AppFile> savedFiles = new List<AppFile>();
+        if (request.Files != null && request.Files.Count > 0) 
+        {
+            foreach (IFormFile file in request.Files) 
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    await file.CopyToAsync(memoryStream);                               
+                    var imageUrl = Path.Combine(StaticFileRootPath.GetImagePath(), 
+                    request.UserId + "-" + Guid.NewGuid().ToString() + "-" + DateTime.Now.ToString("yyyyMMddHHmmss") + "-image." + file.ContentType.Split("/")[1]);
+                    var storePath = Path.Combine(StaticFileRootPath.GetStaticFileRootPath(), imageUrl);
+                    AppFile newFile = new AppFile {
+                        Id = Guid.NewGuid().ToString(),
+                        Url = imageUrl,
+                        ProductId = request.Id,
+                        Format = file.ContentType,
+                    };
+                    savedFiles.Add(newFile);
+                    await file.CopyToAsync(new FileStream(storePath, FileMode.OpenOrCreate));
+                }
+            } 
+        }
+
+        if (!_appDbContext.PurchaseProducts.Where(p => p.ProductId == request.Id).Any()) 
+        {
+            string[] oldFiles = product.ImageUrl.Split(",").ToArray();
+            string[] newFiles = product.ImageUrl.Split(",").ToArray(); 
+        }
+
+        _appDbContext.Products.Update(product);
+        _appDbContext.AppFiles.AddRange(savedFiles);
+        await _appDbContext.SaveChangesAsync();
+
+        return new UpdateProductResponse {
+            Result = RequestResult.FAILURE
+        };
+    }
+
     [HttpPost("status-update/{id}")]
     [Authorize(Roles = "BusinessOwner")]
     public async Task<ActionResult<Boolean>> UpdateProductStatus([FromRoute] string id, [FromQuery] int newStatus)
     {
         return await _productService.UpdateProductStatus(id, newStatus);
-    }
-
-    [HttpPost("stock-update/{id}")]
-    [Authorize(Roles = "BusinessOwner")]
-    public async Task<ActionResult<UpdateProductStockResponse>> UpdateProductStock([FromRoute] string id, [FromQuery] int newStock)
-    {
-        return await _productService.UpdateProductStock(id, newStock);
     }
 
     [HttpDelete("delete/{id}")]

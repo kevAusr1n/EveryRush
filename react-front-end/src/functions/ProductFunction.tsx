@@ -72,6 +72,10 @@ async function addOrUpdateProducts(props: {
     formData.append("userId", localStorage.getItem("userid") as string);
     formData.append("id", props.id);
 
+    if (!isStringEmpty(formData.get("old images") as string)) {
+        formData.append("oldImageUrl", formData.get("old images") as string);
+    }
+
     if (props.files != null) {
         for (let i = 0; i < props.files.length; i++) {
             formData.append("files", props.files[i]); 

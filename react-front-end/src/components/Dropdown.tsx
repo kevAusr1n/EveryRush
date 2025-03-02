@@ -10,10 +10,10 @@ function ContactBoxDropDown(props: {
 }) {
     return (
         props.dropDown && <ResponsiveDiv style="absolute bg-white border" children={<>
-            {props.items.map((contact: Contact) => {
+            {props.items.map((contact: Contact, index: number) => {
                 const id = crypto.randomUUID();
                 const originStyle = "flex flex-col w-100 bg-white border p-5";
-                return <ContactBoxPage id={id} style={originStyle} contact={contact} eventHandlerMap={props.eventHandlerMap(id, originStyle, contact)} />
+                return <ContactBoxPage id={id} key={index} style={originStyle} contact={contact} eventHandlerMap={props.eventHandlerMap(id, originStyle, contact)} />
             })}
         </>}/>      
     )

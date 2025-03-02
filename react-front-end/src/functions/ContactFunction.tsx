@@ -1,4 +1,4 @@
-import { Dispatch, FormEvent, SetStateAction } from "react"
+import { FormEvent } from "react"
 import { GetContactsResponse } from "../type/ResponseType";
 import APICall from "../config/ApiConfig";
 
@@ -6,13 +6,15 @@ async function getPaginatedContacts (props: {
     page: number,
     size: number,
     userid: string
-    setResponse: Dispatch<SetStateAction<GetContactsResponse>>
-}) {
+}) : Promise<GetContactsResponse> {
+    var getContactsResponse = {} as GetContactsResponse;
     await APICall().get(`/api/contacts?userid=${props.userid}&page=${props.page}&size=${props.size}`)
     .then((response) => {
-        props.setResponse(response.data);
+        getContactsResponse = response.data;
     })
     .catch((error) => {console.log(error);})
+
+    return getContactsResponse;
 }
 
 async function addOrUpdateContacts (props: {

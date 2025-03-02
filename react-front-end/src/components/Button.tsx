@@ -25,10 +25,11 @@ function BlackButton(props: {
     id?: string,
     buttonName: string,
     size: string,
+    scalable?: boolean,
     clickHandler: () => void
 }) {
     return (
-        <button id={props.id != undefined ? props.id: crypto.randomUUID()} type="button" className={`font-mono bg-black text-white px-3 py-2 ${props.size} transition hover:scale-110`} onClick={props.clickHandler}>
+        <button id={props.id != undefined ? props.id: crypto.randomUUID()} type="button" className={`font-mono bg-black text-white px-3 py-2 ${props.size} ` + (props.scalable == false ? "" : "transition hover:scale-110")} onClick={props.clickHandler}>
             {props.buttonName}
         </button>
     )
@@ -38,10 +39,11 @@ function WhiteButton(props: {
     id?: string,
     buttonName: string,
     size: string,
+    scalable?: boolean,
     clickHandler: () => void
 }) {
     return (
-        <button id={props.id != undefined ? props.id: crypto.randomUUID()} type="button" className={`font-mono bg-white text-black px-3 py-2 border-1 ${props.size} transition hover:scale-110`} onClick={props.clickHandler}>
+        <button id={props.id != undefined ? props.id: crypto.randomUUID()} type="button" className={`font-mono bg-white text-black px-3 py-2 border-1 ${props.size} ` + (props.scalable == false ? "" : "transition hover:scale-110")} onClick={props.clickHandler}>
             {props.buttonName}
         </button>
     )
@@ -51,10 +53,11 @@ function RedButton(props: {
     id?: string,
     buttonName: string,
     size: string,
+    scalable?: boolean,
     clickHandler: () => void
 }) {
     return (
-        <button id={props.id != undefined ? props.id: crypto.randomUUID()} type="button" className={`font-mono bg-white border-red-500 border-1 text-red-500 px-3 py-2 ${props.size} transition hover:scale-110`} onClick={props.clickHandler}>
+        <button id={props.id != undefined ? props.id: crypto.randomUUID()} type="button" className={`font-mono bg-white border-red-500 border-1 text-red-500 px-3 py-2 ${props.size} ` + (props.scalable == false ? "" : "transition hover:scale-110")} onClick={props.clickHandler}>
             {props.buttonName}
         </button>
     )

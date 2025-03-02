@@ -1,19 +1,11 @@
-//import { ReactNode, useEffect, useRef, useState } from "react";
-//import { isUserLoggedIn } from "../functions/UserUtils";
-//import { useNavigate } from "react-router";
-//import axios from "axios";
-
 import { useEffect, useState } from "react";
-import { BorderlessButton, WhiteButton } from "../components/Button";
+import { WhiteButton } from "../components/Button";
 import ResponsiveDiv from "../components/div/ResponsiveDiv";
-import OrderBoxPage from "./OrderBoxPage";
-import SearchBar from "../components/SearchBar";
 import Pagination from "../components/Pagination";
-import { GetOrdersResponse, GetUnreadMessagesStatisticsResponse } from "../type/ResponseType";
+import { GetUnreadMessagesStatisticsResponse } from "../type/ResponseType";
 import { isUserSignedIn } from "../functions/UserFunction";
 import SignInRequiredPage from "./SignInRequiredPage";
 import { MonoStyleText } from "../components/Text";
-import { getPaginatedOrders } from "../functions/OrderFunction";
 import { getUnreadMessageStatistics } from "../functions/ChatFunction";
 import { useNavigate } from "react-router";
 

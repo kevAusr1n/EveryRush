@@ -14,7 +14,7 @@ function SignUpPage() {
                 <SubmitForm
                     inputNames={["email", "username", "password", "password confirm", "role"]}
                     inputTypes={["text", "text", "password", "password", "option"]}
-                    inputValues={["", "", "", "", "Customer,BusinessOwner"]}
+                    inputValues={[email, "", "", "", "Customer,BusinessOwner"]}
                     inputStyles={["w-100", "w-100", "w-100", "w-100", "w-100"]}
                     stateSetters={[setEmail, null, null, null, null]}
                     actionName="REGISTER"

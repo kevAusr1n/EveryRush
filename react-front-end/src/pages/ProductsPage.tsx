@@ -81,13 +81,6 @@ function ProductsPage() {
                 {response.products.length != 0 && <ResponsiveDiv style="mb-5" children={<>
                     <BlackButton key={crypto.randomUUID()} buttonName="ADD PRODUCT" size="w-40 h-10" clickHandler={() => navigate("/products/add")} />
                 </>} />}
-                {response.products.length != 0 && <ResponsiveDiv style="px-2 w-full flex flex-row items-center border-b-1" children={<>
-                    <MonoStyleText style="w-3/13 font-bold" key={0} content="Product ID" />
-                    <MonoStyleText style="w-3/13 font-bold" key={1} content="Name" />
-                    <MonoStyleText style="w-1/13 font-bold" key={2} content="Price" />
-                    <MonoStyleText style="w-2/13 font-bold" key={3} content="Stock" />
-                    <MonoStyleText style="w-1/13 font-bold" key={4} content="Status" />
-                </>} />}
                 {response.products.length != 0 && response.products.map((product: Product) => {
                     return (                   
                         <ProductUpdatePage key={product.id} product={product} refresh={refresh} setRefresh={setRefresh} />         

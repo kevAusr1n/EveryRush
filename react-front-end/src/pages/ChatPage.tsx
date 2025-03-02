@@ -43,6 +43,7 @@ function ChatPage () {
         if (conn.state == signalR.HubConnectionState.Disconnected) {
             await conn.start();
         }
+        await conn.invoke("MarkMessageOfGivenSenderAsRead", localStorage.getItem("userid") as string, toUserId);
     }
     
     const endChatConnection = async () => {
@@ -67,10 +68,10 @@ function ChatPage () {
     }
   
     return <ResponsiveDiv style="flex flex-col mt-20 mx-50" children={<>
-        <MonoStyleText style="text-2xl bg-black p-2 text-center text-white" content={"CHAT WITH: " + `[${toUserName}]`} />
+        <MonoStyleText style="text-2xl bg-black p-2 text-center text-white" content={"Chat with: " + toUserName} />
         <ResponsiveDiv style="flex flex-col border-1 w-full mb-5" children={<>
             <ResponsiveDiv style="flex flex-row justify-center" children={<>
-                <BorderlessButton buttonName="load previous messages" style="transition hover:scale-110 hover:underline" clickHandler={() => {}} />
+                <BorderlessButton buttonName="load previous messages" style="transition hover:scale-110 hover:underline hover:text-blue-500" clickHandler={() => {}} />
             </>} />
             <ResponsiveDiv id={chatDivId} style="flex flex-col justify-end w-full h-200 gap-5 overflow-auto" children={<>
                 {chatMessageList.map((msg, index) => {

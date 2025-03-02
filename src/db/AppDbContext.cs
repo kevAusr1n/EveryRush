@@ -27,4 +27,6 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, string>
     public DbSet<UserChatConnection> UserChatConnections {get;set;}
 
     public DbSet<ChatMessage> ChatMessages {get;set;}
+
+    public DbSet<VerificationCode> VerificationCodes {get;set;}
 }

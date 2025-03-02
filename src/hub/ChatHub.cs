@@ -42,6 +42,14 @@ public class ChatHub : Hub
         await _appDbContext.SaveChangesAsync();
     }
 
+    public async Task MarkMessageOfGivenSenderAsRead(string receiverid, string senderId) {
+        var messages = _appDbContext.ChatMessages.Where(m => m.ToUserId == receiverid && m.FromUserId == senderId && m.Status == ChatMessageConfig.Status.UNREAD);
+        foreach (var message in messages) {
+            message.Status = ChatMessageConfig.Status.READ;
+        }
+        await _appDbContext.SaveChangesAsync();
+    }
+
     public override Task OnDisconnectedAsync(Exception? exception)
     {
         return base.OnDisconnectedAsync(exception);

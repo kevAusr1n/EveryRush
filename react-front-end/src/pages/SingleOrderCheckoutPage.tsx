@@ -1,4 +1,4 @@
-import { createElement, ReactNode, useEffect, useState } from "react"
+import { createElement, Dispatch, ReactNode, RefObject, SetStateAction, useEffect, useState } from "react"
 import { WhiteButton } from "../components/Button";
 import DropDown from "../components/Dropdown";
 import InputField from "../components/InputField";
@@ -15,31 +15,50 @@ import { MonoStyleText } from "../components/Text";
 
 function SingleOrderCheckoutPage(props: {
     cart: CartItem[],
-    order: Order,
+    postageInfoRef: string[],
     separate: boolean
 }) {
     const [dropdown, setDropdown] = useState(false);
-    const [refreshPage, setRefreshPage] = useState(false);
     const [contactResponse, setContactResponse] = useState<GetContactsResponse>({contacts: [], totalPages: 0, totalCount: 0});
     let totalPrice = 0;
 
+    const getContact = async() => {
+        setContactResponse(await getPaginatedContacts({
+            page: 1, 
+            size: 100, 
+            userid: localStorage.getItem("userid") as string,
+        }));
+    }
+
     useEffect(() => {
         if (isUserSignedIn()) {
-            getPaginatedContacts({
-                page: 1, 
-                size: 10, 
-                userid: localStorage.getItem("userid") as string,
-                setResponse: setContactResponse
-            })
+            getContact();
         }
     }, [])
 
     const contactInputFieldNames=["FirstName", "LastName", "Email", "Phone", "Address", "City", "State", "Postcode"]
     const contactInputFieldTypes=new Array(contactInputFieldNames.length).fill("text");
-    //const postContactInputFieldValues=useRef(new Array(contactInputFieldNames.length).fill(""));
-    //const billContactInputFieldValues=useRef(new Array(contactInputFieldNames.length).fill(""));
-    const postInformation = [useState(""), useState(""), useState(""), useState(""), useState(""), useState(""), useState(""), useState("")];
-    const billInformation = [useState(""), useState(""), useState(""), useState(""), useState(""), useState(""), useState(""), useState("")];
+    const contactInputFieldValueStates=[
+        useState(""), useState(""), useState(""), useState(""), useState(""), useState(""), useState(""), useState("")
+    ];
+
+    const updatePostageInfoRef = () => {
+        props.postageInfoRef.splice(0, 4,
+            [contactInputFieldValueStates[0][0], contactInputFieldValueStates[1][0]].join(" "),
+            contactInputFieldValueStates[2][0],
+            contactInputFieldValueStates[3][0],
+            [
+                contactInputFieldValueStates[4][0], 
+                contactInputFieldValueStates[5][0], 
+                contactInputFieldValueStates[6][0], 
+                contactInputFieldValueStates[7][0]
+            ].join(",")
+        );
+    }
+
+    useEffect(() => {
+        updatePostageInfoRef();
+    }, [contactInputFieldValueStates]);
 
     const tableHead: string[] = ["", "Product", "Seller", "Price", "Quantity"];
     let tableContent: ReactNode[][] = [];
@@ -57,35 +76,27 @@ function SingleOrderCheckoutPage(props: {
     const useContactButtonHandler = ( id: string, originStyle: string, contact: Contact) => {
         return {     
             onMouseOver: () => {
+                setDropdown(true);
                 document.getElementById(id)?.setAttribute("class", originStyle + " hover:bg-black hover:text-white");
             },
             onMouseOut: () => {
+                setDropdown(false);
                 document.getElementById(id)?.setAttribute("class", originStyle);
             },
             onClick: () => {
-                props.order.address = [contact.address, contact.city, contact.state, contact.postcode].join(", ");
-                props.order.fullName = [contact.firstName, contact.lastName].join(" ");
-                props.order.email = contact.email;
-                props.order.phone = contact.phone;
-                postInformation[0][1](contact.firstName);
-                postInformation[1][1](contact.lastName);
-                postInformation[2][1](contact.email);
-                postInformation[3][1](contact.phone);
-                postInformation[4][1](contact.address);
-                postInformation[5][1](contact.city);
-                postInformation[6][1](contact.state);
-                postInformation[7][1](contact.postcode);
+                contactInputFieldValueStates[0][1](contact.firstName);
+                contactInputFieldValueStates[1][1](contact.lastName);
+                contactInputFieldValueStates[2][1](contact.email);
+                contactInputFieldValueStates[3][1](contact.phone);
+                contactInputFieldValueStates[4][1](contact.address);
+                contactInputFieldValueStates[5][1](contact.city);
+                contactInputFieldValueStates[6][1](contact.state);
+                contactInputFieldValueStates[7][1](contact.postcode);
+                updatePostageInfoRef();
                 setDropdown(!dropdown);
             }
         }
     };
-
-    const copyBillInfoFromPostInfo = () => {
-        for (let i = 0; i < contactInputFieldNames.length; i++) {
-            billInformation[i][1](postInformation[i][0]);
-        };
-        setRefreshPage(!refreshPage);
-    }
     
     return (
         <ResponsiveDiv style="flex flex-col items-center" children={<>
@@ -97,25 +108,23 @@ function SingleOrderCheckoutPage(props: {
                 {props.separate && <ResponsiveDiv style="flex flex-col mt-10" children={<>
                     <ResponsiveDiv style="flex flex-row gap-5" children={<>
                         <MonoStyleText style="text-2xl" content="Post Information" />
-                        <WhiteButton buttonName="USE CONTACT" size="w-60 h-10" clickHandler={() => setDropdown(!dropdown)}/>
-                        contactResponse.contacts.length == 0 && dropdown && <ResponsiveDiv style="absolute bg-white border" children={<>
-                            <MonoStyleText style="p-20 text-2xl" content="No Contact Found" />
-                        </>} />
-                        <ResponsiveDiv style="" children={<>
-                            <DropDown dropDown={dropdown} items={contactResponse.contacts} eventHandlerMap={useContactButtonHandler} />
+                        <ResponsiveDiv style="flex flex-col" eventHandlerMap={{
+                            onMouseOut: () => {
+                                setDropdown(false);
+                            },
+                        }}children={<>
+                            <WhiteButton buttonName="USE CONTACT" size="w-60 h-10" scalable={false} clickHandler={() => setDropdown(!dropdown)}/>
+                            {contactResponse.contacts.length == 0 && dropdown && <ResponsiveDiv style="bg-white border" children={<>
+                                <MonoStyleText style="p-20 text-2xl" content="No Contact Found" />
+                            </>} />}
+                            <ResponsiveDiv style="" children={<>
+                                <DropDown dropDown={dropdown} items={contactResponse.contacts} eventHandlerMap={useContactButtonHandler} />
+                            </>} />
                         </>} />
                     </>} />
                     {contactInputFieldNames.map((name : string , index : number) => {
-                        return <InputField key={index} inputName={name} inputType={contactInputFieldTypes[index]} inputValue={postInformation[index][0]} style="w-200" onTextChangeHandler={postInformation[index][1]} />
-                    })}
-                </>} />}
-                {props.separate && <ResponsiveDiv style="flex flex-col mt-10" children={<>
-                    <ResponsiveDiv style="flex flex-row gap-5" children={<>
-                        <MonoStyleText style="text-2xl" content="Billing Information" />
-                        <WhiteButton buttonName="USE POST ADDRESS" size="w-60 h-10" clickHandler={() => copyBillInfoFromPostInfo()}/>
-                    </>} />
-                    {contactInputFieldNames.map((name : string , index : number) => {
-                        return <InputField key={index} inputName={name} inputType={contactInputFieldTypes[index]} inputValue={billInformation[index][0]} style="w-200" onTextChangeHandler={billInformation[index][1]} />
+                        return <InputField key={index} inputName={name} inputType={contactInputFieldTypes[index]} 
+                        inputValue={contactInputFieldValueStates[index][0]} style="w-200" onTextChangeHandler={contactInputFieldValueStates[index][1]} />
                     })}
                 </>} />}
             </>} />
