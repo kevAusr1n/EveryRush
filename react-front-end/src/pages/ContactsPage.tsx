@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { isUserSignedIn } from "../functions/UserFunction";
 import SignInRequiredPage from "./SignInRequiredPage";
 import { getPaginatedContacts } from "../functions/ContactFunction";
-import { Contact } from "../type/EntityType";
+import { Contact } from "../type/ObjectType";
 import { GetContactsResponse } from "../type/ResponseType";
 import ContactDetailPage from "./ContactDetailPage";
 import Pagination from "../components/Pagination";

@@ -1,1 +1,1 @@
-public class WriteReviewResponse : BasicRequestResponse {}
+public class WriteReviewResponse : ApiResponse {}

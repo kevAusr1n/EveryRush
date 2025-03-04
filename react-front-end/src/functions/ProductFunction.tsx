@@ -1,7 +1,8 @@
 import { Dispatch, FormEvent, SetStateAction } from "react";
 import { isStringEmpty } from "./Utils";
 import APICall from "../config/ApiConfig";
-import { Product } from "../type/EntityType";
+import { Product } from "../type/ObjectType";
+import { apiExceptionFailureDescription, ApiResponse } from "../type/ResponseType";
 
 function getPaginatedProducts(props: {
   page: number,
@@ -62,20 +63,19 @@ function getPaginatedProducts(props: {
 async function addOrUpdateProducts(props: {
     action: string,
     id: string,
+    name: string,
     files: FileList | null,
-    formSubmitEvent: FormEvent<HTMLFormElement>
-}) : Promise<boolean> {
-    props.formSubmitEvent.preventDefault();
-    let formData = new FormData(props.formSubmitEvent.currentTarget);
-    let isSucceed : boolean = false;
-
+    description: string,
+    price: string,
+    stock: string,
+    toKeepImageUrl: string
+}) : Promise<ApiResponse> {
+    var formData = new FormData();
+    var apiResponse: ApiResponse = {result: "failure", failureDescription: ""} as ApiResponse;
     formData.append("userId", localStorage.getItem("userid") as string);
-    formData.append("id", props.id);
-
-    if (!isStringEmpty(formData.get("old images") as string)) {
-        formData.append("oldImageUrl", formData.get("old images") as string);
-    }
-
+    formData.append("id", props.id)
+    formData.append("toKeepImageUrl", props.toKeepImageUrl);
+   
     if (props.files != null) {
         for (let i = 0; i < props.files.length; i++) {
             formData.append("files", props.files[i]); 
@@ -87,10 +87,18 @@ async function addOrUpdateProducts(props: {
             "Content-Type": "multipart/form-data"
         }
     })
-    .then((_) => isSucceed = true)
-    .catch((err) => console.log(err));
+    .then((res) => {
+        if (res.data.result == "success") {
+            apiResponse.result = res.data.result;
+        } else {
+            apiResponse.failureDescription = res.data.failureDescription;
+        }
+    })
+    .catch((err) => {
+        apiResponse.failureDescription = apiExceptionFailureDescription;
+    });
 
-    return isSucceed;
+    return apiResponse;
 }
 
 async function getProductDetail(props: {id: string}) : Promise<Product> {
@@ -113,8 +121,4 @@ async function updateProductStatus (props: {id: string, status: number}) {
     await APICall().post(`/api/products/status-update/${props.id}?newstatus=${props.status}`)
 }
 
-async function updateProductStock (props: {id: string, stock: number}) {
-    await APICall().post(`/api/products/stock-update/${props.id}?newstock=${props.stock}`)
-}
-
-export { getPaginatedProducts, addOrUpdateProducts, getProductDetail, deleteProducts, updateProductStatus, updateProductStock };
+export { getPaginatedProducts, addOrUpdateProducts, getProductDetail, deleteProducts, updateProductStatus };

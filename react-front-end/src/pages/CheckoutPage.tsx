@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 import { BlackButton, WhiteButton } from "../components/Button";
-import { CartItem, Order } from "../type/EntityType";
+import { CartItem, Order } from "../type/ObjectType";
 import ResponsiveDiv from "../components/div/ResponsiveDiv";
 import { getCartItem } from "../functions/CartFunction";
 import { isUserSignedIn } from "../functions/UserFunction";

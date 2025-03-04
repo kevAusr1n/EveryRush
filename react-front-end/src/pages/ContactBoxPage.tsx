@@ -1,6 +1,6 @@
 import ResponsiveDiv from "../components/div/ResponsiveDiv";
 import { MonoStyleText } from "../components/Text";
-import { Contact } from "../type/EntityType";
+import { Contact } from "../type/ObjectType";
 
 function ContactBoxPage (props: { 
     id: string,

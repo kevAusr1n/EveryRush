@@ -43,16 +43,16 @@ function PasswordResetPage() {
     return (
         <ResponsiveDiv style="flex flex-col mt-40 items-center" children={<>
             <ResponsiveDiv style="flex flex-col gap-5" children={<>
-                <InputField inputName="Please enter your email for reset" inputType="text" inputValue={email} style="w-200" onTextChangeHandler={setEmail}/>
+                <InputField name="Please enter your email for reset" type="text" value={email} style="w-200" valueChangeHandler={(e) => setEmail(e.target.value)}/>
                 <BlackButton buttonName="SEND" size="w-40 h-10" clickHandler={() => {
                     sendPasswordResetEmailHandler();
                 }} />
                 <MonoStyleText style="text-red-500" content={sendEmailResultMsg.current} />
             </>} />
             {dropDown && <ResponsiveDiv style="flex flex-col mt-5 gap-5" children={<>
-                <InputField inputName="Reset Code" inputType="text" inputValue={code} style="w-200" onTextChangeHandler={setCode}/>
-                <InputField inputName="New Password" inputType="password" inputValue={newPassword} style="w-200" onTextChangeHandler={setNewPassword}/>
-                <InputField inputName="Confirm New Password" inputType="password" inputValue={confirmedNewPassword} style="w-200" onTextChangeHandler={setConfirmedNewPassword}/>
+                <InputField name="Reset Code" type="text" value={code} style="w-200" valueChangeHandler={(e) => setCode(e.target.value)}/>
+                <InputField name="New Password" type="password" value={newPassword} style="w-200" valueChangeHandler={(e) => setNewPassword(e.target.value)}/>
+                <InputField name="Confirm New Password" type="password" value={confirmedNewPassword} style="w-200" valueChangeHandler={(e) => setConfirmedNewPassword(e.target.value)}/>
                 <ResponsiveDiv style="flex flex-row gap-5" children={<>
                     <BlackButton buttonName="RESET" size="w-40 h-10" clickHandler={() => resetPasswordHandler()}/>
                     <BlackButton buttonName="BACK" size="w-40 h-10" clickHandler={() => {

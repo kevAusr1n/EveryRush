@@ -9,6 +9,14 @@
       "PackagePath": "staticwebassets/images/0063a0e8-e2ae-40c1-b925-75cfe9a29bdc-d8121eba-bd98-448c-b5db-7124d071941b-20250225224921-image.jpeg"
     },
     {
+      "Id": "/Users/kevin/git-app/EveryRush/wwwroot/images/033e7e48-dcc4-42ee-8a22-8cb7cef240c9-20250303201256-image.png",
+      "PackagePath": "staticwebassets/images/033e7e48-dcc4-42ee-8a22-8cb7cef240c9-20250303201256-image.png"
+    },
+    {
+      "Id": "/Users/kevin/git-app/EveryRush/wwwroot/images/180b751b-3bff-41c1-82e6-a7731fc9347e-20250303201237-image.jpeg",
+      "PackagePath": "staticwebassets/images/180b751b-3bff-41c1-82e6-a7731fc9347e-20250303201237-image.jpeg"
+    },
+    {
       "Id": "/Users/kevin/git-app/EveryRush/wwwroot/images/192c031c-97e8-4fa1-83bf-994eecb1f259-20250217224657-image.png",
       "PackagePath": "staticwebassets/images/192c031c-97e8-4fa1-83bf-994eecb1f259-20250217224657-image.png"
     },
@@ -23,6 +31,42 @@
     {
       "Id": "/Users/kevin/git-app/EveryRush/wwwroot/images/192c031c-97e8-4fa1-83bf-994eecb1f259-20250218172526-image.jpeg",
       "PackagePath": "staticwebassets/images/192c031c-97e8-4fa1-83bf-994eecb1f259-20250218172526-image.jpeg"
+    },
+    {
+      "Id": "/Users/kevin/git-app/EveryRush/wwwroot/images/1e8f481c-a597-48df-b95b-ed8d3aea0279-20250303191656-image.png",
+      "PackagePath": "staticwebassets/images/1e8f481c-a597-48df-b95b-ed8d3aea0279-20250303191656-image.png"
+    },
+    {
+      "Id": "/Users/kevin/git-app/EveryRush/wwwroot/images/31d14ada-9ea7-4ee0-81b4-c3ba6f8018b4-20250303201222-image.jpeg",
+      "PackagePath": "staticwebassets/images/31d14ada-9ea7-4ee0-81b4-c3ba6f8018b4-20250303201222-image.jpeg"
+    },
+    {
+      "Id": "/Users/kevin/git-app/EveryRush/wwwroot/images/32da81d3-2b19-4c61-851c-2536a02b9887-20250303191401-image.png",
+      "PackagePath": "staticwebassets/images/32da81d3-2b19-4c61-851c-2536a02b9887-20250303191401-image.png"
+    },
+    {
+      "Id": "/Users/kevin/git-app/EveryRush/wwwroot/images/4d7d96d2-1faf-4ecf-8835-551886d9ca36-20250303191825-image.jpeg",
+      "PackagePath": "staticwebassets/images/4d7d96d2-1faf-4ecf-8835-551886d9ca36-20250303191825-image.jpeg"
+    },
+    {
+      "Id": "/Users/kevin/git-app/EveryRush/wwwroot/images/50a01dd7-b0a0-4a93-94bb-2425fdf4ee68-20250303201202-image.png",
+      "PackagePath": "staticwebassets/images/50a01dd7-b0a0-4a93-94bb-2425fdf4ee68-20250303201202-image.png"
+    },
+    {
+      "Id": "/Users/kevin/git-app/EveryRush/wwwroot/images/800314cf-85d8-4876-9baa-8cc4995b302c-20250303193312-image.png",
+      "PackagePath": "staticwebassets/images/800314cf-85d8-4876-9baa-8cc4995b302c-20250303193312-image.png"
+    },
+    {
+      "Id": "/Users/kevin/git-app/EveryRush/wwwroot/images/9e77afeb-dfa9-4dc0-a62f-55cadd09193c-20250303191459-image.jpeg",
+      "PackagePath": "staticwebassets/images/9e77afeb-dfa9-4dc0-a62f-55cadd09193c-20250303191459-image.jpeg"
+    },
+    {
+      "Id": "/Users/kevin/git-app/EveryRush/wwwroot/images/a591766a-ec75-4759-85b3-18713ac3ac1f-20250303193956-image.png",
+      "PackagePath": "staticwebassets/images/a591766a-ec75-4759-85b3-18713ac3ac1f-20250303193956-image.png"
+    },
+    {
+      "Id": "/Users/kevin/git-app/EveryRush/wwwroot/images/a7a244d5-94af-4bfc-9a87-6eec4640717d-20250303195339-image.png",
+      "PackagePath": "staticwebassets/images/a7a244d5-94af-4bfc-9a87-6eec4640717d-20250303195339-image.png"
     },
     {
       "Id": "/Users/kevin/git-app/EveryRush/wwwroot/images/a87b079a-0a3b-4ce7-ba51-d3ae0179e33c-0e55f744-d82d-4301-a092-dbd2af70de10-20250226221551-image.png",
@@ -71,6 +115,18 @@
     {
       "Id": "/Users/kevin/git-app/EveryRush/wwwroot/images/c03c5c5d-f8c2-480c-b12e-9fb58b00bc0f-bb10c217-64b9-4962-ab68-447c00a6b464-20250224212309-image.jpeg",
       "PackagePath": "staticwebassets/images/c03c5c5d-f8c2-480c-b12e-9fb58b00bc0f-bb10c217-64b9-4962-ab68-447c00a6b464-20250224212309-image.jpeg"
+    },
+    {
+      "Id": "/Users/kevin/git-app/EveryRush/wwwroot/images/e970f738-a984-4427-8c13-953e282b0047-20250303195356-image.jpeg",
+      "PackagePath": "staticwebassets/images/e970f738-a984-4427-8c13-953e282b0047-20250303195356-image.jpeg"
+    },
+    {
+      "Id": "/Users/kevin/git-app/EveryRush/wwwroot/images/fb49c5b7-7155-4f4e-81de-737702fc397e-20250303194612-image.jpeg",
+      "PackagePath": "staticwebassets/images/fb49c5b7-7155-4f4e-81de-737702fc397e-20250303194612-image.jpeg"
+    },
+    {
+      "Id": "/Users/kevin/git-app/EveryRush/wwwroot/images/ffe1d2db-9abe-41b7-aa6c-8fdb2f971e61-20250303193811-image.png",
+      "PackagePath": "staticwebassets/images/ffe1d2db-9abe-41b7-aa6c-8fdb2f971e61-20250303193811-image.png"
     },
     {
       "Id": "obj/Debug/net9.0/staticwebassets/msbuild.EveryRush.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",

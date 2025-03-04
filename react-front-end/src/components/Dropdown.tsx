@@ -1,5 +1,5 @@
 import ContactBoxPage from "../pages/ContactBoxPage";
-import { Contact, Product } from "../type/EntityType";
+import { Contact, Product } from "../type/ObjectType";
 import ResponsiveDiv from "./div/ResponsiveDiv";
 import { MonoStyleText } from "./Text";
 

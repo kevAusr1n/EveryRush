@@ -4,7 +4,7 @@ import ResponsiveDiv from "../components/div/ResponsiveDiv";
 import { ImageBrief } from "../components/Image";
 import { backServerEndpoint } from "../config/BackendServerConfig";
 import { addOrUpdateCartItem } from "../functions/CartFunction";
-import { CartItem, Product } from "../type/EntityType";
+import { CartItem, Product } from "../type/ObjectType";
 import { ReactNode } from "react";
 import { isStringEmpty } from "../functions/Utils";
 import { isUserSignedIn } from "../functions/UserFunction";

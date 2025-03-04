@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Linq;
 
@@ -20,21 +21,17 @@ namespace EveryRush.Controller;
 [ApiController]
 public class AuthController : ControllerBase 
 {
-    private readonly AuthService _authService;
-
     private readonly UserManager<AppUser> _userManager;
     private readonly RoleManager<AppRole> _roleManager;
     private readonly SignInManager<AppUser> _signInManager;
     private readonly EmailSender _emailSender;
 
     public AuthController(
-        AuthService authService,
         UserManager<AppUser> userManager,
         RoleManager<AppRole> roleManager, 
         SignInManager<AppUser> signInManager,
         EmailSender emailSender) 
     {
-        _authService = authService;
         _userManager = userManager;
         _roleManager = roleManager;
         _signInManager = signInManager;
@@ -47,10 +44,11 @@ public class AuthController : ControllerBase
         [FromQuery][NotNull] string token,
         [FromQuery][NotNull] string provider) 
     {
-        if (!ThirdPartySignInProviderConfig.FromThirdParty(provider)) 
+        if (!ThirdPartyAuthDefinition.FromGoogle(provider)) 
         {
             return new ThirdPartySignInCheckResponse {
-                Result = RequestResult.FAILURE
+                Result = ApiResponseDefinition.Result.FAILURE,
+                FailureDescription = ApiResponseDefinition.Failure.UserRelatedFailure.INVALID_AUTH_PROVIDER
             };
         }
         
@@ -61,25 +59,28 @@ public class AuthController : ControllerBase
             if (!response.IsSuccessStatusCode)
             {
                 return new ThirdPartySignInCheckResponse {
-                    Result = RequestResult.FAILURE
+                    Result = ApiResponseDefinition.Result.FAILURE,
+                    FailureDescription = ApiResponseDefinition.Failure.UserRelatedFailure.INVALID_AUTH_TOKEN
                 };
             }
             var jsonResponse = JObject.Parse(await response.Content.ReadAsStringAsync());
             if (jsonResponse.GetValue("email") == null || !email.Equals(jsonResponse.GetValue("email").ToString())) 
             {
                 return new ThirdPartySignInCheckResponse {
-                    Result = RequestResult.FAILURE
+                    Result = ApiResponseDefinition.Result.FAILURE,
+                    FailureDescription = ApiResponseDefinition.Failure.UserRelatedFailure.INVALID_AUTH_TOKEN
                 };
             } 
             AppUser user = await _userManager.FindByEmailAsync(email);
             if (user == null) {
                 return new ThirdPartySignInCheckResponse {
-                    Result = RequestResult.FAILURE
+                    Result = ApiResponseDefinition.Result.FAILURE,
+                    FailureDescription = ApiResponseDefinition.Failure.UserRelatedFailure.THIRD_PARTY_USER_FIRSTTIME_SIGNIN
                 };
             }
             var role = await _userManager.GetRolesAsync(user);        
             return new ThirdPartySignInCheckResponse {
-                Result = RequestResult.SUCCESS,
+                Result = ApiResponseDefinition.Result.SUCCESS,
                 Id = user.Id,
                 UserName = user.AlternativeName,
                 Email = user.Email,
@@ -87,48 +88,225 @@ public class AuthController : ControllerBase
                 Provider = provider
             };      
         }
-
     }
 
     [HttpPost("signin")]
-    public async Task<ActionResult<GetUserResponse>> SignInAsync([FromBody] SignInRequest request) 
+    public async Task<ActionResult<SignInResponse>> SignIn([FromBody] SignInRequest request) 
     {
-        return await _authService.SignInAsync(request);      
+        return await DoSignIn(request);
     }
 
     [HttpPost("signup")]
-    public async Task<ActionResult<SignUpResponse>> SignUpAsync([FromBody] SignUpRequest request) 
+    public async Task<ActionResult<SignUpResponse>> SignUp([FromBody] SignUpRequest request) 
     {
-        return await _authService.SignUpAsync(request);
+        if (await _userManager.FindByEmailAsync(request.Email) != null) {
+            return new SignUpResponse {
+                Result = ApiResponseDefinition.Result.FAILURE,
+                FailureDescription = ApiResponseDefinition.Failure.UserRelatedFailure.EMAIL_EXIST
+            };
+        }
+        
+        var user = new AppUser {
+            Email = request.Email,
+            UserName = request.Email,
+            AlternativeName = request.UserName
+        };
+        var role = new AppRole {
+            Name = request.Role
+        };
+
+        var userStoreResult = IdentityResult.Success;
+        if (ThirdPartyAuthDefinition.FromGoogle(request.Provider)) 
+        {
+            userStoreResult = 
+                String.IsNullOrEmpty(request.Password) ? 
+                await _userManager.CreateAsync(user) : 
+                await _userManager.CreateAsync(user, request.Password);
+        } 
+        else 
+        {
+            userStoreResult = await _userManager.CreateAsync(user, request.Password);
+        }
+        var userRoleRelationStoreResult = await _userManager.AddToRoleAsync(user, role.Name);
+        if (userStoreResult.Succeeded && userRoleRelationStoreResult.Succeeded)
+        {    
+            if (ThirdPartyAuthDefinition.FromGoogle(request.Provider)) 
+            {
+                SignInResponse signInResponse = await DoSignIn(new SignInRequest() {
+                    Email = request.Email,
+                    Provider = request.Provider
+                });
+                return new SignUpResponse {
+                    Result = ApiResponseDefinition.Result.SUCCESS,
+                    Id = signInResponse.Id,
+                    Email = request.Email,
+                    UserName = signInResponse.UserName,
+                    Role = signInResponse.Role,
+                    Provider = request.Provider
+                };
+            } 
+            else 
+            {
+                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                await _emailSender.SendEmailAsync(request.Email, "Please confirm your email", $"Your confirm code is {code}");
+                return new SignUpResponse {
+                    Result = ApiResponseDefinition.Result.SUCCESS
+                };
+            }
+        }
+
+        return new SignUpResponse {
+            Result = ApiResponseDefinition.Result.FAILURE,
+            FailureDescription = ApiResponseDefinition.Failure.UserRelatedFailure.SIGNUP_FAIL
+        };
     }
 
     [HttpPost("signup-confirm")]
-    public async Task<ActionResult<SignUpConfirmResponse>> SignUpConfirmAsync([FromBody] SignUpConfirmRequest request) 
+    public async Task<ActionResult<SignUpConfirmResponse>> SignUpConfirm([FromBody] SignUpConfirmRequest request) 
     {
-        return await _authService.SignUpConfirmAsync(request);
+        var user = await _userManager.FindByEmailAsync(request.Email);
+        if (user == null)
+        {
+            return new SignUpConfirmResponse {
+                Result = ApiResponseDefinition.Result.FAILURE,
+                FailureDescription = ApiResponseDefinition.Failure.UserRelatedFailure.USER_NOT_EXIST
+            };
+        }
+        var result = await _userManager.ConfirmEmailAsync(user, request.Code);
+        return new SignUpConfirmResponse {
+            Result = result.Succeeded ? ApiResponseDefinition.Result.SUCCESS : ApiResponseDefinition.Result.FAILURE,
+            FailureDescription = result.Succeeded ? null : ApiResponseDefinition.Failure.UserRelatedFailure.CONFIRM_EMAIL_FAIL
+        };
     }
 
     [HttpPost("signout")]
-    public async Task<ActionResult<Boolean>> SignOutAsync() 
+    public async Task<ActionResult<SignOutResponse>> SignOutAsync() 
     {
-        return await _authService.SignOutAsync();
+        await _signInManager.SignOutAsync();
+        return new SignOutResponse {
+            Result = ApiResponseDefinition.Result.SUCCESS
+        };
     }
 
     [HttpPost("edit")]
-    public async Task<ActionResult<EditUserInfoResponse>> EditUser([FromBody] EditUserRequest request) 
+    public async Task<ActionResult<EditUserResponse>> EditUser([FromBody] EditUserRequest request) 
     {
-        return await _authService.EditUserAsync(request);
+        AppUser user = await _userManager.FindByIdAsync(request.Id);
+        if (user == null) 
+        {
+            return new EditUserResponse() {
+                Result = ApiResponseDefinition.Result.FAILURE,
+                FailureDescription = ApiResponseDefinition.Failure.UserRelatedFailure.USER_NOT_EXIST
+            };
+        }
+        if (!String.IsNullOrEmpty(request.NewPassword) && !String.IsNullOrEmpty(request.OldPassword)) 
+        {
+            var changePasswordResult = await _userManager.ChangePasswordAsync(user, request.OldPassword, request.NewPassword);
+            return new EditUserResponse {
+                Result = changePasswordResult.Succeeded ? ApiResponseDefinition.Result.SUCCESS : ApiResponseDefinition.Result.FAILURE,
+                FailureDescription = changePasswordResult.Succeeded ? null : ApiResponseDefinition.Failure.UserRelatedFailure.CHANGE_PASSWORD_FAIL
+            };
+        }
+        if (!String.IsNullOrEmpty(request.Username)) {
+            var changeUsernameResult = await _userManager.UpdateAsync(user);
+            return new EditUserResponse {
+                Result = changeUsernameResult.Succeeded ? ApiResponseDefinition.Result.SUCCESS : ApiResponseDefinition.Result.FAILURE,
+                FailureDescription = changeUsernameResult.Succeeded ? null : ApiResponseDefinition.Failure.UserRelatedFailure.CHANGE_USERNAME_FAIL
+            };
+        };
+      
+        return new EditUserResponse {
+            Result = ApiResponseDefinition.Result.FAILURE,
+            FailureDescription = ApiResponseDefinition.Failure.UserRelatedFailure.INVALID_USER_INFO_FOR_UPDATE
+        };
     }
 
     [HttpPost("send-password-reset-email")]
     public async Task<ActionResult<SendPasswordResetEmailResponse>> SendPasswordResetEmail([FromQuery] string email) 
     {
-        return await _authService.SendPasswordResetEmailAsync(email);
+        var user = await _userManager.FindByEmailAsync(email);
+        if (user == null)
+        {
+            return new SendPasswordResetEmailResponse() {
+                Result = ApiResponseDefinition.Result.FAILURE,
+                FailureDescription = ApiResponseDefinition.Failure.UserRelatedFailure.USER_NOT_EXIST
+            };
+        }
+        var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+        await _emailSender.SendEmailAsync(email, "Please reset your password with reset code", $"Your reset code is {code}");
+        
+        return new SendPasswordResetEmailResponse {
+            Result = ApiResponseDefinition.Result.SUCCESS
+        };
     }
 
     [HttpPost("password-reset")]
     public async Task<ActionResult<ResetPasswordResponse>> ResetPassword([FromBody] ResetPasswordRequest request) 
     {
-        return await _authService.ResetPasswordAsync(request);
+        AppUser user = await _userManager.FindByEmailAsync(request.Email);
+        if (user == null) 
+        {
+            return new ResetPasswordResponse() {
+                Result = ApiResponseDefinition.Result.FAILURE,
+                FailureDescription = ApiResponseDefinition.Failure.UserRelatedFailure.USER_NOT_EXIST
+            };
+        }     
+        var result = await _userManager.ResetPasswordAsync(user, request.Code, request.NewPassword);
+
+        return new ResetPasswordResponse() {
+            Result = result.Succeeded ? ApiResponseDefinition.Result.SUCCESS : ApiResponseDefinition.Result.FAILURE,
+            FailureDescription = result.Succeeded ? null : ApiResponseDefinition.Failure.UserRelatedFailure.PASSWORD_RESET_FAIL
+        };
+    }
+
+    public async Task<SignInResponse> DoSignIn(SignInRequest request)
+    {
+        AppUser user = await _userManager.FindByEmailAsync(request.Email);
+        if (user == null) 
+        {
+            return new SignInResponse {
+                Result = ApiResponseDefinition.Result.FAILURE,
+                FailureDescription = ApiResponseDefinition.Failure.UserRelatedFailure.USER_NOT_EXIST
+            };
+        }
+
+        if (ThirdPartyAuthDefinition.FromGoogle(request.Provider)) 
+        {
+            var role = await _userManager.GetRolesAsync(user);
+            await _signInManager.SignInAsync(user, true);
+
+            return new SignInResponse {
+                Id = user.Id,
+                Email = user.Email,
+                UserName = user.AlternativeName,
+                Role = role[0]
+            };
+        }
+        if (request.ConfirmRequired && !await _userManager.IsEmailConfirmedAsync(user)) 
+        {
+            return new SignInResponse {
+                Result = ApiResponseDefinition.Result.FAILURE,
+                FailureDescription = ApiResponseDefinition.Failure.UserRelatedFailure.EMAIL_NOT_CONFIRMED
+            };
+        }
+        var result = await _signInManager.PasswordSignInAsync(request.Email, request.Password, true, false);
+        if (result.Succeeded) 
+        {   
+            var role = await _userManager.GetRolesAsync(user);
+            return new SignInResponse {
+                Result = ApiResponseDefinition.Result.SUCCESS,
+                Id = user.Id,
+                Email = user.Email,
+                UserName = user.AlternativeName,
+                Role = role[0]
+            };
+        }
+        else 
+        {
+            return new SignInResponse {
+                Result = ApiResponseDefinition.Result.FAILURE,
+                FailureDescription = ApiResponseDefinition.Failure.UserRelatedFailure.SIGN_INFO_INCORRECT
+            };
+        } 
     }
 }

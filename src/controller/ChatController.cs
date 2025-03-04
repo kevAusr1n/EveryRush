@@ -35,14 +35,14 @@ public class ChatController : ControllerBase
     public async Task<ActionResult<GetUnreadMessagesStatisticsResponse>> GetUnreadMessagesStatistics([FromRoute] string userId, [FromQuery] int paeg, [FromQuery] int size) {
         // TODO: Add pagination
         var totalCount = await _appDbContext.ChatMessages
-                .Where(c => c.ToUserId == userId && c.Status == ChatMessageConfig.Status.UNREAD)
+                .Where(c => c.ToUserId == userId && c.Status == ChatMessageDefinition.Status.UNREAD)
                 .CountAsync();
         var totalPages = (int)Math.Ceiling((double)totalCount / size); 
         var unreadStatisticQuery = 
             from chatMessage in _appDbContext.ChatMessages
             join user in _appDbContext.AppUsers 
             on chatMessage.FromUserId equals user.Id
-            where chatMessage.ToUserId == userId && chatMessage.Status == ChatMessageConfig.Status.UNREAD
+            where chatMessage.ToUserId == userId && chatMessage.Status == ChatMessageDefinition.Status.UNREAD
             select new { chatMessage, user };
 
         IList<UnreadSenderReview> unreadSenders = 

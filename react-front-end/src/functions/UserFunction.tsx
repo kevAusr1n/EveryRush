@@ -2,6 +2,7 @@ import { googleLogout } from "@react-oauth/google";
 import { FormEvent } from "react";
 import APICall from "../config/ApiConfig";
 import { getDefaultAuthScheme } from "../config/AuthConfig";
+import { apiExceptionFailureDescription, ApiResponse } from "../type/ResponseType";
 
 
 function setLoginSuccessUserInfoFromResponse(res : any) {
@@ -12,27 +13,6 @@ function setLoginSuccessUserInfoFromResponse(res : any) {
     if (getDefaultAuthScheme() == "jwt") {
         localStorage.setItem("jwt", res.data.jwt);
     }
-}
-
-async function signInWithCredential(props: { email: string, password: string }) : Promise<string> {
-    let result : string = "failure";
-    var requestJson = {
-        email : props.email,
-        password : props.password
-    }
-
-    await APICall().post(`/api/user/signin`, requestJson)
-    .then((res) => {
-        if (res.status == 200 && res.data.email != "none") {
-            setLoginSuccessUserInfoFromResponse(res);
-            result = "success";
-        } else if (res.data.result == "failure") {
-            result = "email not confirmed";
-        }
-    })
-    .catch((err) => alert(err));
-
-    return result;
 }
 
 function isUserSignedIn() : boolean {
@@ -57,10 +37,27 @@ function signOut() {
     localStorage.removeItem("jwt");
 }
 
-async function signIn(props: { formSubmitEvent: FormEvent<HTMLFormElement> }) : Promise<string> {
-    props.formSubmitEvent.preventDefault();
-    const formData = new FormData(props.formSubmitEvent.currentTarget);
-    return await signInWithCredential({email: formData.get("email") as string, password: formData.get("password") as string});
+async function signIn(props: {email: string, password: string}) : Promise<ApiResponse> {
+    let apiResponse : ApiResponse = { result: "failure", failureDescription: ""} as ApiResponse;
+    var requestJson = {
+        email : props.email,
+        password : props.password
+    }
+
+    await APICall().post(`/api/user/signin`, requestJson)
+    .then((res) => {
+        if (res.data.result == "success") {
+            setLoginSuccessUserInfoFromResponse(res);
+            apiResponse.result = "success";
+        } else {
+            apiResponse.failureDescription = res.data.failureDescription;
+        }
+    })
+    .catch((_) => {
+        apiResponse.failureDescription = apiExceptionFailureDescription;
+    });
+
+    return apiResponse;
 }
 
 async function signUp (props: { 
@@ -69,60 +66,37 @@ async function signUp (props: {
     password: string,
     role: string,
     provider: string
- }) : Promise<boolean> {
-    let isSucceed : boolean = false;
-    let signInRequired : boolean = true;
+ }) : Promise<ApiResponse> {
+    let apiResponse : ApiResponse = { result: "failure", failureDescription: ""} as ApiResponse;
+
     const requestBody = {
         "email": props.email,
         "username": props.username,
         "password": props.password,
         "role": props.role,
         "provider": props.provider,
-        "signin_required": signInRequired
     }
 
     await APICall().post(`/api/user/signup`, requestBody)
     .then((res) => {
-        if (res.status == 200) {
-            if (signInRequired) {
+        if (res.data.result == "success") {
+            apiResponse.result = "success";
+            if ("google" === props.provider) {
                 setLoginSuccessUserInfoFromResponse(res);
             }
-            isSucceed = true;
+        } else {
+            apiResponse.failureDescription = res.data.failureDescription;
         }
     })
-    .catch((err) => {console.log(err)});
+    .catch((_) => {
+        apiResponse.failureDescription = apiExceptionFailureDescription;
+    });
 
-    return isSucceed;
+    return apiResponse;
 }
 
-
-async function signUpFromForm (props: { formSubmitEvent: FormEvent<HTMLFormElement> }) : Promise<boolean> {
-    props.formSubmitEvent.preventDefault();
-
-    let isSucceed : boolean = false;
-    let signInRequired : boolean = true;
-    const formData = new FormData(props.formSubmitEvent.currentTarget);
-    const requestBody = {
-        "email": formData.get("email"),
-        "username": formData.get("username"),
-        "password": formData.get("password"),
-        "role": formData.get("role"),
-        "signin_required": signInRequired
-    }
-
-    await APICall().post(`/api/user/signup`, requestBody)
-    .then((res) => {
-        if (res.status == 200) {
-            isSucceed = true;
-        }
-    })
-    .catch((err) => {console.log(err)});
-
-    return isSucceed;
-}
-
-async function signUpConfirm(props: { email: string, code: string }) : Promise<boolean> {
-    let isSucceed : boolean = false;
+async function signUpConfirm(props: { email: string, code: string }) : Promise<ApiResponse> {
+    let apiResponse : ApiResponse = { result: "failure", failureDescription: ""} as ApiResponse;
 
     var request = {
         email: props.email,
@@ -133,20 +107,23 @@ async function signUpConfirm(props: { email: string, code: string }) : Promise<b
     .post(`/api/user/signup-confirm`, request)
     .then((res) => {
         if (res.data.result == "success") {
-            isSucceed = true;
+            apiResponse.result = "success";
+        } else {
+            apiResponse.failureDescription = res.data.failureDescription;
         }
     })
-    .catch((err) => {console.log(err)});
-
-    return isSucceed;
+    .catch((_) => {
+        apiResponse.failureDescription = apiExceptionFailureDescription;
+    });
+    return apiResponse;
 }
 
 async function EditUser(props: {
     username?: string, 
     oldPassword?: string,
     newPassword?: string
-}) {
-    let isSucceed : boolean = false;
+}) : Promise<ApiResponse> {
+    let apiResponse : ApiResponse = { result: "failure", failureDescription: ""} as ApiResponse;
 
     var request = {
         id: localStorage.getItem("userid"),
@@ -157,35 +134,43 @@ async function EditUser(props: {
 
     await APICall().post(`/api/user/edit`, request)
     .then((res) => {
-        if (res.status == 200 && res.data.result == "success") {
+        if (res.data.result == "success") {
+            apiResponse.result = "success";
             if (props.username != undefined) {
                 localStorage.setItem("username", props.username);
             }
-            isSucceed = true;
+        } else {
+            apiResponse.failureDescription = res.data.failureDescription;
         }
     })
-    .catch((err) => {console.log(err)});
+    .catch((_) => {
+        apiResponse.failureDescription = apiExceptionFailureDescription;
+    });
 
-    return isSucceed;
+    return apiResponse;
 }
 
-async function sendPasswordResetEmail(props: { email: string }) : Promise<boolean> {
-    let isSucceed : boolean = false;
+async function sendPasswordResetEmail(props: { email: string }) : Promise<ApiResponse> {
+    let apiResponse : ApiResponse = { result: "failure", failureDescription: ""} as ApiResponse;
 
     await APICall()
     .post(`/api/user/send-password-reset-email?email=${props.email}`)
     .then((res) => {
         if (res.data.result == "success") {
-            isSucceed = true;
+            apiResponse.result = "success";
+        } else {
+            apiResponse.failureDescription = res.data.failureDescription;
         }
     })
-    .catch((err) => {console.log(err)});
+    .catch((_) => {
+        apiResponse.failureDescription = apiExceptionFailureDescription;
+    });
 
-    return isSucceed;
+    return apiResponse;
 }
 
-async function resetPassword(props: { email: string, code: string, newPassword: string }) : Promise<boolean> {
-    let isSucceed : boolean = false;
+async function resetPassword(props: { email: string, code: string, newPassword: string }) : Promise<ApiResponse> {
+    let apiResponse : ApiResponse = { result: "failure", failureDescription: ""} as ApiResponse;
 
     var request = {
         email: props.email,
@@ -195,32 +180,40 @@ async function resetPassword(props: { email: string, code: string, newPassword: 
     await APICall().post(`/api/user/password-reset`, request)
     .then((res) => {
         if (res.data.result == "success") {
-            isSucceed = true;
+            apiResponse.result = "success";
+        } else {
+            apiResponse.failureDescription = res.data.failureDescription;
         }
     })
-    .catch((err) => {console.log(err)});
+    .catch((_) => {
+        apiResponse.failureDescription = apiExceptionFailureDescription;
+    });
 
-    return isSucceed;
+    return apiResponse;
 }
 
 async function isThirdPartyUserRegistered(props: {
     email: string,
     token: string,
     provider: string
-}) : Promise<boolean> {
-    let isSucceed : boolean = false;
-    
+}) : Promise<ApiResponse> {
+    let apiResponse : ApiResponse = { result: "failure", failureDescription: ""} as ApiResponse;
+
     await APICall().get(`/api/user/third-party-signin-check?email=${props.email}&token=${props.token}&provider=${props.provider}`)
     .then((res) => {
         if (res.data.result == "success") {
             setLoginSuccessUserInfoFromResponse(res);
-            isSucceed = true;
+            apiResponse.result = "success";
+        } else {
+            apiResponse.failureDescription = res.data.failureDescription;
         }
     })
-    .catch((err) => {console.log(err)});
+    .catch((_) => {
+        apiResponse.failureDescription = apiExceptionFailureDescription;
+    });
 
-    return isSucceed;
+    return apiResponse;;
 }
 
-export { isUserSignedIn , signOut , signIn, signUp, signUpFromForm, EditUser, isUserCustomerOrGuest };
+export { isUserSignedIn , signOut , signIn, signUp, EditUser, isUserCustomerOrGuest };
 export { sendPasswordResetEmail, resetPassword, signUpConfirm, isThirdPartyUserRegistered };

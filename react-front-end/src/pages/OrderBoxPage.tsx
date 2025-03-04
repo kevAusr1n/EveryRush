@@ -4,7 +4,7 @@ import ResponsiveDiv from "../components/div/ResponsiveDiv";
 import { ImageBrief } from "../components/Image";
 import { MonoStyleText } from "../components/Text";
 import { backServerEndpoint } from "../config/BackendServerConfig";
-import { CartItem, Order, OrderProcess } from "../type/EntityType";
+import { CartItem, Order, OrderProcess } from "../type/ObjectType";
 import OrderStatusConfig from "../config/OrderStatusConfig";
 import DisplayTable from "../components/DisplayTable";
 import { isStringEmpty } from "../functions/Utils";
@@ -141,7 +141,7 @@ function OrderBoxPage(props: {order: Order}) {
                     }}/>
                 })}
             </>} />
-            <InputField inputName="Comment" inputType="textarea" inputValue="" style="w-200 h-50" onTextChangeHandler={setComment} />
+            <InputField name="Comment" type="textarea" value="" style="w-200 h-50" valueChangeHandler={(e) => setComment(e.target.value)} />
             <ResponsiveDiv style="w-full flex flex-row gap-5" children={<>
                 <WhiteButton buttonName="SUBMIT" size="w-60 h-10" clickHandler={() => {
                     submitReviewHandler()

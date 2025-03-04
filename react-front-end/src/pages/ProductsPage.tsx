@@ -4,7 +4,7 @@ import { getPaginatedProducts } from "../functions/ProductFunction";
 import ProductBriefPage from "./ProductBriefPage";
 import DisplayArrangement from "../components/DisplayArrangement";
 import { GetProductsResponse } from "../type/ResponseType";
-import { Product } from "../type/EntityType";
+import { Product } from "../type/ObjectType";
 import FilterSide from "../components/FilterSide";
 import ResponsiveDiv from "../components/div/ResponsiveDiv";
 import { isUserCustomerOrGuest } from "../functions/UserFunction";

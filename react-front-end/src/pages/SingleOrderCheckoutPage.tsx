@@ -4,7 +4,7 @@ import DropDown from "../components/Dropdown";
 import InputField from "../components/InputField";
 import { GetContactsResponse } from "../type/ResponseType";
 import { getPaginatedContacts } from "../functions/ContactFunction";
-import { CartItem, Contact, Order } from "../type/EntityType";
+import { CartItem, Contact, Order } from "../type/ObjectType";
 import { ImageBrief } from "../components/Image";
 import ResponsiveDiv from "../components/div/ResponsiveDiv";
 import DisplayTable from "../components/DisplayTable";
@@ -123,8 +123,8 @@ function SingleOrderCheckoutPage(props: {
                         </>} />
                     </>} />
                     {contactInputFieldNames.map((name : string , index : number) => {
-                        return <InputField key={index} inputName={name} inputType={contactInputFieldTypes[index]} 
-                        inputValue={contactInputFieldValueStates[index][0]} style="w-200" onTextChangeHandler={contactInputFieldValueStates[index][1]} />
+                        return <InputField key={index} name={name} type={contactInputFieldTypes[index]} 
+                        value={contactInputFieldValueStates[index][0]} style="w-200" valueChangeHandler={contactInputFieldValueStates[index][1]} />
                     })}
                 </>} />}
             </>} />

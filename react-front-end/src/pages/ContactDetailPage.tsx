@@ -2,7 +2,7 @@ import { createSearchParams, useNavigate } from "react-router";
 import { RedButton, WhiteButton } from "../components/Button";
 import ResponsiveDiv from "../components/div/ResponsiveDiv";
 import { deleteContacts } from "../functions/ContactFunction";
-import { Contact } from "../type/EntityType";
+import { Contact } from "../type/ObjectType";
 import { Dispatch, SetStateAction } from "react";
 import { MonoStyleText } from "../components/Text";
 

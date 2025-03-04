@@ -1,4 +1,4 @@
-public class ThirdPartySignInCheckResponse : BasicRequestResponse {
+public class ThirdPartySignInCheckResponse : ApiResponse {
     public string? Id {get;set;}
     public string? Email {get;set;}
     public string? UserName {get;set;}

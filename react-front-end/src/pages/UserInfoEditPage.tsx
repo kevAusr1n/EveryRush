@@ -23,36 +23,39 @@ function UserInfoEditPage() {
             updateUsernameErrorMsg.current = "Username cannot be empty";
             setRefresh(!refresh);
         }
-        if (await EditUser({username: username})) {
+        var apiResponse = await EditUser({username: username});
+        if (apiResponse.result == "success") {
             setUsernameEdit(false);
             window.location.reload();
         } else {
-            updateUsernameErrorMsg.current = "Username change failed";
+            updateUsernameErrorMsg.current = apiResponse.failureDescription
             setRefresh(!refresh);
         }
     }
 
     const editPasswordRequest = async () => {
         if (isStringEmpty(newPassword) || newPassword !== confirmedNewPassword) {
-            updatePasswordErrorMsg.current = "New password is empty or do not match confirm password";
+            updatePasswordErrorMsg.current = "Passwords not same";
             setRefresh(!refresh);
             return;
         } 
-        if (await EditUser({oldPassword: oldPassword, newPassword: newPassword})) {
+        var apiResponse = await EditUser({oldPassword: oldPassword, newPassword: newPassword});
+        if (apiResponse.result == "success") {
             setPasswordEdit(false);
             await signOut();
             navigate("/password-changed-then-signin-required");
             window.location.reload();
         } else {
-            updatePasswordErrorMsg.current = "Password change failed";
+            updatePasswordErrorMsg.current = apiResponse.failureDescription;
+            setRefresh(!refresh);
         }
     }
 
     const usernameEditDiv = () : ReactNode => {
         return (
             <ResponsiveDiv style="flex flex-col" children={<>
-                <TextInput inputName="New Username" inputType="text" style="w-100" inputValue="" onTextChangeHandler={setUsername}/>
-                <p className="text-red-500">{updateUsernameErrorMsg.current}</p>
+                <TextInput name="New Username" type="text" style="w-100" value={username} valueChangeHandler={(e) => setUsername(e.target.value)}/>
+                <MonoStyleText style="text-red-500" content={updateUsernameErrorMsg.current} />
                 <ResponsiveDiv style="flex flex-row gap-3 mt-5" children={<>
                     <WhiteButton buttonName="SAVE" size="h-10" clickHandler={() => editUsernameRequest()} />
                     <WhiteButton buttonName="CANCEL" size="h-10" clickHandler={() => {
@@ -67,9 +70,9 @@ function UserInfoEditPage() {
     const passwordEditDiv = () : ReactNode => {
         return (
             <ResponsiveDiv style="flex flex-col" children={<>
-                <TextInput inputName="Old Password" inputType="password" style="w-100" inputValue="" onTextChangeHandler={setOldPassword}/>
-                <TextInput inputName="New Password" inputType="password" style="w-100" inputValue="" onTextChangeHandler={setNewPassword}/>
-                <TextInput inputName="Confirm New Password" inputType="password" style="w-100" inputValue="" onTextChangeHandler={setConfirmedNewPassword} />
+                <TextInput name="Old Password" type="password" style="w-100" value={oldPassword} valueChangeHandler={(e) => setOldPassword(e.target.value)}/>
+                <TextInput name="New Password" type="password" style="w-100" value={newPassword} valueChangeHandler={(e) => setNewPassword(e.target.value)}/>
+                <TextInput name="Confirm New Password" type="password" style="w-100" value={confirmedNewPassword} valueChangeHandler={(e) => setConfirmedNewPassword(e.target.value)} />
                 <MonoStyleText style="text-red-500" content={updatePasswordErrorMsg.current} />
                 <ResponsiveDiv style="flex flex-row gap-3 mt-5" children={<>
                     <WhiteButton buttonName="SAVE" size="h-10" clickHandler={() => editPasswordRequest()} />

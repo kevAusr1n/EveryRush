@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using System.Security.Claims;
 using EveryRush.Entity;
 using Microsoft.AspNetCore.Authorization;
@@ -10,13 +11,12 @@ namespace EveryRush.Controller;
 [ApiController]
 public class ProductController : ControllerBase 
 {   
-    private readonly ProductService _productService;
-
+    private readonly FileService _fileService;
     private readonly AppDbContext _appDbContext;
 
-    public ProductController(ProductService productService, AppDbContext appDbContext) {
-        _productService = productService;
+    public ProductController(AppDbContext appDbContext, FileService fileService) {
         _appDbContext = appDbContext;
+        _fileService = fileService;
     }
 
     [HttpGet]
@@ -34,10 +34,10 @@ public class ProductController : ControllerBase
         
         var productsQuery = 
             from product in _appDbContext.Products
-            where product.Status != ProductStatus.DELETED
+            where product.Status != ProductDefinition.Status.DELETED
             select product;
 
-        if (RoleConfig.BUSINESS_OWNER.Equals(role)) 
+        if (UserDefinition.Role.BUSINESS_OWNER.Equals(role)) 
         {
             productsQuery = 
                 from product in productsQuery 
@@ -47,7 +47,7 @@ public class ProductController : ControllerBase
         {
             productsQuery = 
                 from product in productsQuery 
-                where product.Status != ProductStatus.OFF_SHELF
+                where product.Status != ProductDefinition.Status.OFF_SHELF
                 select product;
         }
         if (minimumPrice > 0) 
@@ -89,7 +89,7 @@ public class ProductController : ControllerBase
                     break;
             }
         }
-        if (RoleConfig.BUSINESS_OWNER.Equals(role)) 
+        if (UserDefinition.Role.BUSINESS_OWNER.Equals(role)) 
         {
             productsQuery = 
                 from product in productsQuery 
@@ -124,17 +124,58 @@ public class ProductController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<ProductView>> GetProductDetail([FromRoute] string id) 
     {
-        return await _productService.GetProductDetail(id);
+        var product = await _appDbContext.Products.Where(p => p.Id == id).FirstOrDefaultAsync();
+        var appUser = await _appDbContext.AppUsers.Where(u => u.Id == product.AppUserId).FirstOrDefaultAsync();
+
+        return new ProductView{
+            Id = product.Id,
+            UserId = product.AppUserId,
+            UserName = appUser.AlternativeName,
+            Name = product.Name,
+            Description = product.Description,
+            Price = product.Price,
+            Stock = product.Stock,
+            Status = product.Status,
+            ImageUrl = product.ImageUrl
+        };
     }
 
     [HttpPost("add")]
     [Authorize(Roles = "BusinessOwner")]
-    public async Task<ActionResult<Product>> AddProduct([FromForm] AddOrUpdateProductRequest request) 
+    public async Task<ActionResult<AddProductResponse>> AddProduct([FromForm] AddOrUpdateProductRequest request) 
     {
-        return await _productService.AddProduct(request);
+        var newProduct = new Product
+        {
+            Id = Guid.NewGuid().ToString(),
+            AppUserId = request.UserId,
+            Name = request.Name,
+            Description = request.Description,
+            Price = request.Price,
+            Stock = request.Stock,
+            Status = request.Stock > 0 ? ProductDefinition.Status.IN_SALE : ProductDefinition.Status.OUT_OF_STOCK
+        };
+
+        if (request.Files == null || request.Files.Count == 0)
+        {
+            return new AddProductResponse {
+                Result = ApiResponseDefinition.Result.FAILURE,
+                FailureDescription = ApiResponseDefinition.Failure.ProductRelatedFailure.NO_IMAGE_PROVIDED
+            };
+        } 
+
+        IList<string> toSaveFilesPaths = new List<string>();
+        toSaveFilesPaths = await _fileService.SaveFilesWithDb(request.Files, newProduct.Id);
+             
+        newProduct.ImageUrl = String.Join(",", toSaveFilesPaths);
+        _appDbContext.Products.Add(newProduct);
+        await _appDbContext.SaveChangesAsync();
+
+        return new AddProductResponse {
+            Result = ApiResponseDefinition.Result.SUCCESS
+        };
     }
 
-    [HttpPost("updatexxxx")]
+    [HttpPost("update")]
     [Authorize(Roles = "BusinessOwner")]
     public async Task<ActionResult<UpdateProductResponse>> UpdateProduct([FromForm] AddOrUpdateProductRequest request) 
     {
@@ -142,70 +183,126 @@ public class ProductController : ControllerBase
         if (product == null) 
         {
             return new UpdateProductResponse {
-                Result = RequestResult.FAILURE
+                Result = ApiResponseDefinition.Result.FAILURE,
+                FailureDescription = ApiResponseDefinition.Failure.ProductRelatedFailure.PRODUCT_NOT_EXIST
             };
         }
+
+        if (String.IsNullOrEmpty(request.ToKeepImageUrl) && (request.Files == null || request.Files.Count == 0)) 
+        {
+            return new UpdateProductResponse {
+                Result = ApiResponseDefinition.Result.FAILURE,
+                FailureDescription = ApiResponseDefinition.Failure.ProductRelatedFailure.NO_IMAGE_PROVIDED
+            };
+        }
+
         product.Name = request.Name;
         product.Description = request.Description;
         product.Price = request.Price;
         product.Stock = request.Stock;
         
-        if (product.Stock == 0 && product.Status == ProductStatus.IN_SALE) {
-            product.Status = ProductStatus.OUT_OF_STOCK;
+        if (product.Stock == 0 && product.Status == ProductDefinition.Status.IN_SALE) {
+            product.Status = ProductDefinition.Status.OUT_OF_STOCK;
         }
-        if (product.Stock > 0 && product.Status == ProductStatus.OUT_OF_STOCK) {
-            product.Status = ProductStatus.IN_SALE;
+        if (product.Stock > 0 && product.Status == ProductDefinition.Status.OUT_OF_STOCK) {
+            product.Status = ProductDefinition.Status.IN_SALE;
         }
 
-        List<AppFile> savedFiles = new List<AppFile>();
+        // save new images if there is
+        IList<string> toSaveFilesPaths = new List<string>();
         if (request.Files != null && request.Files.Count > 0) 
         {
-            foreach (IFormFile file in request.Files) 
-            {
-                using (var memoryStream = new MemoryStream())
-                {
-                    await file.CopyToAsync(memoryStream);                               
-                    var imageUrl = Path.Combine(StaticFileRootPath.GetImagePath(), 
-                    request.UserId + "-" + Guid.NewGuid().ToString() + "-" + DateTime.Now.ToString("yyyyMMddHHmmss") + "-image." + file.ContentType.Split("/")[1]);
-                    var storePath = Path.Combine(StaticFileRootPath.GetStaticFileRootPath(), imageUrl);
-                    AppFile newFile = new AppFile {
-                        Id = Guid.NewGuid().ToString(),
-                        Url = imageUrl,
-                        ProductId = request.Id,
-                        Format = file.ContentType,
-                    };
-                    savedFiles.Add(newFile);
-                    await file.CopyToAsync(new FileStream(storePath, FileMode.OpenOrCreate));
-                }
-            } 
+            toSaveFilesPaths = await _fileService.SaveFilesWithDb(request.Files, request.Id);
         }
 
+        IList<string> toKeepFilePaths = 
+            String.IsNullOrEmpty(request.ToKeepImageUrl) ? 
+            new List<string>() : 
+            request.ToKeepImageUrl.Split(",").ToList();
+        IList<string> allOldFilesPaths = product.ImageUrl.Split(",").ToList();
+
+        // delete old images if there is
+        // if this product has been purchased ever, then related images cannot be deleted
         if (!_appDbContext.PurchaseProducts.Where(p => p.ProductId == request.Id).Any()) 
         {
-            string[] oldFiles = product.ImageUrl.Split(",").ToArray();
-            string[] newFiles = product.ImageUrl.Split(",").ToArray(); 
+            await _fileService.DeleteFiles(allOldFilesPaths.Except(toKeepFilePaths).ToList());
         }
 
+        product.ImageUrl = 
+            toKeepFilePaths.Count > 0 ? 
+            String.Join(",", toKeepFilePaths) :
+            "";
+
+        if (toSaveFilesPaths.Count > 0) 
+        {
+            product.ImageUrl = 
+                String.IsNullOrEmpty(product.ImageUrl) ? 
+                String.Join(",", toSaveFilesPaths) :
+                product.ImageUrl + "," + String.Join(",", toSaveFilesPaths);
+        }
         _appDbContext.Products.Update(product);
-        _appDbContext.AppFiles.AddRange(savedFiles);
         await _appDbContext.SaveChangesAsync();
 
         return new UpdateProductResponse {
-            Result = RequestResult.FAILURE
+            Result = ApiResponseDefinition.Result.SUCCESS
         };
     }
 
     [HttpPost("status-update/{id}")]
     [Authorize(Roles = "BusinessOwner")]
-    public async Task<ActionResult<Boolean>> UpdateProductStatus([FromRoute] string id, [FromQuery] int newStatus)
+    public async Task<ActionResult<UpdateProductResponse>> UpdateProductStatus([FromRoute] string id, [FromQuery] int newStatus)
     {
-        return await _productService.UpdateProductStatus(id, newStatus);
+        var product = await _appDbContext.Products.FindAsync(id);
+        if (product == null) 
+        {
+            return new UpdateProductResponse {
+                Result = ApiResponseDefinition.Result.SUCCESS,
+                FailureDescription = ApiResponseDefinition.Failure.ProductRelatedFailure.PRODUCT_NOT_EXIST
+            };
+        }
+        if (newStatus == ProductDefinition.Status.IN_SALE) 
+        {
+            newStatus = product.Stock != 0 ? newStatus : ProductDefinition.Status.OUT_OF_STOCK;
+        }
+        product.Status = newStatus;
+        _appDbContext.Products.Update(product);
+        await _appDbContext.SaveChangesAsync();
+
+        return new UpdateProductResponse {
+            Result = ApiResponseDefinition.Result.SUCCESS
+        };
     }
 
     [HttpDelete("delete/{id}")]
     [Authorize(Roles = "BusinessOwner")]
-    public async Task<ActionResult<Boolean>> DeleteProduct([FromRoute] string id) 
+    public async Task<ActionResult<DeleteProductResponse>> DeleteProduct([FromRoute] string id) 
     {
-        return await _productService.DeleteProduct(id);
+        var product = await _appDbContext.Products.FindAsync(id);
+        if (product == null) 
+        {
+            return new DeleteProductResponse {
+                Result = ApiResponseDefinition.Result.SUCCESS,
+                FailureDescription = ApiResponseDefinition.Failure.ProductRelatedFailure.PRODUCT_NOT_EXIST
+            };
+        }
+        if (_appDbContext.PurchaseProducts.Where(o => o.ProductId == id).Count() > 0 ||
+            _appDbContext.CartItems.Where(o => o.ProductId == id).Count() > 0) 
+        {
+            product.Status = ProductDefinition.Status.DELETED;
+            _appDbContext.Products.Update(product);
+            await _appDbContext.SaveChangesAsync();
+            
+            return new DeleteProductResponse {
+                Result = ApiResponseDefinition.Result.SUCCESS,
+            };
+        }
+
+        _appDbContext.AppFiles.RemoveRange(_appDbContext.AppFiles.Where(f => f.ProductId == id));
+        _appDbContext.Products.Remove(product);
+        await _appDbContext.SaveChangesAsync();
+
+        return new DeleteProductResponse {
+            Result = ApiResponseDefinition.Result.SUCCESS
+        };
     }
 }

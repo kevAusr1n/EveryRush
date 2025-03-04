@@ -16,70 +16,57 @@ const invisibleDeleteButtonStyle = "opacity-0 h-8 w-8 absolute inset-12 flex ite
 const visibleDeleteButtonStyle = "opacity-100 h-8 w-8 absolute inset-12 flex items-center justify-center bg-red-500 text-white";
 
 function TextInput(props: {
-    inputName: string, 
-    inputValue: string, 
-    inputType: string,
+    name: string, 
+    value: string, 
+    type: string,
     style: string,
     readonly?: boolean,
-    onTextChangeHandler?: Dispatch<SetStateAction<string>>
+    valueChangeHandler: (value: any) => void
 }) {
-    const [value, setValue] = useState(props.inputValue);
     return (
         <ResponsiveDiv style="" children={<>
-            <label className={basicLabelStyle}>{props.inputName.toLocaleLowerCase()}</label>
+            <label className={basicLabelStyle}>{props.name.toLocaleUpperCase()}</label>
             <input className={props.readonly == true ? props.style + " " + readOnlyTestFieldStyle : props.style + " " + basicTextFieldStyle} 
-                value={props.onTextChangeHandler != undefined && props.onTextChangeHandler != null ? props.inputValue : value} 
-                id={props.inputName.toLocaleLowerCase()} 
-                name={props.inputName.toLocaleLowerCase()}
-                type={props.inputType} onChange={(e) => {
-                    if (props.onTextChangeHandler != undefined && props.onTextChangeHandler != null) {
-                        props.onTextChangeHandler(e.target.value);
-                    } else {
-                        setValue(e.target.value);
-                    }
-                }} readOnly={props.readonly == true ? true : false}
+                value={props.value} 
+                id={props.name.toLocaleLowerCase()} 
+                name={props.name.toLocaleLowerCase()}
+                type={props.type} 
+                onChange={(e) => props.valueChangeHandler(e)} 
+                readOnly={props.readonly == true ? true : false}
             />
         </>}/>
     )
 }
 
 function TextAreaInput(props: {
-    inputName: string, 
-    inputValue: string, 
+    name: string, 
+    value: string, 
     style: string,
     readonly?: boolean,
-    onTextChangeHandler?: Dispatch<SetStateAction<string>>
+    valueChangeHandler: (value: any) => void
 }) {
-    const [value, setState] = useState(props.inputValue);
-
     return (
         <ResponsiveDiv style="" children={<>
-            <label className={basicLabelStyle}>{props.inputName.toLocaleLowerCase()}</label>
+            <label className={basicLabelStyle}>{props.name.toLocaleUpperCase()}</label>
             <textarea className={props.style + " h-50 " + basicTextFieldStyle} 
-                value={props.onTextChangeHandler != undefined && props.onTextChangeHandler != null ? props.inputValue : value} 
-                id={props.inputName.toLocaleLowerCase()} 
-                name={props.inputName.toLocaleLowerCase()}
-                onChange={(e) => {
-                    if (props.onTextChangeHandler != undefined && props.onTextChangeHandler != null) {
-                        props.onTextChangeHandler(e.target.value);
-                    } else {
-                        setState(e.target.value);
-                    }
-                }}
+                value={props.value} 
+                id={props.name.toLocaleLowerCase()} 
+                name={props.name.toLocaleLowerCase()}
+                onChange={(e) => props.valueChangeHandler(e)}
             />
         </>}/>
     )
 }
 
 function OptionInput(props: {
-    inputName: string, 
-    inputValue: string, 
+    name: string, 
+    value: string | number, 
     style: string, 
-    inputChangeHandler?: (value: any) => void
+    options: string[] | number[],
+    valueChangeHandler: (value: any) => void
 }) {
-    const optionValues: string[] = props.inputValue.split(",");
+    const optionValues: string[] | number[] = props.options;
     const [dropDown, setDropDown] = useState(false);
-    const [inputValueState, setInputValueState] = useState(optionValues[0]);
     const optionWidth = props.style;
     const id = crypto.randomUUID();
 
@@ -95,10 +82,10 @@ function OptionInput(props: {
                 setDropDown(false);
             },
             onClick: () => {
-                setInputValueState(value);
-                setDropDown(false);
-                if (props.inputChangeHandler != undefined) {
-                    props.inputChangeHandler(value);
+                if (typeof props.value == "number") {
+                    props.valueChangeHandler(parseInt(value));
+                } else {
+                    props.valueChangeHandler(value);
                 }
             }
         }
@@ -106,24 +93,31 @@ function OptionInput(props: {
 
     return (        
         <ResponsiveDiv style={"flex flex-col"} eventHandlerMap={{onMouseOut: () => setDropDown(false)}} children={<>
-            {!isStringEmpty(props.inputName) && <label className={basicLabelStyle}>{props.inputName.toLocaleLowerCase()}</label>}
-            <input id={id} name={props.inputName} type="text" value={inputValueState} className={optionWidth + " h-10 text-center font-mono border-b-1 hover:bg-black hover:text-white focus:outline-none"} onClick={() => {
-                setDropDown(!dropDown);
-            }} readOnly />
+            {!isStringEmpty(props.name) && <label className={basicLabelStyle}>{props.name.toLocaleLowerCase()}</label>}
+            <input id={id} 
+                name={props.name} 
+                type="text" 
+                value={props.value}
+                className={optionWidth + " h-10 text-center font-mono border-b-1 hover:bg-black hover:text-white focus:outline-none"} 
+                onClick={() => setDropDown(!dropDown)} 
+                readOnly 
+            />
             <ResponsiveDiv style="" children={<>
-                <DropDown dropDown={dropDown} items={optionValues} style={optionWidth} eventHandlerMap={defaultHandler} />
+                <DropDown dropDown={dropDown} items={optionValues.map(v => v.toString())} style={optionWidth} eventHandlerMap={defaultHandler} />
             </>} />
         </>} />     
     )
 }
 
 function ImageUrlInput(props: {
-    inputName: string, 
-    inputValue: string, 
+    name: string, 
+    value: string, 
     style: string, 
+    valueChangeHandler: (value: any) => void
 }) {
-    const [imageUrls, _] = useState<string[]>(props.inputValue.split(","));
-    const [urlStatuses, setUrlStatuses] = useState<boolean[]>(new Array(imageUrls.length).fill(true));
+    const [imageUrls, setImageUrls] = useState<string>(props.value);
+    const imageUrlArr: string[] = props.value.split(",");
+    const [urlStatuses, setUrlStatuses] = useState<boolean[]>(new Array(imageUrlArr.length).fill(true));
     
     const eventHandlerMap = (imageId: string, buttonId: string, statusIndex: number) => {
         return {
@@ -153,21 +147,25 @@ function ImageUrlInput(props: {
                     document.getElementById(imageId)?.setAttribute("class", visibleImageStyle);
                     document.getElementById(buttonId)?.setAttribute("class", invisibleDeleteButtonStyle);
                 }
-                document.getElementById(props.inputName.toLocaleLowerCase())?.setAttribute(
-                    "value", 
-                    imageUrls.filter((_, i) => (i == statusIndex && !urlStatuses[i]) || (i != statusIndex &&urlStatuses[i])).join(",")
-                );
+                setImageUrls(imageUrlArr.filter((_, i) => (i == statusIndex && !urlStatuses[i]) || (i != statusIndex && urlStatuses[i])).join(","));
+                props.valueChangeHandler(imageUrlArr.filter((_, i) => (i == statusIndex && !urlStatuses[i]) || (i != statusIndex && urlStatuses[i])).join(","));
                 setUrlStatuses((prevArray) => prevArray.map((value, i) => (i === statusIndex ? !value : value)));
             }
         }
     }
     
-    return <ResponsiveDiv style={"flex flex-col gap-5 "} children={<>
-                <label className={basicLabelStyle}>{props.inputName.toLocaleLowerCase()}</label> 
-                <input id={props.inputName.toLocaleLowerCase()} name={props.inputName.toLocaleLowerCase()} type="text" hidden />   
+    return <ResponsiveDiv style={"flex flex-col gap-5 " + props.style} children={<>
+                <label className={basicLabelStyle}>{props.name.toLocaleUpperCase()}</label> 
+                <input id={props.name.toLocaleLowerCase()} 
+                    name={props.name.toLocaleLowerCase()} 
+                    type="text" 
+                    value={imageUrls} 
+                    hidden
+                    onChange={(e) => setImageUrls(e.target.value)} 
+                />   
                 <ResponsiveDiv style="flex flex-row mt-3 mb-3 gap-2" children={<> 
                     {
-                        imageUrls.map((imageUrl, index) => {   
+                        imageUrlArr.map((imageUrl, index) => {   
                             const imageId = crypto.randomUUID();
                             const deleteButtonId = crypto.randomUUID();
                             return <ResponsiveDiv key={index} style="relative h-32 w-32" eventHandlerMap={eventHandlerMap(imageId, deleteButtonId, index)} children={<>
@@ -183,11 +181,11 @@ function ImageUrlInput(props: {
 }
 
 function ImageInput(props: {
-    inputName: string, 
-    inputValue: [FileList | null, React.Dispatch<React.SetStateAction<FileList | null>>],
-    style: string}) 
-{
-    const [files, setFiles] = props.inputValue as [FileList | null, React.Dispatch<React.SetStateAction<FileList | null>>];
+    name: string, 
+    value: [FileList | null, React.Dispatch<React.SetStateAction<FileList | null>>],
+    style: string
+}) {
+    const [files, setFiles] = props.value as [FileList | null, React.Dispatch<React.SetStateAction<FileList | null>>];
     const [errorMsg, setErrorMsg] = useState("");
 
     const addImage = (fileList: FileList) => {
@@ -253,14 +251,20 @@ function ImageInput(props: {
     };
 
     return (
-        <ResponsiveDiv style="flex flex-col gap-5" children={<>
-            <label className={basicLabelStyle}>{props.inputName}</label>
-            <label className={props.style + " " + basicTextFieldStyle + " trainsition hover:scale-102 hover:bg-black hover:text-white"} htmlFor={props.inputName.toLocaleLowerCase()}>
+        <ResponsiveDiv style="flex flex-col h-100 gap-5" children={<>
+            <label className={basicLabelStyle}>{props.name.toLocaleUpperCase()}</label> 
+            <label className={props.style + " " + basicTextFieldStyle + " trainsition hover:scale-102 hover:bg-black hover:text-white"} htmlFor={props.name.toLocaleLowerCase()}>
                 Upload Product Pictures
             </label>
-            <input id={props.inputName.toLocaleLowerCase()} name={props.inputName.toLocaleLowerCase()} 
-                type="file" multiple hidden onChange={(e) => addImage(e.target.files as FileList)}/>
-            <ResponsiveDiv style="mt-2 mb-2" children={<MonoStyleText style="text-red-500" content={errorMsg} />} />
+            <MonoStyleText style="text-green-400 bg-green-200 border-1 border-green-300 p-2" content="upload at least 1 images with .jpeg/.png format of <= 2MB" />   
+            <input id={props.name.toLocaleLowerCase()} 
+                name={props.name.toLocaleLowerCase()} 
+                type="file" 
+                multiple 
+                hidden 
+                onChange={(e) => addImage(e.target.files as FileList)}
+            />
+            <ResponsiveDiv style="mt-2 mb-2 h-10" children={<MonoStyleText style="text-red-500" content={errorMsg} />} />
             <ResponsiveDiv style="flex flex-row mt-3 mb-3 gap-2" children={<>
                 {files && Array.from(files).map((file, index) => {
                     const id = crypto.randomUUID();
@@ -281,24 +285,29 @@ function ImageInput(props: {
 }
 
 function InputField(props: {
-    inputName : string, 
-    inputType: string, 
-    inputValue: string | [FileList | null, React.Dispatch<React.SetStateAction<FileList | null>>],
+    name : string, 
+    type: string, 
+    value: string | number | [FileList | null, React.Dispatch<React.SetStateAction<FileList | null>>],
     style: string,
-    onTextChangeHandler?: Dispatch<SetStateAction<string>>
+    options?: string[],
+    valueChangeHandler?: (value: any) => void
 }) {
-    switch (props.inputType) {
+    switch (props.type) {
         case "text":
         case "password":
-            return <TextInput inputName={props.inputName} inputType={props.inputType} inputValue={props.inputValue as string} style={props.style} onTextChangeHandler={props.onTextChangeHandler}/>
+            return <TextInput name={props.name} type={props.type} value={props.value as string} style={props.style} 
+                valueChangeHandler={props.valueChangeHandler as (value: any) => void}/>
         case "textarea":
-            return <TextAreaInput inputName={props.inputName} inputValue={props.inputValue as string} style={props.style} onTextChangeHandler={props.onTextChangeHandler} />
+            return <TextAreaInput name={props.name} value={props.value as string} style={props.style} 
+                valueChangeHandler={props.valueChangeHandler as (value: any) => void} />
         case "option":
-            return <OptionInput inputName={props.inputName} inputValue={props.inputValue as string} style={props.style} />
+            return <OptionInput name={props.name} value={props.value as string} style={props.style} options={props.options as string[]} 
+                valueChangeHandler={props.valueChangeHandler as (value: any) => void}/>
         case "imageUrl":
-            return <ImageUrlInput inputName={props.inputName} inputValue={props.inputValue as string} style={props.style} />
+            return <ImageUrlInput name={props.name} value={props.value as string} style={props.style} 
+                valueChangeHandler={props.valueChangeHandler as (value: any) => void} />
         case "image":
-            return <ImageInput inputName={props.inputName} inputValue={props.inputValue as [FileList | null, React.Dispatch<React.SetStateAction<FileList | null>>]} style={props.style} />
+            return <ImageInput name={props.name} value={props.value as [FileList | null, React.Dispatch<React.SetStateAction<FileList | null>>]} style={props.style} />
         default:
             return <></> 
     }

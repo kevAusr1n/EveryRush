@@ -51,7 +51,7 @@ export function Pagination(props: {
             <WhiteButton buttonName="Previous" size="w-25 h-10" clickHandler={() => jumpToPage(props.page - 1)} />
             {renderPageButton(props.page)}
             <WhiteButton buttonName="Next" size="w-25 h-10" clickHandler={() => jumpToPage(props.page + 1)} />
-            <OptionInput inputName="" inputValue={"5,10,20,50"} style="w-15" inputChangeHandler={(value) => props.setSize(parseInt(value))} />
+            <OptionInput name="" value={props.size} options={[5, 10, 15, 20]} style="w-15" valueChangeHandler={props.setSize} />
             <BorderlessButton buttonName="/ PAGE" style="w-25 h-10" clickHandler={() => {}} />
         </>} />
     )

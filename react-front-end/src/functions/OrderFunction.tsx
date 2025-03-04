@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 import APICall from "../config/ApiConfig";
-import { Order } from "../type/EntityType";
+import { Order } from "../type/ObjectType";
 import { isStringEmpty } from "./Utils";
 
 async function getPaginatedOrders(props: {

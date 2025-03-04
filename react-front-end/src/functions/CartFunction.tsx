@@ -1,5 +1,5 @@
 import APICall from "../config/ApiConfig";
-import { CartItem } from "../type/EntityType";
+import { CartItem } from "../type/ObjectType";
 import { isStringEmpty } from "./Utils";
 
 async function getCartItem(props: {userId : string}) : Promise<CartItem[]> {

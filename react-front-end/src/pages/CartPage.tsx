@@ -7,7 +7,7 @@ import { addOrUpdateCartItem, getCartItem, removeFromCart } from "../functions/C
 import { ImageBrief } from "../components/Image";
 import { backServerEndpoint } from "../config/BackendServerConfig";
 import ResponsiveDiv from "../components/div/ResponsiveDiv";
-import { CartItem } from "../type/EntityType";
+import { CartItem } from "../type/ObjectType";
 import { isUserSignedIn } from "../functions/UserFunction";
 import SignInRequiredPage from "./SignInRequiredPage";
 import { MonoStyleText } from "../components/Text";

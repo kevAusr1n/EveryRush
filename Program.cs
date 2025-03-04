@@ -87,17 +87,8 @@ builder.Services.AddCors
 builder.Services.AddSignalR();
 
 builder.Services.AddTransient<EmailSender>();
-builder.Services.Configure<AuthMessageSenderConfig>(builder.Configuration);
-
-builder.Services.AddScoped<AuthService>();
-builder.Services.AddScoped<ProductService>();
-builder.Services.AddScoped<ContactService>();
-builder.Services.AddScoped<CartService>();
-
 builder.Services.AddSingleton<IUserIdProvider, EmailUserIdProvider>();
-
-//builder.Services.AddScoped<IAuthorizationHandler, CustomerAuthorizationHandler>();
-//builder.Services.AddScoped<IAuthorizationHandler, BusinessOwnerAuthorizationHandler>();
+builder.Services.AddScoped<FileService>();
 
 var app = builder.Build();
 

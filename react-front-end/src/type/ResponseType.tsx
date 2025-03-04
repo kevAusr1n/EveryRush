@@ -1,4 +1,4 @@
-import { Contact, Order, Product, Review, UnreadSender } from "./EntityType";
+import { Contact, Order, Product, Review, UnreadSender } from "./ObjectType";
 
 type GetProductsResponse = {
     products: Product[];
@@ -30,4 +30,11 @@ type GetReviewsResponse = {
     reviews: Review[]
 }
 
-export type { GetProductsResponse, GetContactsResponse, GetOrdersResponse, GetUnreadMessagesStatisticsResponse, GetReviewsResponse };
+type ApiResponse = {
+    result: string;
+    failureDescription: string;
+}
+
+const apiExceptionFailureDescription = "API request exception";
+export type { GetProductsResponse, GetContactsResponse, GetOrdersResponse, GetUnreadMessagesStatisticsResponse, GetReviewsResponse, ApiResponse };
+export{ apiExceptionFailureDescription };

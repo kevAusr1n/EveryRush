@@ -86,4 +86,14 @@ type Review = {
     createdAt: string;
 }
 
-export type { Product, Contact, CartItem, Order, OrderProcess, ChatMessage, UnreadSender, Review }
+type Input = {
+    name: string,
+    type: string,
+    value: string | [FileList | null, React.Dispatch<React.SetStateAction<FileList | null>>]
+    style: string,
+    options?: string[],
+    valueChangeHandler?: (value: any) => void,
+    eventHandlerMap?: (...params : any) => { [key : string] : () => void}
+}
+
+export type { Product, Contact, CartItem, Order, OrderProcess, ChatMessage, UnreadSender, Review, Input }

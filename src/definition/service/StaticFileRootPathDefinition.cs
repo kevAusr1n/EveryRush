@@ -1,4 +1,4 @@
-public class StaticFileRootPath
+public class StaticFileRootPathDefinition
 {
     public static string GetStaticFileRootPath()
     {

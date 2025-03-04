@@ -1,0 +1,1 @@
+public class AddProductResponse : ApiResponse {}

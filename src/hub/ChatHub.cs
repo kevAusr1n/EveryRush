@@ -27,7 +27,7 @@ public class ChatHub : Hub
             ToUserId = toUserId,
             Content = message,
             CreatedAt = DateTime.Now,
-            Status = ChatMessageConfig.Status.UNREAD
+            Status = ChatMessageDefinition.Status.UNREAD
         });
         await _appDbContext.SaveChangesAsync();
      
@@ -38,14 +38,14 @@ public class ChatHub : Hub
     public async Task MarkMessageAsRead(string messasgeId) 
     {
         var chatMessage = _appDbContext.ChatMessages.Where(m => m.Id == messasgeId).First();
-        chatMessage.Status = ChatMessageConfig.Status.READ;
+        chatMessage.Status = ChatMessageDefinition.Status.READ;
         await _appDbContext.SaveChangesAsync();
     }
 
     public async Task MarkMessageOfGivenSenderAsRead(string receiverid, string senderId) {
-        var messages = _appDbContext.ChatMessages.Where(m => m.ToUserId == receiverid && m.FromUserId == senderId && m.Status == ChatMessageConfig.Status.UNREAD);
+        var messages = _appDbContext.ChatMessages.Where(m => m.ToUserId == receiverid && m.FromUserId == senderId && m.Status == ChatMessageDefinition.Status.UNREAD);
         foreach (var message in messages) {
-            message.Status = ChatMessageConfig.Status.READ;
+            message.Status = ChatMessageDefinition.Status.READ;
         }
         await _appDbContext.SaveChangesAsync();
     }

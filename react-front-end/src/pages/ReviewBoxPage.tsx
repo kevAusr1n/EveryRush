@@ -2,7 +2,7 @@ import { Star } from "lucide-react";
 import ResponsiveDiv from "../components/div/ResponsiveDiv";
 import { MonoStyleText } from "../components/Text";
 import { RedButton, WhiteButton } from "../components/Button";
-import { Product, Review } from "../type/EntityType";
+import { Product, Review } from "../type/ObjectType";
 import { useState } from "react";
 import InputField from "../components/InputField";
 
@@ -29,7 +29,7 @@ function ReviewBoxPage(props: {
             }} />}
             <MonoStyleText style="w-full text-center underline transition hover:scale-110 hover:text-blue-500" content="expand reply" />
             {replyDropdown && <ResponsiveDiv style="flex flex-col gap-5 mt-5" children={<>
-                <InputField inputName="Comment" inputType="textarea" inputValue="" style="w-200 h-50" />
+                <InputField name="Comment" type="textarea" value="" style="w-200 h-50" />
                 <ResponsiveDiv style="w-full flex flex-row gap-5" children={<>
                     <WhiteButton buttonName="SUBMIT" size="w-60 h-10" clickHandler={() => {}} />
                     <RedButton buttonName="CANCEL" size="w-60 h-10" clickHandler={() => {

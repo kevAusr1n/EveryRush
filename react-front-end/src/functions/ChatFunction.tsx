@@ -1,5 +1,5 @@
 import APICall from "../config/ApiConfig";
-import { ChatMessage } from "../type/EntityType";
+import { ChatMessage } from "../type/ObjectType";
 import { GetUnreadMessagesStatisticsResponse } from "../type/ResponseType";
 
 async function getChatMessagesForConversation(props: {userid: string, retrieveNum: number}) : Promise<ChatMessage[]> {

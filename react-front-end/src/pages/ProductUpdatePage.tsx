@@ -2,8 +2,8 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { RedButton, WhiteButton } from "../components/Button";
 import ResponsiveDiv from "../components/div/ResponsiveDiv";
 import ProductStatusConfig from "../config/ProductStatusConfig";
-import { deleteProducts, updateProductStatus, updateProductStock } from "../functions/ProductFunction";
-import { Product } from "../type/EntityType";
+import { deleteProducts, updateProductStatus } from "../functions/ProductFunction";
+import { Product } from "../type/ObjectType";
 import { MonoStyleText } from "../components/Text";
 import { createSearchParams, useNavigate } from "react-router";
 

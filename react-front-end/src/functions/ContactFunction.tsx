@@ -20,23 +20,28 @@ async function getPaginatedContacts (props: {
 async function addOrUpdateContacts (props: {
     action : string,
     id: string,
-    formSubmitEvent: FormEvent<HTMLFormElement>
+    firstName: string,
+    lastName: string,
+    email: string,
+    phone: string,
+    address: string,
+    city: string,
+    state: string,
+    postcode: string
 }) : Promise<boolean> {
-    props.formSubmitEvent.preventDefault();
-    const formData = new FormData(props.formSubmitEvent.currentTarget);
     let isSucceed : boolean = false;
 
     var requestBody = {
         id: props.id,
         userId: localStorage.getItem('userid'),
-        firstname: formData.get('firstname'),
-        lastname: formData.get('lastname'),
-        email: formData.get('email'),
-        phone: formData.get('phone'),
-        address: formData.get('address'),
-        city: formData.get('city'),
-        state: formData.get('state'),
-        postcode: formData.get('postcode'),
+        firstName: props.firstName,
+        lastName: props.firstName,
+        email: props.email,
+        phone: props.phone,
+        address: props.address,
+        city: props.city,
+        state: props.state,
+        postcode: props.postcode,
     }
 
     await APICall().post(`/api/contacts/${props.action}`, requestBody, {

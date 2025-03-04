@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import { CartItem, Product } from "../type/EntityType";
+import { CartItem, Product } from "../type/ObjectType";
 import ResponsiveDiv from "../components/div/ResponsiveDiv";
 import { ImageBrief, ImageExhibition } from "../components/Image";
 import { backServerEndpoint } from "../config/BackendServerConfig";

@@ -21,15 +21,17 @@ public class ReviewController : ControllerBase
     [HttpPost]
     [Authorize(Roles = "Customer,BusinessOwner")]
     public async Task<ActionResult<WriteReviewResponse>> WriteReview([FromBody] WriteReviewRequest request) {
-        if (ProductReviewConfig.Type.REVIEW == request.Type) {
+        if (ProductReviewDefinition.Type.REVIEW == request.Type) {
             var isReviewExisted = _appDbContext.ProductReviews
                 .Where(r => r.ProductId == request.ProductId && r.OrderId == request.OrderId && r.AppUserId == request.UserId).Any();
             if (isReviewExisted) {
                 return new WriteReviewResponse {
-                    Result = RequestResult.FAILURE
+                    Result = ApiResponseDefinition.Result.FAILURE,
+                    FailureDescription = ApiResponseDefinition.Failure.ReviewRelatedFailure.ONLY_ONE_REVIEW_ALLOWED
                 };
             }
         }
+
         ProductReview review = new ProductReview {
             Id = Guid.NewGuid().ToString(),
             ProductId = request.ProductId,
@@ -40,11 +42,12 @@ public class ReviewController : ControllerBase
             Rating = request.Rating,
             CreatedAt = DateTime.Now
         };
+        
         _appDbContext.ProductReviews.Add(review);
         await _appDbContext.SaveChangesAsync();
 
         return new WriteReviewResponse {
-            Result = RequestResult.SUCCESS 
+            Result = ApiResponseDefinition.Result.SUCCESS 
         };
     }
 
@@ -62,7 +65,7 @@ public class ReviewController : ControllerBase
         var reviewQuery = 
             from review in _appDbContext.ProductReviews
             join user in _appDbContext.AppUsers on review.AppUserId equals user.Id
-            where review.ProductId == productId && review.Type == ProductReviewConfig.Type.REVIEW
+            where review.ProductId == productId && review.Type == ProductReviewDefinition.Type.REVIEW
             select new ProductReviewView {
                 Id = review.Id,
                 ProductId = review.ProductId,

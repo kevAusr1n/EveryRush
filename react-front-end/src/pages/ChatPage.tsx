@@ -5,7 +5,7 @@ import { BlackButton, BorderlessButton, WhiteButton } from "../components/Button
 import { useNavigate, useSearchParams } from "react-router";
 import * as signalR from "@microsoft/signalr";
 import { isStringEmpty } from "../functions/Utils";
-import { ChatMessage } from "../type/EntityType";
+import { ChatMessage } from "../type/ObjectType";
 import { getChatMessagesForConversation } from "../functions/ChatFunction";
 
 

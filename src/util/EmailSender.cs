@@ -1,16 +1,8 @@
 using Microsoft.AspNetCore.Identity.UI.Services;
-using Microsoft.Extensions.Options;
 using System.Net.Mail;
 
 public class EmailSender : IEmailSender
 {
-    public EmailSender(IOptions<AuthMessageSenderConfig> configAccessor)
-    {
-        Config = configAccessor.Value;
-    }
-
-    public AuthMessageSenderConfig Config { get; }
-
     public async Task SendEmailAsync(string toEmail, string subject, string message)
     {
         Console.WriteLine("Sending email to " + toEmail + "\n subject: " + subject + "\n message: " + message);

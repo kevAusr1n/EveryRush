@@ -55,13 +55,13 @@ public class OrderController : ControllerBase
             on order.AppUserId equals buyer.Id
             join seller in _appDbContext.AppUsers
             on purchaseProduct.AppUserId equals seller.Id
-            where RoleConfig.BUSINESS_OWNER.Equals(role) ? order.SellerId == userId : order.AppUserId == userId
+            where UserDefinition.Role.BUSINESS_OWNER.Equals(role) ? order.SellerId == userId : order.AppUserId == userId
             select new { order, buyer, seller, purchaseProduct };
         
         var orderAndProcessJoinQuery = from order in orderQuery
             join orderProcess in _appDbContext.OrderProcesses 
             on order.Id equals orderProcess.OrderId
-            where RoleConfig.BUSINESS_OWNER.Equals(role) ? order.SellerId == userId : order.AppUserId == userId
+            where UserDefinition.Role.BUSINESS_OWNER.Equals(role) ? order.SellerId == userId : order.AppUserId == userId
             select new { order, orderProcess };
 
         var orderFindRelatedProductQuery = 
@@ -153,47 +153,67 @@ public class OrderController : ControllerBase
             if (user == null) 
             {
                 return new PlaceOrderResponse {
-                    Result = RequestResult.FAILURE,
-                    Comment = RequestResult.Comment.USER_NOT_EXIST
+                    Result = ApiResponseDefinition.Result.FAILURE,
+                    FailureDescription = ApiResponseDefinition.Failure.UserRelatedFailure.USER_NOT_EXIST
                 };
             }
 
             if (orderRequest.PurchaseProducts.Count == 0) 
             {
                 return new PlaceOrderResponse {
-                    Result = RequestResult.FAILURE
+                    Result = ApiResponseDefinition.Result.FAILURE
                 };
             }
             var products = _appDbContext.Products
                 .AsEnumerable()
-                .Where(p => orderRequest.PurchaseProducts.Select(op => op.Id).Contains(p.Id))
+                .Where(
+                    p => orderRequest.PurchaseProducts.Select(op => op.Id).Contains(p.Id) 
+                    && ProductDefinition.Status.DELETED != p.Status 
+                    && ProductDefinition.Status.OUT_OF_STOCK !=p.Status
+                )
                 .ToList();
 
             if (orderRequest.PurchaseProducts.Count != products.Count) 
             {
+                IList<string> nonexistedProducIds = orderRequest.PurchaseProducts
+                    .Where(op => !products.Select(p => p.Id).Contains(op.Id))
+                    .Select(op => op.Id)
+                    .ToList();
                 return new PlaceOrderResponse {
-                    Result = RequestResult.FAILURE
+                    Result = ApiResponseDefinition.Result.FAILURE,
+                    FailureDescription = ApiResponseDefinition.Failure.ProductRelatedFailure.PRODUCT_NOT_EXIST,
+                    FailedProductNames = _appDbContext.Products.Where(p => nonexistedProducIds.Contains(p.Id)).Select(p => p.Name).ToList()
                 };
             }
             products = products.OrderBy(p => p.Id).ToList();
             orderRequest.PurchaseProducts = orderRequest.PurchaseProducts.OrderBy(p => p.Id).ToList();
             decimal totalPrice = 0;
+            IList<string> outOfStockProducIds = new List<string>();
             for (int i = 0; i < products.Count; i++) 
             {
                 if (orderRequest.PurchaseProducts[i].Quantity <= 0 || orderRequest.PurchaseProducts[i].Quantity > products[i].Stock)
                 {
-                    return new PlaceOrderResponse {
-                        Result = RequestResult.FAILURE
-                    };
+                    outOfStockProducIds.Add(products[i].Id);
+                    continue;
+
                 }
                 products[i].Stock -= orderRequest.PurchaseProducts[i].Quantity;
                 totalPrice += products[i].Price * orderRequest.PurchaseProducts[i].Quantity;
             }
+            if (outOfStockProducIds.Count > 0) 
+            {
+                return new PlaceOrderResponse {
+                    Result = ApiResponseDefinition.Result.FAILURE,
+                    FailureDescription = ApiResponseDefinition.Failure.ProductRelatedFailure.PRODUCT_OUT_OF_STOCK,
+                    FailedProductNames = _appDbContext.Products.Where(p => outOfStockProducIds.Contains(p.Id)).Select(p => p.Name).ToList()
+                };
+            }
+
             Order order = new Order() {
                 Id = Guid.NewGuid().ToString(),
                 AppUserId = orderRequest.UserId,
                 SellerId = products.First().AppUserId,
-                Status = OrderStatus.PENDING,
+                Status = OrderDefinition.Status.PENDING,
                 CreatedAt = DateTime.Now,
                 FullName = orderRequest.FullName,
                 Email = orderRequest.Email,
@@ -218,8 +238,8 @@ public class OrderController : ControllerBase
             OrderProcess orderProcessForThisOrder = new OrderProcess() {
                 Id = Guid.NewGuid().ToString(),
                 OrderId = order.Id,
-                FromOrderStatus = OrderStatus.PENDING,
-                ToOrderStatus = OrderStatus.PENDING,
+                FromOrderStatus = OrderDefinition.Status.PENDING,
+                ToOrderStatus = OrderDefinition.Status.PENDING,
                 Event = "Order Placed",
                 CreatedAt = DateTime.Now
             };
@@ -241,7 +261,7 @@ public class OrderController : ControllerBase
         await _appDbContext.SaveChangesAsync();
 
         return new PlaceOrderResponse {
-            Result = RequestResult.SUCCESS
+            Result = ApiResponseDefinition.Result.SUCCESS
         };
     }
 

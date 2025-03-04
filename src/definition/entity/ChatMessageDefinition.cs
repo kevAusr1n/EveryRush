@@ -1,4 +1,4 @@
-public class ChatMessageConfig
+public class ChatMessageDefinition
 {
     public class Status 
     {

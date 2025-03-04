@@ -6,6 +6,6 @@ public class AddOrUpdateProductRequest
     public string? Description { get; set; }
     public decimal Price { get; set; } = 0;
     public int? Stock { get; set; }
-    public string? OldImageUrl {get; set;}
+    public string? ToKeepImageUrl {get; set;}
     public IList<IFormFile>? Files {get; set;}
 }

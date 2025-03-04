@@ -1,1 +1,1 @@
-public class UpdateProductStockResponse : BasicRequestResponse {}
+public class UpdateProductStockResponse : ApiResponse {}
