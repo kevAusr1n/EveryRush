@@ -8,7 +8,7 @@ public class ApiResponseDefinition
 
     public class Failure 
     {
-        public static class UserRelatedFailure 
+        public class UserRelatedFailure 
         {
             public static readonly string EMAIL_EXIST = "email already exist";
             public static readonly string USER_NOT_EXIST = "user not exist";
@@ -25,14 +25,14 @@ public class ApiResponseDefinition
             public static readonly string INVALID_USER_INFO_FOR_UPDATE = "given user info is invalid for update";
         }
 
-        public static class ProductRelatedFailure 
+        public class ProductRelatedFailure 
         {   
             public static readonly string NO_IMAGE_PROVIDED = "product must have image as a part of detail";
             public static readonly string PRODUCT_NOT_EXIST = "some or products not exist";
             public static readonly string PRODUCT_OUT_OF_STOCK = "some or products out of stock";
         }
 
-        public static class ReviewRelatedFailure 
+        public class ReviewRelatedFailure 
         {
             public static readonly string ONLY_ONE_REVIEW_ALLOWED = "you have already reviewed this product for this oder";
         }
