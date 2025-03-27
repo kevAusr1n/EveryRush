@@ -1,5 +1,18 @@
 # EveryRush
 ASP.NET + React APP
+
+To start and test this app: 
+
+cd your-path-to/EveryRush
+dotnet run 
+
+to start back-end
+
+cd your-path-to/EveryRush/react-front-end
+npm run dev
+
+to start front-end
+
 <img width="1799" alt="image" src="https://github.com/user-attachments/assets/33567540-cc8d-4985-a978-8ea55972388b" />
 <img width="1769" alt="image" src="https://github.com/user-attachments/assets/8bfc1f20-2d50-47b5-914a-ea2fb779d006" />
 <img width="1758" alt="image" src="https://github.com/user-attachments/assets/390c8bde-f442-44ab-a3cd-3d26ecef025e" />
