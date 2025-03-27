@@ -21,6 +21,7 @@ function ThirdPartySignInCheckPage() {
     const [thirdPartySignUpResult, setThirdPartySignUpResult] = useState("");
     const updatePasswordErrorMsg = useRef("");
     const [passwordSetUp, setPasswordSetUp] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     const getGoogleUserInfo = async () => {
         const response = await axios.get("https://www.googleapis.com/oauth2/v3/userinfo", {
@@ -37,6 +38,7 @@ function ThirdPartySignInCheckPage() {
         if (apiResponse.result == "success") {
             navigate("/");
         } else {
+            setLoading(false);
             setEmail(response.data.email);
             setUsername(response.data.name);
         }
@@ -49,6 +51,7 @@ function ThirdPartySignInCheckPage() {
             password: password,
             role: role,
             provider: "google",
+            providerToken: token
         });
         if (apiResponse.result == "success") {
             navigate("/");
@@ -72,7 +75,7 @@ function ThirdPartySignInCheckPage() {
     }
 
     return (
-        <ResponsiveDiv style="flex flex-col items-center" children={<>
+        !loading && <ResponsiveDiv style="flex flex-col items-center" children={<>
             <ResponsiveDiv style="mt-20 mb-20 gap-5 p-20 flex flex-col items-start bg-white shadow-xl" children={<>
                 <ResponsiveDiv style="flex flex-row h-10 items-end gap-5" children={<>
                     <label className="font-bold font-mono">Email</label>

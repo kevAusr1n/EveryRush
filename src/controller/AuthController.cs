@@ -1,17 +1,13 @@
 using System.Diagnostics.CodeAnalysis;
-using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http.Headers;
-using System.Security.Claims;
-using System.Text.Json.Nodes;
+using System.Reflection.Metadata;
 using EveryRush.Entity;
 using EveryRush.Request;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Microsoft.IdentityModel.Tokens;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
 using Newtonsoft.Json.Linq;
 
 namespace EveryRush.Controller;
@@ -44,56 +40,74 @@ public class AuthController : ControllerBase
         [FromQuery][NotNull] string token,
         [FromQuery][NotNull] string provider) 
     {
-        if (!ThirdPartyAuthDefinition.FromGoogle(provider)) 
-        {
+        AppUser user = await _userManager.FindByEmailAsync(email);
+        if (user == null) {
             return new ThirdPartySignInCheckResponse {
                 Result = ApiResponseDefinition.Result.FAILURE,
-                FailureDescription = ApiResponseDefinition.Failure.UserRelatedFailure.INVALID_AUTH_PROVIDER
+                FailureDescription = ApiResponseDefinition.Failure.UserRelatedFailure.THIRD_PARTY_USER_FIRSTTIME_SIGNIN
             };
         }
-        
-        using (var client = new HttpClient())
-        {
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            var response = await client.GetAsync("https://www.googleapis.com/oauth2/v3/userinfo");
-            if (!response.IsSuccessStatusCode)
-            {
-                return new ThirdPartySignInCheckResponse {
-                    Result = ApiResponseDefinition.Result.FAILURE,
-                    FailureDescription = ApiResponseDefinition.Failure.UserRelatedFailure.INVALID_AUTH_TOKEN
-                };
-            }
-            var jsonResponse = JObject.Parse(await response.Content.ReadAsStringAsync());
-            if (jsonResponse.GetValue("email") == null || !email.Equals(jsonResponse.GetValue("email").ToString())) 
-            {
-                return new ThirdPartySignInCheckResponse {
-                    Result = ApiResponseDefinition.Result.FAILURE,
-                    FailureDescription = ApiResponseDefinition.Failure.UserRelatedFailure.INVALID_AUTH_TOKEN
-                };
-            } 
-            AppUser user = await _userManager.FindByEmailAsync(email);
-            if (user == null) {
-                return new ThirdPartySignInCheckResponse {
-                    Result = ApiResponseDefinition.Result.FAILURE,
-                    FailureDescription = ApiResponseDefinition.Failure.UserRelatedFailure.THIRD_PARTY_USER_FIRSTTIME_SIGNIN
-                };
-            }
-            var role = await _userManager.GetRolesAsync(user);        
-            return new ThirdPartySignInCheckResponse {
-                Result = ApiResponseDefinition.Result.SUCCESS,
-                Id = user.Id,
-                UserName = user.AlternativeName,
-                Email = user.Email,
-                Role = role[0],    
-                Provider = provider
-            };      
-        }
+
+        var thisUser = await _userManager.FindByEmailAsync(email);
+        var thisUserRole = await _userManager.GetRolesAsync(user);
+        await _signInManager.SignInAsync(user, true);
+           
+        return new ThirdPartySignInCheckResponse {
+            Result = ApiResponseDefinition.Result.SUCCESS,
+            Id = thisUser.Id,
+            UserName = thisUser.AlternativeName,
+            Email = thisUser.Email,
+            Role = thisUserRole[0],    
+            Provider = provider
+        };      
     }
 
     [HttpPost("signin")]
     public async Task<ActionResult<SignInResponse>> SignIn([FromBody] SignInRequest request) 
     {
-        return await DoSignIn(request);
+        if (!String.IsNullOrEmpty(request.Provider)) 
+        {
+            return new SignInResponse {
+                Result = ApiResponseDefinition.Result.FAILURE,
+                FailureDescription = ApiResponseDefinition.Failure.GeneralFailure.INVALID_REQUEST
+            };
+        }
+        AppUser user = await _userManager.FindByEmailAsync(request.Email);
+        if (user == null) 
+        {
+            return new SignInResponse {
+                Result = ApiResponseDefinition.Result.FAILURE,
+                FailureDescription = ApiResponseDefinition.Failure.UserRelatedFailure.USER_NOT_EXIST
+            };
+        }
+
+
+        if (request.ConfirmRequired && !await _userManager.IsEmailConfirmedAsync(user)) 
+        {
+            return new SignInResponse {
+                Result = ApiResponseDefinition.Result.FAILURE,
+                FailureDescription = ApiResponseDefinition.Failure.UserRelatedFailure.EMAIL_NOT_CONFIRMED
+            };
+        }
+        var result = await _signInManager.PasswordSignInAsync(request.Email, request.Password, true, false);
+        if (result.Succeeded) 
+        {   
+            var role = await _userManager.GetRolesAsync(user);
+            return new SignInResponse {
+                Result = ApiResponseDefinition.Result.SUCCESS,
+                Id = user.Id,
+                Email = user.Email,
+                UserName = user.AlternativeName,
+                Role = role[0]
+            };
+        }
+        else 
+        {
+            return new SignInResponse {
+                Result = ApiResponseDefinition.Result.FAILURE,
+                FailureDescription = ApiResponseDefinition.Failure.UserRelatedFailure.SIGN_INFO_INCORRECT
+            };
+        }
     }
 
     [HttpPost("signup")]
@@ -118,6 +132,15 @@ public class AuthController : ControllerBase
         var userStoreResult = IdentityResult.Success;
         if (ThirdPartyAuthDefinition.FromGoogle(request.Provider)) 
         {
+            if (!await ValidateGoogleToken(request.Email, request.ProviderToken)) 
+            {
+                return new SignUpResponse {
+                    Result = ApiResponseDefinition.Result.FAILURE,
+                    FailureDescription = ApiResponseDefinition.Failure.UserRelatedFailure.INVALID_AUTH_TOKEN
+                };
+            }
+            
+            user.EmailConfirmed = true;
             userStoreResult = 
                 String.IsNullOrEmpty(request.Password) ? 
                 await _userManager.CreateAsync(user) : 
@@ -132,16 +155,15 @@ public class AuthController : ControllerBase
         {    
             if (ThirdPartyAuthDefinition.FromGoogle(request.Provider)) 
             {
-                SignInResponse signInResponse = await DoSignIn(new SignInRequest() {
-                    Email = request.Email,
-                    Provider = request.Provider
-                });
+                var thisUser = await _userManager.FindByEmailAsync(request.Email);
+                var thisUserRole = await _userManager.GetRolesAsync(user);
+                await _signInManager.SignInAsync(user, true);
                 return new SignUpResponse {
                     Result = ApiResponseDefinition.Result.SUCCESS,
-                    Id = signInResponse.Id,
-                    Email = request.Email,
-                    UserName = signInResponse.UserName,
-                    Role = signInResponse.Role,
+                    Id = thisUser.Id,
+                    Email = thisUser.Email,
+                    UserName = thisUser.AlternativeName,
+                    Role = thisUserRole[0],
                     Provider = request.Provider
                 };
             } 
@@ -259,54 +281,29 @@ public class AuthController : ControllerBase
         };
     }
 
-    public async Task<SignInResponse> DoSignIn(SignInRequest request)
-    {
-        AppUser user = await _userManager.FindByEmailAsync(request.Email);
-        if (user == null) 
-        {
-            return new SignInResponse {
-                Result = ApiResponseDefinition.Result.FAILURE,
-                FailureDescription = ApiResponseDefinition.Failure.UserRelatedFailure.USER_NOT_EXIST
-            };
-        }
-
-        if (ThirdPartyAuthDefinition.FromGoogle(request.Provider)) 
-        {
-            var role = await _userManager.GetRolesAsync(user);
-            await _signInManager.SignInAsync(user, true);
-
-            return new SignInResponse {
-                Id = user.Id,
-                Email = user.Email,
-                UserName = user.AlternativeName,
-                Role = role[0]
-            };
-        }
-        if (request.ConfirmRequired && !await _userManager.IsEmailConfirmedAsync(user)) 
-        {
-            return new SignInResponse {
-                Result = ApiResponseDefinition.Result.FAILURE,
-                FailureDescription = ApiResponseDefinition.Failure.UserRelatedFailure.EMAIL_NOT_CONFIRMED
-            };
-        }
-        var result = await _signInManager.PasswordSignInAsync(request.Email, request.Password, true, false);
-        if (result.Succeeded) 
-        {   
-            var role = await _userManager.GetRolesAsync(user);
-            return new SignInResponse {
-                Result = ApiResponseDefinition.Result.SUCCESS,
-                Id = user.Id,
-                Email = user.Email,
-                UserName = user.AlternativeName,
-                Role = role[0]
-            };
-        }
-        else 
-        {
-            return new SignInResponse {
-                Result = ApiResponseDefinition.Result.FAILURE,
-                FailureDescription = ApiResponseDefinition.Failure.UserRelatedFailure.SIGN_INFO_INCORRECT
-            };
-        } 
+    [HttpGet("roles")]
+    public async Task<GetRolesResponse> GetRoles() {
+        var roles = await _roleManager.Roles.ToListAsync();
+        return new GetRolesResponse {
+            Result = ApiResponseDefinition.Result.SUCCESS,
+            Roles = roles.Select(x => x.Name).ToList()
+        };
     }
+
+    public async Task<Boolean> ValidateGoogleToken(string email, string token) {
+        var client = new HttpClient(); 
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+        var response = await client.GetAsync("https://www.googleapis.com/oauth2/v3/userinfo");
+        if (!response.IsSuccessStatusCode)
+        {
+            return false;
+        }
+        var jsonResponse = JObject.Parse(await response.Content.ReadAsStringAsync());
+        if (jsonResponse.GetValue("email") == null || !email.Equals(jsonResponse.GetValue("email").ToString())) 
+        {
+            return false;
+        } 
+        return true;
+    }
+
 }

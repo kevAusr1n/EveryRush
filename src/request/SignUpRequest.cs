@@ -28,4 +28,6 @@ public class SignUpRequest
     public bool doSignInAfterSignUp {get;set;} = false;
 
     public string? Provider {get;set;}
+
+    public string? ProviderToken {get;set;}
 }

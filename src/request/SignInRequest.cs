@@ -20,4 +20,6 @@ public class SignInRequest
     public Boolean ConfirmRequired {get;set;} = true;
 
     public String? Provider {get;set;}
+
+    public String? ProviderToken {get;set;}
 }

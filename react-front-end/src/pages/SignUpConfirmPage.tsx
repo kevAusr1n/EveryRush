@@ -31,7 +31,7 @@ function SignUpConfirmPage() {
         <ResponsiveDiv style="flex flex-col mt-40 items-center" children={<>
             <ResponsiveDiv style="flex flex-col gap-5" children={<>
                 <MonoStyleText style="text-xl" content={"A confirmation code is send to " + email + ". Please use it to activate your account."} />
-                <InputField name="Confirmation Code" type="text" value={code} style="w-200" valueChangeHandler={setCode} />
+                <InputField name="Confirmation Code" type="text" value={code} style="w-200" valueChangeHandler={(e) => {setCode(e.target.value)}} />
                 <BlackButton buttonName="CONFIRM" size="w-40 h-10" clickHandler={() => {
                     confirmEmailHandler();
                 }} />

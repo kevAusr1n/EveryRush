@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router';
-import { signUp } from '../functions/UserFunction';
-import { useState } from 'react';
+import { getRoles, signUp } from '../functions/UserFunction';
+import { useEffect, useState } from 'react';
 import ResponsiveDiv from '../components/div/ResponsiveDiv';
 import { MonoStyleText } from '../components/Text';
 import { Input } from '../type/ObjectType';
@@ -14,12 +14,25 @@ function SignUpPage() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [passwordConfirm, setPasswordConfirm] = useState("");
-    const [role, setRole] = useState("Customer");
+    const [roles, setRoles] = useState<string[]>([]);
+    const [role, setRole] = useState("");
 
     const [emailCheckMsg, setEmailCheckMsg] = useState("");
     const [passwordCheckMsg, setPasswordCheckMsg] = useState("");
     const [passwordConfirmCheckMsg, setPasswordConfirmCheckMsg] = useState("");
     const [signUpResultMsg, setSignUpResultMsg] = useState("");
+    
+    const getRolesHandler = async () => {
+        var retrievedRoles = await getRoles();
+        if (retrievedRoles != undefined && retrievedRoles.length > 0) {
+            setRole(retrievedRoles[0]);
+            setRoles(retrievedRoles);
+        }
+    }
+
+    useEffect(() => {
+        getRolesHandler();
+    }, []);
 
     const signUpInputs: Input[] = [
         { name: "email", type: "text", value: email, style: "w-100", 
@@ -52,9 +65,8 @@ function SignUpPage() {
                 }
             } 
         },
-        { name: "role", type: "option", value: role, options: ["Customer", "BusinessOwner"], style:"w-100", valueChangeHandler: setRole },
+        { name: "role", type: "option", value: role, options: roles, style:"w-100", valueChangeHandler: setRole },
     ];
-
 
     const checkMsgs: string[] = [emailCheckMsg, "", passwordCheckMsg, passwordConfirmCheckMsg, ""];
 
@@ -76,7 +88,8 @@ function SignUpPage() {
             password: password,
             email: email,
             role: role,
-            provider: ""
+            provider: "",
+            providerToken: ""
         });
         if (apiResponse.result == "success") {
             navigate(`/signup-confirm?email=${email}`);

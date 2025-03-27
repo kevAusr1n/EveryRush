@@ -8,6 +8,11 @@ public class ApiResponseDefinition
 
     public class Failure 
     {
+        public class GeneralFailure
+        {
+            public static readonly string INVALID_REQUEST = "invalid request";
+        }
+        
         public class UserRelatedFailure 
         {
             public static readonly string EMAIL_EXIST = "email already exist";

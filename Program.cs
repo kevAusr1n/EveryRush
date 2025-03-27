@@ -26,8 +26,32 @@ builder.Services.AddDbContext<AppDbContext>
 (
     connDbOptions => connDbOptions.UseMySql
     (
-        "server=127.0.0.1;port=3306;user=root;password=key123456;database=identitymysqldatabase", 
-        new MySqlServerVersion(new Version(8, 4, 3))
+        builder.Configuration.GetConnectionString("AppDbContext"),
+        ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("AppDbContext"))
+    )
+    .UseSeeding
+    ((context, _) =>
+        {
+            var roles = context.Set<AppRole>().ToList();
+            if (roles == null || roles.Count == 0)
+            {
+                context.Set<AppRole>().Add(new AppRole { Id = Guid.NewGuid().ToString(), Name = "Customer", NormalizedName = "CUSTOMER"});
+                context.Set<AppRole>().Add(new AppRole { Id = Guid.NewGuid().ToString(), Name = "BusinessOwner", NormalizedName = "BUSINESSOWNER"});
+                context.SaveChanges();
+            }
+        }
+    )
+    .UseAsyncSeeding
+    (async (context, _, cancellationToken) =>
+        {
+            var roles = await context.Set<AppRole>().ToListAsync();
+            if (roles == null || roles.Count == 0)
+            {
+                context.Set<AppRole>().Add(new AppRole { Name = "Customer" });
+                context.Set<AppRole>().Add(new AppRole { Name = "BusinessOwner" });
+                await context.SaveChangesAsync(cancellationToken);
+            }
+        }
     )
     .LogTo(Console.WriteLine, LogLevel.Error)
 );
@@ -54,7 +78,7 @@ builder.Services.Configure<IdentityOptions>
         options.Password.RequireLowercase = true;
         options.Password.RequireNonAlphanumeric = true;
         options.Password.RequireUppercase = true;
-        options.Password.RequiredLength = 6;
+        options.Password.RequiredLength = 8;
         options.Password.RequiredUniqueChars = 1;
 
         // Lockout settings.

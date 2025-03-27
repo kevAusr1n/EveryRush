@@ -3,6 +3,7 @@ import { FormEvent } from "react";
 import APICall from "../config/ApiConfig";
 import { getDefaultAuthScheme } from "../config/AuthConfig";
 import { apiExceptionFailureDescription, ApiResponse } from "../type/ResponseType";
+import { data } from "react-router";
 
 
 function setLoginSuccessUserInfoFromResponse(res : any) {
@@ -66,6 +67,7 @@ async function signUp (props: {
     password: string,
     role: string,
     provider: string
+    providerToken: string
  }) : Promise<ApiResponse> {
     let apiResponse : ApiResponse = { result: "failure", failureDescription: ""} as ApiResponse;
 
@@ -75,6 +77,7 @@ async function signUp (props: {
         "password": props.password,
         "role": props.role,
         "provider": props.provider,
+        "providerToken": props.providerToken
     }
 
     await APICall().post(`/api/user/signup`, requestBody)
@@ -215,5 +218,16 @@ async function isThirdPartyUserRegistered(props: {
     return apiResponse;;
 }
 
-export { isUserSignedIn , signOut , signIn, signUp, EditUser, isUserCustomerOrGuest };
+async function getRoles() {
+    var roles: string[] = [];
+    await APICall().get(`/api/user/roles`)
+    .then((res) => {
+        if (res.data.result == "success") {
+            roles = res.data.roles;
+        }
+    })
+    return roles;
+}
+
+export { isUserSignedIn , signOut , signIn, signUp, EditUser, isUserCustomerOrGuest, getRoles };
 export { sendPasswordResetEmail, resetPassword, signUpConfirm, isThirdPartyUserRegistered };
