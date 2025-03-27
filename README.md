@@ -5,9 +5,23 @@ To start and test this app:
 
 cd your-path-to/EveryRush
 
+modify "ConnectionStrings" in application.json to set your own MySQL database source
+
+typing command:
+
+dotnet ef migrations add "any-name-for-migration" 
+
+dotnet ef database update
+
+to setup the database tables and seeding data
+
+typing command:
+
 dotnet run 
 
 to start back-end
+
+typing command:
 
 cd your-path-to/EveryRush/react-front-end
 
