@@ -4,11 +4,13 @@ ASP.NET + React APP
 To start and test this app: 
 
 cd your-path-to/EveryRush
+
 dotnet run 
 
 to start back-end
 
 cd your-path-to/EveryRush/react-front-end
+
 npm run dev
 
 to start front-end
