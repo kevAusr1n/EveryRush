@@ -48,18 +48,26 @@ public class AuthController : ControllerBase
             };
         }
 
-        var thisUser = await _userManager.FindByEmailAsync(email);
-        var thisUserRole = await _userManager.GetRolesAsync(user);
-        await _signInManager.SignInAsync(user, true);
-           
+        if (ThirdPartyAuthDefinition.FromGoogle(provider) && await ValidateGoogleToken(email, token))  
+        {
+            var thisUser = await _userManager.FindByEmailAsync(email);
+            var thisUserRole = await _userManager.GetRolesAsync(user);
+            await _signInManager.SignInAsync(user, true);
+            
+            return new ThirdPartySignInCheckResponse {
+                Result = ApiResponseDefinition.Result.SUCCESS,
+                Id = thisUser.Id,
+                UserName = thisUser.AlternativeName,
+                Email = thisUser.Email,
+                Role = thisUserRole[0],    
+                Provider = provider
+            };   
+        }   
+
         return new ThirdPartySignInCheckResponse {
-            Result = ApiResponseDefinition.Result.SUCCESS,
-            Id = thisUser.Id,
-            UserName = thisUser.AlternativeName,
-            Email = thisUser.Email,
-            Role = thisUserRole[0],    
-            Provider = provider
-        };      
+            Result = ApiResponseDefinition.Result.FAILURE,
+            FailureDescription = ApiResponseDefinition.Failure.UserRelatedFailure.INVALID_AUTH_TOKEN
+        };
     }
 
     [HttpPost("signin")]

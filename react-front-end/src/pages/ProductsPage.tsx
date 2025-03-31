@@ -14,14 +14,17 @@ import { MonoStyleText } from "../components/Text";
 import ProductUpdatePage from "./ProductUpdatePage";
 
 function ProductsPage() {
+    const gridArrangement = "grid 2xl:grid-cols-4 xl:grid-cols-3 lg:grid-cols-2 grid-cols-1";
+    const rowArrangement = "grid grid-cols-1";
+
     const navigate = useNavigate();
     const [refresh, setRefresh] = useState(false);
     const [size, setSize]  = useState(5);
     const [page, setPage] = useState(1);
     const [searchTerm, setSearchTerm] = useState("");
-    const [orderTerm, setOrderTerm] = useState("Popularity");
-    const initialArrangement = "grid grid-cols-4";
-    const [arrangement, setArrangement] = useState<string>(initialArrangement);
+    const [orderTerm, setOrderTerm] = useState("");
+    const [selectedOrderTermIndex, setSelectedOrderTermIndex] = useState(-1);
+    const [arrangementType, setArrangementType] = useState<string>("grid");
     const [response, setResponse] = useState<GetProductsResponse>({products: [], totalPages: 0, totalCount: 0});
 
     useEffect(() => getPaginatedProducts({
@@ -37,26 +40,27 @@ function ProductsPage() {
             isUserCustomerOrGuest() && 
             <ResponsiveDiv style="" children={<>
                 <ResponsiveDiv style="flex flex-row" children={<>
-                    <ResponsiveDiv style="w-1/5" key={crypto.randomUUID()} children={<>
-                        <ResponsiveDiv style="mt-20 mb-20 ml-5 py-10 flex flex-col items-center bg-white shadow-xl" children={<>
-                            <ResponsiveDiv style="ml-5 mr-5" children={<>
+                    <ResponsiveDiv style={"invisible w-0 md:visible md:w-1/2 lg:w-1/3 xl:w-1/4 2xl:w-1/5"}  key={crypto.randomUUID()} children={<>
+                        <ResponsiveDiv style="py-20 flex flex-col items-center bg-white h-full fixed" children={<>
+                            <ResponsiveDiv style="ml-5" children={<>
                                 <FilterSide 
-                                    orderTerms={["Popularity", "Price Ascending", "Price Descending", "Newest Product", "Oldest Product"]}
+                                    orderTerms={["Price Ascending", "Price Descending", "Newest Product", "Oldest Product"]}
                                     setOrderTerm={setOrderTerm}
-                                    setArrangement={setArrangement}
+                                    setArrangementType={setArrangementType}
                                     searchTerm={searchTerm}
                                     setSearchTerm={setSearchTerm}
+                                    selectedOrderTermIndex={selectedOrderTermIndex}
+                                    setSelectedOrderTermIndex={setSelectedOrderTermIndex}
                                 />
                             </>} />
                         </>} />
                     </>} />
-                    <ResponsiveDiv style="mt-20 mb-20 m-5 mr-5 w-4/5" key={crypto.randomUUID()} children={<> 
+                    <ResponsiveDiv style={"mt-20 mb-20 " + arrangementType == "grid" ? "w-full lg:w-1/2 xl:w-2/3 2xl:w-4/5" : "w-full md:w-2/3 xl:w-4/5"} key={crypto.randomUUID()} children={<> 
                         <DisplayArrangement 
-                            arrangement={arrangement}
+                            arrangement={arrangementType == "grid" ? gridArrangement : rowArrangement}
                             exhibitedChildren={
                                 response.products.map((product: Product, index: number) => {
-                                    const display = arrangement == initialArrangement ? "grid" : "row";
-                                    return (<ProductBriefPage key={index.toString()} display={display} product={product}/>)
+                                    return (<ProductBriefPage key={index.toString()} display={arrangementType} product={product}/>)
                                 })
                             }
                         />

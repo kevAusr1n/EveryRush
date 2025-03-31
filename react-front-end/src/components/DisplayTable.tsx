@@ -5,9 +5,9 @@ function DisplayTable(props: {
     tableContent: ReactNode[][]
 }) {
     return (
-        <table className="table-fixed w-300 text-center">
+        <table className="table-fixed w-100 md:w-150 xl:w-300 text-center">
             <thead>
-                <tr className="border-b border-gray-400 text-2xl font-mono">
+                <tr className="border-b border-gray-400 text-xs sm:text-sm md:text-xl xl:text-2xl font-mono">
                     {props.tableHead.map((value: string, index: number) => {
                         return <th key={index} className="p-5 font-mono">{value}</th>
                     })}

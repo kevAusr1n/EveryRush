@@ -1,3 +1,4 @@
-const backServerEndpoint = "http://localhost:5175";
+const backServerEndpoint = import.meta.env.PROD ? "" : "http://localhost:5175";
+const imageRoot = import.meta.env.PROD ? "/" : "http://localhost:5175/";
 
-export { backServerEndpoint };
+export { backServerEndpoint, imageRoot };

@@ -3,8 +3,8 @@ import { useNavigate, useParams } from "react-router";
 import { CartItem, Product } from "../type/ObjectType";
 import ResponsiveDiv from "../components/div/ResponsiveDiv";
 import { ImageBrief, ImageExhibition } from "../components/Image";
-import { backServerEndpoint } from "../config/BackendServerConfig";
-import { BlackButton, RedButton, WhiteButton } from "../components/Button";
+import { imageRoot } from "../config/BackendServerConfig";
+import { BlackButton } from "../components/Button";
 import { addOrUpdateCartItem } from "../functions/CartFunction";
 import { isUserCustomerOrGuest, isUserSignedIn } from "../functions/UserFunction";
 import { MonoStyleText } from "../components/Text";
@@ -12,9 +12,7 @@ import { GetReviewsResponse } from "../type/ResponseType";
 import { getPaginatedReviews } from "../functions/ProductReviewFunction";
 import { getProductDetail } from "../functions/ProductFunction";
 import Pagination from "../components/Pagination";
-import { Star } from "lucide-react";
 import { isStringEmpty } from "../functions/Utils";
-import InputField from "../components/InputField";
 import ReviewBoxPage from "./ReviewBoxPage";
 
 function ProductDetailPage() {
@@ -42,27 +40,27 @@ function ProductDetailPage() {
 
     return (
         <ResponsiveDiv style="mt-20 mb-20 gap-5 p-20" children={<>
-            <ResponsiveDiv style="flex flex-row gap-20" children={<>
-                <ResponsiveDiv style="flex flex-col gap-16 w-3/8 items-center" children={<>
-                    {!isStringEmpty(product.imageUrl) && <ImageBrief src={(product.imageUrl as string).split(",").map((image: string) => new URL(image, backServerEndpoint).toString())[currentImageIndex]} style="w-108 h-108 p-5"/>}
+            <ResponsiveDiv style="flex flex-col xl:flex-row gap-20 " children={<>
+                <ResponsiveDiv style="flex flex-col gap-16 w-full xl:w-3/8 items-center" children={<>
+                    {!isStringEmpty(product.imageUrl) && <ImageBrief src={(product.imageUrl as string).split(",").map((image: string) => imageRoot + image)[currentImageIndex]} style="w-108 h-108 p-5"/>}
                     {!isStringEmpty(product.imageUrl) && <ImageExhibition 
-                        srcList={(product.imageUrl as string).split(",").map((image: string) => new URL(image, backServerEndpoint).toString())} 
+                        srcList={(product.imageUrl as string).split(",").map((image: string) => imageRoot + image)} 
                         style="w-16 h-16 p-2 shadow" 
                         currentImageIndex={currentImageIndex} 
                         setCurrentImageIndex={setCurrentImageIndex}
                         eventHandlerMap={clickImageHandler} 
                     />}
                 </>} />
-                <ResponsiveDiv style="flex flex-col px-10 py-10 gap-5 w-3/4" children={<>
-                    <ResponsiveDiv style="flex flex-col gap-10 h-full" children={<>
-                        <ResponsiveDiv style="flex flex-row gap-10 items-center" children={<>
+                <ResponsiveDiv style="flex flex-col px-10 py-10 gap-5 w-full xl:w-3/4" children={<>
+                    <ResponsiveDiv style="flex flex-col items-center xl:items-start gap-10 h-full" children={<>
+                        <ResponsiveDiv style="flex flex-col xl:flex-row items-center gap-10" children={<>
                             <MonoStyleText style="text-3xl font-bold" content={product.name} />
                             <span className="ml-5 px-3 py-2 text-black border-3 rounded-lg text-5xl font-normal">${product.price}</span>
                         </>} />
                         <MonoStyleText style="text-gray-500 text-xl" content={product.description} />
                     </>} />
-                    <ResponsiveDiv style="flex flex-row items-center justify-end gap-5 mt-20" children={<> 
-                        {isUserCustomerOrGuest() && <BlackButton key={crypto.randomUUID()} buttonName="ADD TO CART" size="w-40 h-10" clickHandler={() => 
+                    <ResponsiveDiv style="flex flex-col xl:flex-row items-center justify-end gap-5 mt-20" children={<> 
+                        {isUserCustomerOrGuest() && <BlackButton key={crypto.randomUUID()} buttonName="ADD TO CART" size="w-50 h-10" clickHandler={() => 
                             {
                                 if (!isUserSignedIn()) {
                                     navigate("/signin");
@@ -71,7 +69,7 @@ function ProductDetailPage() {
                                 }
                             }
                         } />}
-                        {isUserCustomerOrGuest() && <BlackButton buttonName={"CHAT WITH SELLER: " + product.userName} size="h-10" clickHandler={() => 
+                        {isUserCustomerOrGuest() && <BlackButton buttonName={"CHAT WITH SELLER"} size="w-50 h-10" clickHandler={() => 
                             {
                                 if (!isUserSignedIn()) {
                                     navigate("/signin");
@@ -80,7 +78,7 @@ function ProductDetailPage() {
                                 }
                             }
                         } />}
-                        <BlackButton buttonName="BACK" size="w-40 h-10" clickHandler={() => {navigate('/products')}} />
+                        <BlackButton buttonName="BACK" size="w-50 h-10" clickHandler={() => {navigate('/products')}} />
                     </>} />
                 </>} />
             </>} />

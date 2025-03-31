@@ -36,6 +36,24 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\0063a0e8-e2ae-40c1-b925-75cfe9a29bdc-d8121eba-bd98-448c-b5db-7124d071941b-20250225224921-image.jpeg'))</OriginalItemSpec>
     </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\017bc790-6faa-4572-9ccc-ed4c9c5d7093-20250330164301-image.jpeg'))">
+      <SourceType>Package</SourceType>
+      <SourceId>EveryRush</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/EveryRush</BasePath>
+      <RelativePath>images/017bc790-6faa-4572-9ccc-ed4c9c5d7093-20250330164301-image.jpeg</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>ozekuwu2s7</Fingerprint>
+      <Integrity>HLkzSIaZV5P483ECWvqevVu+PlumAlV8ZSWj8iKt288=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\017bc790-6faa-4572-9ccc-ed4c9c5d7093-20250330164301-image.jpeg'))</OriginalItemSpec>
+    </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\033e7e48-dcc4-42ee-8a22-8cb7cef240c9-20250303201256-image.png'))">
       <SourceType>Package</SourceType>
       <SourceId>EveryRush</SourceId>

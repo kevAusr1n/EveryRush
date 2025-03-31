@@ -67,8 +67,8 @@ function ThirdPartySignInCheckPage() {
     const passwordSetUpDiv = () : ReactNode => {
         return (
             <ResponsiveDiv style="flex flex-col" children={<>
-                <TextInput name="New Password" type="password" style="w-100" value={password} valueChangeHandler={(e) => setPassword(e.target.value)} />
-                <TextInput name="Confirm New Password" type="password" style="w-100" value={confirmedPassword} valueChangeHandler={(e) => setConfirmedPassword(e.target.value)} />
+                <TextInput name="New Password" type="password" style="w-50 md:w-100" value={password} valueChangeHandler={(e) => setPassword(e.target.value)} />
+                <TextInput name="Confirm New Password" type="password" style="w-50 md:w-100" value={confirmedPassword} valueChangeHandler={(e) => setConfirmedPassword(e.target.value)} />
                 <MonoStyleText style="text-red-500" content={updatePasswordErrorMsg.current} />
             </>} /> 
         )
@@ -89,7 +89,7 @@ function ThirdPartySignInCheckPage() {
                     <label className="font-bold font-mono">Role</label>
                     <OptionInput name="" value={role} options={["Customer", "BusinessOwner"]} style="h-10" valueChangeHandler={setRole} />
                 </>} />
-                <ResponsiveDiv style="flex flex-row items-center gap-5" children={<>
+                <ResponsiveDiv style="flex flex-col md:flex-row md:items-center gap-5" children={<>
                     <label className="font-bold font-mono">Password</label>
                     <MonoStyleText style="" content={"set OR go with Google"} />
                     {!passwordSetUp && <WhiteButton buttonName="SET PASSWORD" size="w-40 h-10" clickHandler={() => {setPasswordSetUp(true)}}/>}

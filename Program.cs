@@ -93,20 +93,22 @@ builder.Services.Configure<IdentityOptions>
     }
 );
 
-builder.Services.AddCors
-(
-    options =>
-    {
-        options.AddPolicy(name: "AllowSelfFrontEnd", policy =>
+if (builder.Environment.IsDevelopment()) {
+    builder.Services.AddCors
+    (
+        options =>
         {
-            policy
-            .WithOrigins("http://localhost:5173")
-            .AllowCredentials()
-            .AllowAnyHeader()
-            .AllowAnyMethod();
-        });
-    }
-);
+            options.AddPolicy(name: "AllowSelfFrontEnd", policy =>
+            {
+                policy
+                .WithOrigins("http://localhost:5173")
+                .AllowCredentials()
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+            });
+        }
+    );
+}
 
 builder.Services.AddSignalR();
 
@@ -122,7 +124,6 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
-app.UseHttpsRedirection();
 app.UseRouting();
 app.UseCors("AllowSelfFrontEnd");
 

@@ -1,4 +1,4 @@
-import { use, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import ResponsiveDiv from "../components/div/ResponsiveDiv";
 import { MonoStyleText } from "../components/Text";
 import { BlackButton, BorderlessButton, WhiteButton } from "../components/Button";
@@ -7,6 +7,7 @@ import * as signalR from "@microsoft/signalr";
 import { isStringEmpty } from "../functions/Utils";
 import { ChatMessage } from "../type/ObjectType";
 import { getChatMessagesForConversation } from "../functions/ChatFunction";
+import { backServerEndpoint } from "../config/BackendServerConfig";
 
 
 function ChatPage () {
@@ -17,7 +18,7 @@ function ChatPage () {
     const [message, setMessage] = useState("");
     const [chatMessageList, setChatMessageList] = useState<ChatMessage[]>([])
     const [conn, _] = useState<signalR.HubConnection>(new signalR.HubConnectionBuilder()
-        .withUrl("http://localhost:5175/chathub")
+        .withUrl(backServerEndpoint + "/chathub")
         .withAutomaticReconnect()
         .build());
     const chatDivId = crypto.randomUUID();
@@ -87,8 +88,8 @@ function ChatPage () {
                 })}
             </>} />
         </>} />
-        <ResponsiveDiv style="flex flex-row gap-5 mb-20" children={<>
-            <input id={crypto.randomUUID()} name="message" value={message} className="w-2/3 h-10 border-1 focus:outline-none" onChange={
+        <ResponsiveDiv style="flex flex-col items-center md:flex-row gap-5 mb-20" children={<>
+            <input id={crypto.randomUUID()} name="message" value={message} className="md:w-2/3 h-10 border-1 focus:outline-none" onChange={
                 (e) => setMessage(e.target.value)
             }/>
             <WhiteButton buttonName="SEND" size="w-60 h-10" clickHandler={() => {

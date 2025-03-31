@@ -1,11 +1,11 @@
-import { Dispatch, SetStateAction, useState } from 'react';
+import { useState } from 'react';
 import ResponsiveDiv from './div/ResponsiveDiv';
 import { X } from 'lucide-react';
 import { ImageBrief } from './Image';
 import DropDown from './Dropdown';
 import { MonoStyleText } from './Text';
 import { isStringEmpty } from '../functions/Utils';
-import { backServerEndpoint } from '../config/BackendServerConfig';
+import { imageRoot } from '../config/BackendServerConfig';
 
 const basicTextFieldStyle = "font-mono shadow appearance-none border py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline";
 const readOnlyTestFieldStyle = "font-mono shadow appearance-none border py-2 px-3 bg-gray-200 text-black leading-tight focus:outline-none focus:shadow-outline";
@@ -24,7 +24,7 @@ function TextInput(props: {
     valueChangeHandler: (value: any) => void
 }) {
     return (
-        <ResponsiveDiv style="" children={<>
+        <ResponsiveDiv style="w-full" children={<>
             <label className={basicLabelStyle}>{props.name.toLocaleUpperCase()}</label>
             <input className={props.readonly == true ? props.style + " " + readOnlyTestFieldStyle : props.style + " " + basicTextFieldStyle} 
                 value={props.value} 
@@ -46,7 +46,7 @@ function TextAreaInput(props: {
     valueChangeHandler: (value: any) => void
 }) {
     return (
-        <ResponsiveDiv style="" children={<>
+        <ResponsiveDiv style="w-full" children={<>
             <label className={basicLabelStyle}>{props.name.toLocaleUpperCase()}</label>
             <textarea className={props.style + " h-50 " + basicTextFieldStyle} 
                 value={props.value} 
@@ -169,7 +169,7 @@ function ImageUrlInput(props: {
                             const imageId = crypto.randomUUID();
                             const deleteButtonId = crypto.randomUUID();
                             return <ResponsiveDiv key={index} style="relative h-32 w-32" eventHandlerMap={eventHandlerMap(imageId, deleteButtonId, index)} children={<>
-                                <ImageBrief id={imageId} src={new URL(imageUrl, backServerEndpoint).toString()} style={visibleImageStyle} />
+                                <ImageBrief id={imageId} src={imageRoot + imageUrl} style={visibleImageStyle} />
                                 <button id={deleteButtonId} type="button" className={invisibleDeleteButtonStyle} >
                                     <X lightingColor="green" />
                                 </button>

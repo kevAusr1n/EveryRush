@@ -24,14 +24,14 @@ function AddOrUpdateContactPage() {
     const [addOrUpdateContactResultMsg, setAddOrUpdateContactResultMsg] = useState("");
 
     const addOrUpdateContactInputs: Input[] = [
-        { name: "first name", type: "text", value: firstName, style: "w-200", valueChangeHandler: (e) => setFirstName(e.target.value) },
-        { name: "last name", type: "text", value: lastName, style: "w-200", valueChangeHandler: (e) => setLastName(e.target.value) },
-        { name: "email", type: "text", value: email, style: "w-200", valueChangeHandler: (e) => setEmail(e.target.value) },
-        { name: "phone", type: "text", value: phone, style: "w-200", valueChangeHandler: (e) => setPhone(e.target.value) },
-        { name: "address", type: "text", value: address, style: "w-200", valueChangeHandler: (e) => setAddress(e.target.value) },
-        { name: "city", type: "text", value: city, style: "w-200", valueChangeHandler: (e) => setCity(e.target.value) },
-        { name: "state", type: "text", value: state, style: "w-200", valueChangeHandler: (e) => setState(e.target.value) },
-        { name: "postcde", type: "text", value: postcode, style: "w-200", valueChangeHandler: (e) => setPostcode(e.target.value) },
+        { name: "first name", type: "text", value: firstName, style: "w-full md:w-100 lg:w-200", valueChangeHandler: (e) => setFirstName(e.target.value) },
+        { name: "last name", type: "text", value: lastName, style: "w-full md:w-100 lg:w-200", valueChangeHandler: (e) => setLastName(e.target.value) },
+        { name: "email", type: "text", value: email, style: "w-full md:w-100 lg:w-200", valueChangeHandler: (e) => setEmail(e.target.value) },
+        { name: "phone", type: "text", value: phone, style: "w-full md:w-100 lg:w-200", valueChangeHandler: (e) => setPhone(e.target.value) },
+        { name: "address", type: "text", value: address, style: "w-full md:w-100 lg:w-200", valueChangeHandler: (e) => setAddress(e.target.value) },
+        { name: "city", type: "text", value: city, style: "w-full md:w-100 lg:w-200", valueChangeHandler: (e) => setCity(e.target.value) },
+        { name: "state", type: "text", value: state, style: "w-full md:w-100 lg:w-200", valueChangeHandler: (e) => setState(e.target.value) },
+        { name: "postcde", type: "text", value: postcode, style: "w-full md:w-100 lg:w-200", valueChangeHandler: (e) => setPostcode(e.target.value) },
     ];
 
     const addOrUpdateContactHandler = async () => {

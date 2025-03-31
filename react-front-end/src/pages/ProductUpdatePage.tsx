@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { RedButton, WhiteButton } from "../components/Button";
 import ResponsiveDiv from "../components/div/ResponsiveDiv";
 import ProductStatusConfig from "../config/ProductStatusConfig";

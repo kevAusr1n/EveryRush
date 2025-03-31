@@ -54,9 +54,9 @@ function UserInfoEditPage() {
     const usernameEditDiv = () : ReactNode => {
         return (
             <ResponsiveDiv style="flex flex-col" children={<>
-                <TextInput name="New Username" type="text" style="w-100" value={username} valueChangeHandler={(e) => setUsername(e.target.value)}/>
+                <TextInput name="New Username" type="text" style="w-50 md:w-100" value={username} valueChangeHandler={(e) => setUsername(e.target.value)}/>
                 <MonoStyleText style="text-red-500" content={updateUsernameErrorMsg.current} />
-                <ResponsiveDiv style="flex flex-row gap-3 mt-5" children={<>
+                <ResponsiveDiv style="flex flex-col md:flex-row gap-3 mt-5" children={<>
                     <WhiteButton buttonName="SAVE" size="h-10" clickHandler={() => editUsernameRequest()} />
                     <WhiteButton buttonName="CANCEL" size="h-10" clickHandler={() => {
                         updateUsernameErrorMsg.current = "";
@@ -70,11 +70,11 @@ function UserInfoEditPage() {
     const passwordEditDiv = () : ReactNode => {
         return (
             <ResponsiveDiv style="flex flex-col" children={<>
-                <TextInput name="Old Password" type="password" style="w-100" value={oldPassword} valueChangeHandler={(e) => setOldPassword(e.target.value)}/>
-                <TextInput name="New Password" type="password" style="w-100" value={newPassword} valueChangeHandler={(e) => setNewPassword(e.target.value)}/>
-                <TextInput name="Confirm New Password" type="password" style="w-100" value={confirmedNewPassword} valueChangeHandler={(e) => setConfirmedNewPassword(e.target.value)} />
+                <TextInput name="Old Password" type="password" style="w-50 md:w-100" value={oldPassword} valueChangeHandler={(e) => setOldPassword(e.target.value)}/>
+                <TextInput name="New Password" type="password" style="w-50 md:w-100" value={newPassword} valueChangeHandler={(e) => setNewPassword(e.target.value)}/>
+                <TextInput name="Confirm New Password" type="password" style="w-50 md:w-100" value={confirmedNewPassword} valueChangeHandler={(e) => setConfirmedNewPassword(e.target.value)} />
                 <MonoStyleText style="text-red-500" content={updatePasswordErrorMsg.current} />
-                <ResponsiveDiv style="flex flex-row gap-3 mt-5" children={<>
+                <ResponsiveDiv style="flex flex-col md:flex-row gap-3 mt-5" children={<>
                     <WhiteButton buttonName="SAVE" size="h-10" clickHandler={() => editPasswordRequest()} />
                     <WhiteButton buttonName="CANCEL" size="h-10" clickHandler={() => {
                         updatePasswordErrorMsg.current = "";
@@ -86,13 +86,13 @@ function UserInfoEditPage() {
     }
 
     return (
-        <ResponsiveDiv style="flex flex-col items-center" children={<>
+        <ResponsiveDiv style="w-full flex flex-col items-center" children={<>
             <ResponsiveDiv style="mt-20 mb-20 gap-5 p-20 flex flex-col items-start bg-white shadow-xl" children={<>
                 <ResponsiveDiv style="flex flex-row items-end gap-5" children={<>
                     <label className="font-bold font-mono">Email</label>
                     <MonoStyleText style="" content={localStorage.getItem("email") as string} />
                 </>} />
-                <ResponsiveDiv style="w-150 flex flex-row items-center justify-between" children={<>
+                <ResponsiveDiv style="w-full flex flex-row items-center justify-between" children={<>
                     <ResponsiveDiv style="flex flew-row gap-5" children={<>
                         <label className="font-bold font-mono">Username</label>
                         <MonoStyleText style="" content={localStorage.getItem("username") as string} />
@@ -100,7 +100,7 @@ function UserInfoEditPage() {
                     <WhiteButton buttonName="CHANGE" size="h-10" clickHandler={() => setUsernameEdit(true)}/>
                 </>} />
                 {(usernameEdit && usernameEditDiv())}
-                <ResponsiveDiv style="w-150 flex flex-row items-center justify-between" children={<>
+                <ResponsiveDiv style="w-full flex flex-row items-center justify-between" children={<>
                     <ResponsiveDiv style="flex flew-row gap-5" children={<>
                         <label className="font-bold font-mono">Password</label>
                         <MonoStyleText style="" content="********" />

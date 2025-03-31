@@ -1,14 +1,14 @@
-import { createElement, Dispatch, ReactNode, RefObject, SetStateAction, useEffect, useState } from "react"
+import { createElement,ReactNode, useEffect, useState } from "react"
 import { WhiteButton } from "../components/Button";
 import DropDown from "../components/Dropdown";
 import InputField from "../components/InputField";
 import { GetContactsResponse } from "../type/ResponseType";
 import { getPaginatedContacts } from "../functions/ContactFunction";
-import { CartItem, Contact, Order } from "../type/ObjectType";
+import { CartItem, Contact } from "../type/ObjectType";
 import { ImageBrief } from "../components/Image";
 import ResponsiveDiv from "../components/div/ResponsiveDiv";
 import DisplayTable from "../components/DisplayTable";
-import { backServerEndpoint } from "../config/BackendServerConfig";
+import { imageRoot } from "../config/BackendServerConfig";
 import { isUserSignedIn } from "../functions/UserFunction";
 import { MonoStyleText } from "../components/Text";
 
@@ -66,7 +66,7 @@ function SingleOrderCheckoutPage(props: {
     props.cart.map((cartItem: CartItem, index: number) => {
         totalPrice = totalPrice + cartItem.quantity * cartItem.price;
         tableContent[index] = []
-        tableContent[index].push(<ImageBrief src={new URL((cartItem.imageUrl as string).split(",")[0], backServerEndpoint).toString()} style="w-32 h-32"/>);
+        tableContent[index].push(<ImageBrief src={imageRoot + (cartItem.imageUrl as string).split(",")[0]} style="w-32 h-32"/>);
         tableContent[index].push(createElement("p", {}, cartItem.name) as ReactNode);
         tableContent[index].push(createElement("p", {}, cartItem.sellerName) as ReactNode);
         tableContent[index].push(createElement("p", {}, "$" + cartItem.price) as ReactNode);
@@ -100,10 +100,10 @@ function SingleOrderCheckoutPage(props: {
     
     return (
         <ResponsiveDiv style="flex flex-col items-center" children={<>
-            <ResponsiveDiv style="mt-20 mb-20 gap-5 flex flex-col items-start" children={<>
+            <ResponsiveDiv style="mt-20 mb-20 gap-5 flex flex-col items-center xl:items-start" children={<>
                 <DisplayTable tableHead={tableHead} tableContent={tableContent} />
-                <ResponsiveDiv key={crypto.randomUUID()} style="mt-10 w-full flex flex-row justify-end" children={<>
-                    <MonoStyleText style="text-5xl" content={"Total: $" + totalPrice} />
+                <ResponsiveDiv key={crypto.randomUUID()} style="mt-10 w-full flex flex-col items-center xl:flex-row xl:justify-end" children={<>
+                    <MonoStyleText style="xl:text-5xl" content={"Total: $" + totalPrice} />
                 </>} />
                 {props.separate && <ResponsiveDiv style="flex flex-col mt-10" children={<>
                     <ResponsiveDiv style="flex flex-row gap-5" children={<>
@@ -124,7 +124,7 @@ function SingleOrderCheckoutPage(props: {
                     </>} />
                     {contactInputFieldNames.map((name : string , index : number) => {
                         return <InputField key={index} name={name} type={contactInputFieldTypes[index]} 
-                        value={contactInputFieldValueStates[index][0]} style="w-200" valueChangeHandler={contactInputFieldValueStates[index][1]} />
+                        value={contactInputFieldValueStates[index][0]} style="w-full xl:w-200" valueChangeHandler={(e) => contactInputFieldValueStates[index][1](e.target.value)} />
                     })}
                 </>} />}
             </>} />

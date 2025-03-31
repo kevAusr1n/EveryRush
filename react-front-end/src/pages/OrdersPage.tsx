@@ -32,9 +32,9 @@ function OrdersPage() {
         });
     }, [page, size, searchTerm])
 
-    const filterButtonNames = ["ALL", "IN PROCESS", "FINISHED"];
+    /* const filterButtonNames = ["ALL", "IN PROCESS", "FINISHED"];
     const focusButtonStyle = "w-40 h-10 border-b-1 bg-black text-white transition hover:bg-black hover:text-white focus:bg-black focus:text-white";
-    const unfocusButtonStyle = "w-40 h-10 border-b-1 bg-white text-black transition hover:bg-black hover:text-white focus:bg-black focus:text-white";
+    const unfocusButtonStyle = "w-40 h-10 border-b-1 bg-white text-black transition hover:bg-black hover:text-white focus:bg-black focus:text-white"; */
     
     return (
         (!isUserSignedIn() && <SignInRequiredPage message="please sign in to manage orders"/>) ||
@@ -42,13 +42,13 @@ function OrdersPage() {
             {(focusFilterButtonIndex == 0 && response.orders.length == 0) && <ResponsiveDiv style="flex flex-col items-center gap-5" children={<>
                 <MonoStyleText key={crypto.randomUUID()} style="text-xl" content="You have no order" />
             </>} />}   
-            {(response.orders.length != 0 || focusFilterButtonIndex != 0) && <ResponsiveDiv style="flex flex-row mx-20 mb-5 gap-5 justify-between" children={<>
-                <ResponsiveDiv style="" children={<>
+            {(response.orders.length != 0 || focusFilterButtonIndex != 0) && <ResponsiveDiv style="flex flex-col items-center xl:flex-row mx-20 mb-5 gap-5 justify-between" children={<>
+                {/*<ResponsiveDiv style="flex flex-col xl:flex-row" children={<>
                     {filterButtonNames.map((buttonName, index) => {
                         return <BorderlessButton key={index} style={index == focusFilterButtonIndex ? focusButtonStyle : unfocusButtonStyle} buttonName={buttonName} clickHandler={() => {setFocusFilterButtonIndex(index)}} />
                     })}
-                </>} />
-                <ResponsiveDiv style="w-1/4 flex flex-row h-10 items-start" children={<>
+                </>} /> */}
+                <ResponsiveDiv style="w-1/2 xl:w-1/4 flex flex-row h-10 items-start" children={<>
                     <SearchBar placeHolder="order id, item etc ..." searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
                 </>} />
             </>} />}   

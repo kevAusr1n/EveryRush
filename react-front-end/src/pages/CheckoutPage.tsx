@@ -64,7 +64,7 @@ function CheckoutPage() {
 
     return (
         <ResponsiveDiv style="flex flex-col items-center" children={<>
-            <ResponsiveDiv style="mt-10 flex flex-row items-center gap-10 justify-center" children={<>
+            <ResponsiveDiv style="mt-10 flex flex-col xl:flex-row items-center gap-10 justify-center" children={<>
                 {!separateOrder && <WhiteButton buttonName="FILL POST/BILLING FOR SEPARATE ORDER" size="w-100 h-10" clickHandler={() => {
                     setSeparateOrder(true);
                 }} />}
@@ -75,9 +75,9 @@ function CheckoutPage() {
             </>} />
             {differentSellers.map((sellerName, index) => {
                 return <ResponsiveDiv key={index} style="mt-10 flex flex-col" children={<>
-                    <MonoStyleText style="w-full py-2 text-2xl bg-black text-white text-center" content={"NO." + (index+1) + " Order For Seller " + sellerName} />
+                    <MonoStyleText style="w-full py-2 xl:text-2xl bg-black text-white text-center" content={"NO." + (index+1) + " Order For Seller " + sellerName} />
                     <SingleOrderCheckoutPage cart={differentSellerProducts[index]} postageInfoRef={postageInfoRef.current[index]} separate={separateOrder ? separateOrder : index == differentSellers.length - 1} />
-                    {index == differentSellers.length - 1 && <ResponsiveDiv style="gap-5 flex flex-row" children={<>
+                    {index == differentSellers.length - 1 && <ResponsiveDiv style="gap-5 flex flex-col items-center xl:flex-row" children={<>
                         <BlackButton buttonName="PLACE ORDER" size="w-60 h-10" clickHandler={() => {
                             placeOrderHandler();
                         }} />

@@ -1,4 +1,4 @@
-import { Dispatch, FormEvent, SetStateAction } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { isStringEmpty } from "./Utils";
 import APICall from "../config/ApiConfig";
 import { Product } from "../type/ObjectType";
@@ -15,10 +15,6 @@ function getPaginatedProducts(props: {
     let order = "";
 
     switch(props.orderTerm){
-        case "Popularity":
-            orderBy = "";
-            order = "";
-            break;
         case "Price Ascending":
             orderBy = "price";
             order = "asc";
@@ -74,6 +70,10 @@ async function addOrUpdateProducts(props: {
     var apiResponse: ApiResponse = {result: "failure", failureDescription: ""} as ApiResponse;
     formData.append("userId", localStorage.getItem("userid") as string);
     formData.append("id", props.id)
+    formData.append("name", props.name);
+    formData.append("description", props.description);
+    formData.append("price", props.price);
+    formData.append("stock", props.stock);
     formData.append("toKeepImageUrl", props.toKeepImageUrl);
    
     if (props.files != null) {

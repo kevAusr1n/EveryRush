@@ -25,8 +25,8 @@ function AddOrUpdateProductPage() {
     const [addOrUpdateProductResult, setAddOrUpdateProductResult] = useState("");
     
     var addOrProductInputs: Input[] = [
-        { name: "name", type: "text", value: name, style: "w-200", valueChangeHandler: (e) => setName(e.target.value) },
-        { name: "price", type: "text", value: price, style: "w-200", 
+        { name: "name", type: "text", value: name, style: "w-full md:w-100 lg:w-200", valueChangeHandler: (e) => setName(e.target.value) },
+        { name: "price", type: "text", value: price, style: "w-full md:w-100 lg:w-200", 
             valueChangeHandler: (e) => {
                 setPrice(e.target.value);
                 if (!isNonNegativeNumber(e.target.value)) {
@@ -36,7 +36,7 @@ function AddOrUpdateProductPage() {
                 }
             } 
         },
-        { name: "stock", type: "text", value: stock, style: "w-200",
+        { name: "stock", type: "text", value: stock, style: "w-full md:w-100 lg:w-200",
             valueChangeHandler: (e) => {
                 setStock(e.target.value);
                 if (!isNonNegativeInteger(e.target.value)) {
@@ -46,8 +46,8 @@ function AddOrUpdateProductPage() {
                 }
             } 
         },
-        { name: "New Images", type: "image", value: [files, setFiles], style: "w-200" }, 
-        { name: "description", type: "textarea", value: description, style:"w-200 h-50", valueChangeHandler: (e) => setDescription(e.target.value) },
+        { name: "New Images", type: "image", value: [files, setFiles], style: "w-full md:w-100 lg:w-200" }, 
+        { name: "description", type: "textarea", value: description, style:"w-full md:w-100 lg:w-200 h-50", valueChangeHandler: (e) => setDescription(e.target.value) },
     ];
 
     var checkMsgs: string[] = ["", priceCheckMsg, stockCheckMsg, "", ""];
@@ -56,7 +56,7 @@ function AddOrUpdateProductPage() {
         addOrProductInputs.splice(
             3, 
             0,
-            { name: "Old Images", type: "imageUrl", value: searchParams.get("imageUrl") as string, style: "w-200", 
+            { name: "Old Images", type: "imageUrl", value: searchParams.get("imageUrl") as string, style: "w-full md:w-100 lg:w-200", 
                 valueChangeHandler: (value) => {
                     setToKeepImageUrl(value);
                     if (isStringEmpty(value) && (files == null || files.length == 0)) {

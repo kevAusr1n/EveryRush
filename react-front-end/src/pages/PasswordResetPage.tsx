@@ -42,18 +42,18 @@ function PasswordResetPage() {
 
     return (
         <ResponsiveDiv style="flex flex-col mt-40 items-center" children={<>
-            <ResponsiveDiv style="flex flex-col gap-5" children={<>
-                <InputField name="Please enter your email for reset" type="text" value={email} style="w-200" valueChangeHandler={(e) => setEmail(e.target.value)}/>
+            <ResponsiveDiv style="flex items-center md:items-start flex-col gap-5" children={<>
+                <InputField name="Please enter your email for reset" type="text" value={email} style="w-full md:w-100 lg:w-200" valueChangeHandler={(e) => setEmail(e.target.value)}/>
                 <BlackButton buttonName="SEND" size="w-40 h-10" clickHandler={() => {
                     sendPasswordResetEmailHandler();
                 }} />
                 <MonoStyleText style="text-red-500" content={sendEmailResultMsg.current} />
             </>} />
-            {dropDown && <ResponsiveDiv style="flex flex-col mt-5 gap-5" children={<>
-                <InputField name="Reset Code" type="text" value={code} style="w-200" valueChangeHandler={(e) => setCode(e.target.value)}/>
-                <InputField name="New Password" type="password" value={newPassword} style="w-200" valueChangeHandler={(e) => setNewPassword(e.target.value)}/>
-                <InputField name="Confirm New Password" type="password" value={confirmedNewPassword} style="w-200" valueChangeHandler={(e) => setConfirmedNewPassword(e.target.value)}/>
-                <ResponsiveDiv style="flex flex-row gap-5" children={<>
+            {dropDown && <ResponsiveDiv style="flex items-center md:items-start flex-col mt-5 gap-5" children={<>
+                <InputField name="Reset Code" type="text" value={code} style="w-full md:w-100 lg:w-200" valueChangeHandler={(e) => setCode(e.target.value)}/>
+                <InputField name="New Password" type="password" value={newPassword} style="w-full md:w-100 lg:w-200" valueChangeHandler={(e) => setNewPassword(e.target.value)}/>
+                <InputField name="Confirm New Password" type="password" value={confirmedNewPassword} style="w-full md:w-100 lg:w-200" valueChangeHandler={(e) => setConfirmedNewPassword(e.target.value)}/>
+                <ResponsiveDiv style="flex flex-col md:flex-row gap-5" children={<>
                     <BlackButton buttonName="RESET" size="w-40 h-10" clickHandler={() => resetPasswordHandler()}/>
                     <BlackButton buttonName="BACK" size="w-40 h-10" clickHandler={() => {
                         sendEmailResultMsg.current = "";
