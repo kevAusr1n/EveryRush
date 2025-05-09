@@ -1,6 +1,4 @@
 # EveryRush
-[latest update]
-The frontend part has been removed from this git repo and relocated to react-frontend-deploy-by-aws.
 
 ASP.NET + React APP
 
